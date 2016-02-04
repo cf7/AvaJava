@@ -11,11 +11,12 @@ Example Code:
 <br>`eat hellowWorld`
 
 ######Pointers:
-`[x, y] = [1, 2, 3];`
-`x - 1`
-`y - 2`
-<br>`x = 100`</br>
-<br>`w = {y: 21, x, z: 22};`</br>
+`[x, y] = [1, 2, 3];`<br>
+`x - 1`<br>
+`y - 2`<br>
+
+`x = 100`<br>
+`w = {y: 21, x, z: 22};`<br>
 `w - {y: 21, x: 100, z: 22}`
 
 ######Basic Operations:
