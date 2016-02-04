@@ -3,7 +3,9 @@
 
 ####<i>Features/Planned Implementation (Subject to Change)</i>
 Example Code:
-<br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `add 2 3;`</br>
+<br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `add 3 3;`</br>
+<br>`var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1); //plain OCaml`</br>
+<br>`factorial add 3 3;`</br>
 ######To Print:
 `ava("Hello World!");` 
 ######To Compile & Run:
@@ -23,10 +25,12 @@ Example Code:
 `[1...10] => [1,2,3,4,5,6,7,8,9,10]`<br>
 
 ######Basic Operations:
-`x, y = "hi";`<br>
+`x,y = "hi";`<br>
 `x - "hi"; `<br>
 `y - "hi";` <br>
-`x, y = 5;`<br>
+`x,y = 5;`<br>
+`x - 5`<br>
+`y - 5`<br>
 `x++;`<br>
 `x--;`<br>
 `x^^2; //square x`<br>
@@ -50,6 +54,8 @@ Example Code:
 `[1,2,3]++ = [2,3,4]`<br>
 `x and y`<br>
 `x or y`<br>
+
+
 
 
 
