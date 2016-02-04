@@ -23,7 +23,7 @@ Example Code:
 `[1..10] => [1,2,3,4,5,6,7,8,9]`<br>
 `[1...10] => [1,2,3,4,5,6,7,8,9,10]`<br>
 
-######Basic Operations:
+######Basic Operations and/or Representations:
 `x,y = "hi";`<br>
 `x - "hi"; `<br>
 `y - "hi";` <br>
