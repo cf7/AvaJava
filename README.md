@@ -14,7 +14,7 @@ Example Code:
 `[x, y] = [1, 2, 3];`
 <br>`{y: 21, x, z: 22};`</br>
 
-######Basic Functions:
+######Basic Operations:
 `x, y = "hi";`<br>
 `x - "hi"; `<br>
 `y - "hi";` <br>
