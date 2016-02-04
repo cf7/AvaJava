@@ -1,39 +1,41 @@
-# AvaJava
+#<b>Avajava</b>
+<b>AvaJava is a compiler written in Javascript that translates Javascript to Python.</b> AvaJava combines the most interesting parts of famous languages such as Python, CoffeeScript, Javascript, OCAML, etc., and also provides a new selection of functions (<i>to come</i>).  
 
-// Combination of CoffeScript, Javascript, and OCaml
-// Specifically to be able to have multiple conditionals in
-// an if statement without having to restate "not 0" for each conditional
+####<i>Features/Planned Implementation (Subject to Change)</i>
+Example Code:
+<br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `add 2 3;`</br>
+######To Print:
+`ava("Hello World!");` 
+######To Compile & Run:
+`guac hellowWorld.ava`
+<br>`eat hellowWorld`
 
-var addOdds = (x,y) -> if x%2 and y%2 both not 0 then x + y;  
-add 2 3;  
-// currying  
-  
-ava("Hello World!");  
-guac helloWorld.ava  
-eat helloWorld  
+######Pointers:
+`[x, y] = [1, 2, 3];`
+<br>`{y: 21, x, z: 22};`</br>
 
-[x,y] = [1,2,3];  
-{y: 21, x, z: 22};  
+######Basic Functions:
+`x, y = "hi";`<br>
+`x - "hi"; `<br>
+`y - "hi";` <br>
+`x, y = 5;`<br>
+`x++;`<br>
+`x--;`<br>
+`x^^2; //square x`<br>
+`x^^3; //cube x`<br>
+`x += 10;` <br>
+`x -= 10;` <br>
+`x *= 10;` <br>
+`x /= 10;` <br>
+`x %2;` <br>
+`'' = "";`<br>
+`'' => '';` <br>
+`"" => "";`<br>
+`'' => "";`<br>
+`"" => '';`<br>
+`[x, y, z] = " hi";`<br>
+`x - " ";`<br>
+`y - "h";`<br>
+`z - "i";`<br>
 
-x,y = "hi";  
-x - "hi"  
-y - "hi"  
-x,y = 5;  
-x++;  
-x--;  
-x^^2; //square x   
-x^^3; // cube x  
-x += 10;  
-x -= 10;  
-x *= 10;  
-x /= 10;  
-x % 2  
-'' = "";  
-'' => '';  
-"" => "";  
-'' => "";  
-"" => '';  
-[x,y,z] = " hi"  
-x - " "  
-y - "h"  
-z - "i"  
+
