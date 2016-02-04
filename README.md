@@ -4,8 +4,7 @@
 ####<i>Features/Planned Implementation (Subject to Change)</i>
 Example Code:
 <br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `add 3 3;`</br>
-<br>`var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1); //plain OCaml`</br>
-<br>`factorial add 3 3;`</br>
+<br>`var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1); //plain OCaml`<br> `factorial add 3 3;`</br>
 ######To Print:
 `ava("Hello World!");` 
 ######To Compile & Run:
