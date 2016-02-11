@@ -1,7 +1,7 @@
 #<b>Avajava</b>
 <b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, and OCamlw that compiles into Python.</b> 
-<br>It combines the most interesting parts of these languages, and also provides a new selection of functions (<i>to come</i>).</br>
-<br>This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.</br>
+It combines the most interesting parts of these languages, and also provides a new selection of functions (<i>to come</i>).<br>
+This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.<br>
 
 ####<i>Features/Planned Implementation (Subject to Change)</i>
 <ul>
