@@ -158,8 +158,18 @@ Example Code:
 `=> Error "Expected conditional" ...if x % 2 + y % 2 both...`<br>
 `--------------------------------------^^^^^^^^^^^^^`<br>
 
-#####Modules (just use "export")
+#####Modules (just use "export"):
 `export: { } // exports objects`<br>
 `export: { "add": ((x,y) -> x + y) }`<br>
+
+#####Scoping:
+`avajava will utilize static scoping.`<br>
+`For example . . .`<br>
+    var x = 3;
+    var printNumber = () -> ava(x);
+    var printAgain = () -> var x = 10; printNumber;
+`will print out 3 because printNumber was instantiated with var x = 3`<br>
+`The var x = 10 instantiated within the printAgain will not affect the scope`<br>
+`of the printNumber call within printAgain. (That would by dynamic scoping.)`<br>
 
 
