@@ -85,7 +85,10 @@ Example Code:
 `x - [1,2,3] => x = [] `<br>
 `x[0] => 1 `<br>
 
-#####
+#####Number Literal: 
+`Number => x - 4.0` <br> 
+` x + 6.3 => 10.3` <br> 
+` 1.2 + 3 => 4.2 <br> 
 
 #####Execeptions:
 `1 + true => Error "Invalid Addition of Types"` <br>
