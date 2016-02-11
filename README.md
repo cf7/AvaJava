@@ -56,7 +56,7 @@ Example Code:
 `To declare a new variable => x = "Hello World"
 
 #####Commments:
-`Single Line Comments => **
+`Single Line Comments => ** **
 <br>
 `Multi-Line Comments => **Cada ... Cada** <br> 
 
@@ -73,7 +73,7 @@ Example Code:
 `"heh" - "h" => "he" <br>
 
 #####Arrays
-`x = [] ** An empty array <br>
+`x = [] Empty <br>
 `x + [1,2,3] => x = [1,2,3] <br>
 `x - [1,2,3] => x = [] <br>
 `x[0] => 1 <br>
