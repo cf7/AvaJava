@@ -5,8 +5,8 @@
 Example Code:
 <br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `addOdds 3 3;`</br>
 <br>`var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1); //plain OCaml`<br> `factorial add 3 3;`</br>
-<br>`var isPrime = (n)...</br>
-<br>` var HelloWorld = () -> ava "Hello World"; ` </br>
+<br>`var isPrime = (n)...`</br>
+<br>` var HelloWorld = () -> ava "Hello World"; `</br>
 
 ######To Print:
 `ava("Hello World!");` <br>
