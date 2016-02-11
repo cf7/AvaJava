@@ -118,7 +118,7 @@ Example Code:
 `addOdds(x=3, y=3);`<br>
 `addOdds 3; // x=3 and y=0  default parameters`<br>
 
-######Higher Order Functions:
+#####Higher Order Functions:
 `var map = (g, list) -> for each item in list: g item`<br>
 `map ((x) -> x + 1) [1...10]`<br>
 `=> [2,3,4,5,6,7,8,9,10,11]`<br>
@@ -153,10 +153,10 @@ Example Code:
 #####Errors and Exceptions:
 `1 + true`<br>
 `=> Error "Invalid Addition of Types" 1 + true` <br>
-`                                     ^^^^^^^^`<br>
+`-------------------------------------^^^^^^^^`<br>
 `var addOdds = (x,y) -> if x % 2 + y % 2 both not 0 then x + y;`<br> 
 `=> Error "Expected conditional" ...if x % 2 + y % 2 both...`<br>
-`                                      ^^^^^^^^^^^^^`<br>
+`--------------------------------------^^^^^^^^^^^^^`<br>
 
 #####Modules (just use "export")
 `export: { } // exports objects`<br>
