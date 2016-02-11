@@ -54,6 +54,22 @@ Example Code:
 `x and y`<br>
 `x or y`<br>
 
+#####Commments:
+`Single Line Comments => ** <br>
+`Multi-Line Comments => **Cada ... Cada** <br> 
+
+#####Loops: 
+`Tbd <br> 
+
+#####String Literal: 
+`String => "Hello" <br>
+`String is a set of chars. <br> 
+`Chars => "h", "e", "l" ... <br> 
+`"h" + "e" => "he" <br> 
+`"e" - "e" => ""<br>
+`"h" - "e" => "h" <br> 
+`"heh" - "h" => "he" <br>
+
 
 
 
