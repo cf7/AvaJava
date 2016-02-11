@@ -42,6 +42,8 @@ Example Code:
 `"hi" - string`<br>
 `true - boolean`<br>
 `false - boolean`<br>
+`[1,2,3] - list`<br>
+`{x:1,y:2} - object`<br>
  
 ######To Print:
 `ava("Hello World!");` <br>
