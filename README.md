@@ -53,6 +53,7 @@ Example Code:
 `[1,2,3]++ = [2,3,4]`<br>
 `x and y`<br>
 `x or y`<br>
+`To declare a new variable => x = "Hello World"
 
 #####Commments:
 `Single Line Comments => ** <br>
@@ -70,6 +71,14 @@ Example Code:
 `"h" - "e" => "h" <br> 
 `"heh" - "h" => "he" <br>
 
+#####Arrays
+`x = [] ** An empty array 
+`x + [1,2,3] => x = [1,2,3]
+`x - [1,2,3] => x = []
+`x[0] => [1]
+
+
+#####
 
 
 
