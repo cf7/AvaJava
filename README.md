@@ -59,7 +59,7 @@ Example Code:
 `[1,2,3]++ = [2,3,4]`<br>
 `x and y`<br>
 `x or y`<br>
-`To declare a new variable => x = "Hello World"
+`To declare a new variable => x = "Hello World"`
 
 #####Commments:
 `Single Line Comments => ** **`
@@ -88,7 +88,7 @@ Example Code:
 #####Number Literal: 
 `Number => x - 4.0` <br> 
 ` x + 6.3 => 10.3` <br> 
-` 1.2 + 3 => 4.2 <br> 
+` 1.2 + 3 => 4.2` <br> 
 
 #####Execeptions:
 `1 + true => Error "Invalid Addition of Types"` <br>
