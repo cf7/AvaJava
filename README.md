@@ -56,27 +56,27 @@ Example Code:
 `To declare a new variable => x = "Hello World"
 
 #####Commments:
-`Single Line Comments => ** **
+`Single Line Comments => ** **`
 <br>
-`Multi-Line Comments => **Cada ... Cada** <br> 
+`Multi-Line Comments => **Cada ... Cada**` <br> 
 
 #####Loops: 
-`Tbd <br> 
+`Tbd` <br> 
 
 #####String Literal: 
-`String => "Hello" <br>
-`String is a set of chars. <br> 
-`Chars => "h", "e", "l" ... <br> 
-`"h" + "e" => "he" <br> 
-`"e" - "e" => ""<br>
-`"h" - "e" => "h" <br> 
-`"heh" - "h" => "he" <br>
+`String => "Hello"` <br>
+`String is a set of chars.` <br> 
+`Chars => "h", "e", "l" ... `<br> 
+`"h" + "e" => "he" `<br> 
+`"e" - "e" => ""`<br>
+`"h" - "e" => "h" `<br> 
+`"heh" - "h" => "he" `<br>
 
 #####Arrays
-`x = [] Empty <br>
-`x + [1,2,3] => x = [1,2,3] <br>
-`x - [1,2,3] => x = [] <br>
-`x[0] => 1 <br>
+`x = [] Empty `<br>
+`x + [1,2,3] => x = [1,2,3] `<br>
+`x - [1,2,3] => x = [] `<br>
+`x[0] => 1 `<br>
 
 
 #####
