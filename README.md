@@ -33,7 +33,7 @@ Example Code:
 <br>
 `Multi-Line Comments => ***Cada ...`<br> 
                         `... Cada***`<br>
-#######Literals:
+######Literals:
 `1 - integer`<br>
 `1.00 - float`<br>
 `1.00e24 - exponentiation`<br>
@@ -45,10 +45,10 @@ Example Code:
 `[1,2,3] - list`<br>
 `{x:1,y:2} - object`<br>
  
-######To Print:
+#####To Print:
 `ava("Hello World!");` <br>
 
-######Assignment:
+#####Assignment:
 `var x = 1; // plain javascript`<br>
 `x - 1`<br>
 `x,y = "hi";`<br>
@@ -63,7 +63,7 @@ Example Code:
 `w = {y: 21, x, z: 22};`<br>
 `w - {y: 21, x: 100, z: 22}`<br>
 
-######Operators:
+#####Operators:
 `x++;`<br>
 `x--;`<br>
 `x^^2; //square x`<br>
@@ -81,7 +81,7 @@ Example Code:
 `x and y => boolean literal`<br>
 `x or y => boolean literal`<br>
 
-######Pattern Matching/Destructuring (basically CoffeeScript):
+#####Pattern Matching/Destructuring (basically CoffeeScript):
 `[x, y] = [1, 2, 3];`<br>
 `x - 1`<br>
 `y - 2`<br>
@@ -93,17 +93,17 @@ Example Code:
 `y - "h";`<br>
 `z - "i";`<br>
 
-######Lists (basically CoffeeScript):
+#####Lists (basically CoffeeScript):
 `[1..10] => [1,2,3,4,5,6,7,8,9]`<br>
 `[1...10] => [1,2,3,4,5,6,7,8,9,10]`<br>
 
-######List Operations (basically OCaml and some extra):
+#####List Operations (basically OCaml and some extra):
 `[1,2,3] @ [4,5,6,7] = [1,2,3,4,5,6,7] = [1...7]`<br>
 `[1,2,3]::[4,5,6,7] = [[1,2,3], [4,5,6,7]]`<br>
 `[1,2,3]++ => [2,3,4]`<br>
 `[1,2,3]^^2 => [1,4,9]`<br>
 
-######Functions:
+#####Functions:
 `var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> 
 `addOdds 3 3;`<br>
 `addOdds(3,3);`<br>
@@ -115,7 +115,7 @@ Example Code:
 `map ((x) -> x + 1) [1...10]`<br>
 `=> [2,3,4,5,6,7,8,9,10,11]`<br>
 
-######Conditionals:
+#####Conditionals:
 `1 == 1`<br>
 `1 >= 2`<br>
 `1 <= 2`<br>
@@ -127,11 +127,11 @@ Example Code:
 `true and false both false => false`<br>
 `false and false both false => true`<br>
 
-######Loops: 
+#####Loops: 
 `while (x and y both less than 10): ava "Hello World";` <br>
 `for x times: ava "Hello World";` <br> 
 
-######String Operations:
+#####String Operations:
 `"h" + "e" => "he" `<br> 
 `"e" - "e" => ""`<br>
 `"he" - "e" => "h" `<br> 
