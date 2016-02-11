@@ -105,6 +105,12 @@ Example Code:
 `[1,2,3]++ => [2,3,4]`<br>
 `[1,2,3]^^2 => [1,4,9]`<br>
 
+#####Sets (just objects):
+`{ x: 2, y:3, z: { "inside": 3 } }`<br>
+
+#####Tuples:
+`(x,y,z)`<br>
+
 #####Functions:
 `var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> 
 `addOdds 3 3;`<br>
@@ -151,5 +157,9 @@ Example Code:
 `var addOdds = (x,y) -> if x % 2 + y % 2 both not 0 then x + y;`<br> 
 `=> Error "Expected conditional" ...if x % 2 + y % 2 both...`<br>
 `                                      ^^^^^^^^^^^^^`<br>
+
+#####Modules (just use "export")
+`export: { } // exports objects`<br>
+`export: { "add": ((x,y) -> x + y) }`<br>
 
 
