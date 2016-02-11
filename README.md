@@ -72,10 +72,10 @@ Example Code:
 `"heh" - "h" => "he" <br>
 
 #####Arrays
-`x = [] ** An empty array 
-`x + [1,2,3] => x = [1,2,3]
-`x - [1,2,3] => x = []
-`x[0] => [1]
+`x = [] ** An empty array <br>
+`x + [1,2,3] => x = [1,2,3] <br>
+`x - [1,2,3] => x = [] <br>
+`x[0] => 1 <br>
 
 
 #####
