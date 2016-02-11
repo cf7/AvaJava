@@ -169,6 +169,7 @@ Example Code:
 var x = 3;
 var printNumber = () -> ava(x);
 var printAgain = () -> var x = 10; printNumber;
+printAgain();
 ```
 `will print out 3 because printNumber was instantiated with var x = 3`<br>
 `The var x = 10 instantiated within the printAgain will not affect the scope`<br>
