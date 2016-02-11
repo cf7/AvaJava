@@ -56,7 +56,8 @@ Example Code:
 `To declare a new variable => x = "Hello World"
 
 #####Commments:
-`Single Line Comments => ** <br>
+`Single Line Comments => **
+<br>
 `Multi-Line Comments => **Cada ... Cada** <br> 
 
 #####Loops: 
