@@ -2,11 +2,18 @@
 <b>AvaJava is a compiler written in Javascript that translates Javascript to Python.</b> AvaJava combines the most interesting parts of famous languages such as Python, CoffeeScript, Javascript, OCAML, etc., and also provides a new selection of functions (<i>to come</i>).  
 
 ####<i>Features/Planned Implementation (Subject to Change)</i>
+<ul>
+<li> Type Inference
+<li> Static Scoping
+<li> Pattern Matching
+<li> List Comprehensions
+<li> Higher Order Functions
+</ul>
+
 Example Code:
 <br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `addOdds 3 3;`</br>
 <br>`var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1); //plain OCaml`<br> `factorial add 3 3;`</br>
-<br>`var isPrime = (n)...`</br>
-<br>` var HelloWorld = () -> ava "Hello World"; `</br>
+<br>` var helloWorld = () -> ava "Hello World"; `</br>
 
 ######To Print:
 `ava("Hello World!");` <br>
@@ -15,10 +22,12 @@ Example Code:
 `guac hellowWorld.ava`
 <br>`eat hellowWorld`
 
-######Pointers:
+######Pattern Matching/Destructuring (basically CoffeeScript)
 `[x, y] = [1, 2, 3];`<br>
 `x - 1`<br>
 `y - 2`<br>
+
+######Pointers:
 `x,y = "hi";`<br>
 `x - "hi"; `<br>
 `y - "hi";` <br>
@@ -38,7 +47,7 @@ Example Code:
 `[1...10] => [1,2,3,4,5,6,7,8,9,10]`<br>
 `Example Pointer (From Justin): x - 1;` <br> 
 
-######Basic Operations and/or Representations:
+######Operators:
 `x++;`<br>
 `x--;`<br>
 `x^^2; //square x`<br>
@@ -62,10 +71,10 @@ Example Code:
 `To declare a new variable => x = "Hello World"`
 
 #####Commments:
-`Single Line Comments => ** **`
+`Single Line Comments => // This is commented`
 <br>
-`Multi-Line Comments => **Cada ... Cada**` <br> 
-
+`Multi-Line Comments => ***Cada ...`<br> 
+                        `... Cada***`<br>
 #####Loops: 
 `while (x = 6) < 0 : ava "Hello World";` <br>
 `for x in range(0, 3): "Hello World";` <br> 
