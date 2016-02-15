@@ -7,9 +7,9 @@ var LETTER = XRegExp('[\\p{L}]');
 var DIGIT = XRegExp('[\\p{Nd}]');
 var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
 var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|less than|greater than)/;
-var oneCharacterTokens = /[+\-*\/()[]{},:;=<>%@.]/;
-var twoCharacterTokens = /<=|==|>=|!=|+=|-=|*=|\/=|++|--|^^|::|../;
-var twoCharacterTokens = /.../;
+var oneCharacterTokens = /[\+\-*\/()[]{},:;=<>%@.]/;
+var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.(?=\.)/;
+var threeCharacterTokens = /.../;
 
 module.exports = function(filename, callback) {
   var baseStream = fs.createReadStream(filename, { encoding: 'utf8' });
