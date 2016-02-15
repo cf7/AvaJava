@@ -7,10 +7,9 @@ var LETTER = XRegExp('[\\p{L}]');
 var DIGIT = XRegExp('[\\p{Nd}]');
 var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
 var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|less than|greater than)$/;
-var oneCharacterTokens = /[+\-*\/()[]{},:;=<>%@.]/;
-var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|--|^^|::|../;
+var oneCharacterTokens = /[+\-*\/()\[\]{},:;=<>%@.Ee]/;
+var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /...|\*\*\*/;
-var scientificNotation = /^(\d+)\.(\d+)[Ee]\-?(\d+)/;
 
 module.exports = function(filename, callback) {
   var baseStream = fs.createReadStream(filename, { encoding: 'utf8' });
@@ -58,7 +57,6 @@ var scan = function (line, linNumber, tokens) {
         break;
       }
 
-      // need code for scientific notation
       if (threeCharacterTokens.test(line.substring(pos, pos + 3))) {
         emit(line.substring(pos, pos + 3));
         pos += 3;

@@ -1,3 +1,5 @@
+//baseline code from Iki
+
 var error = function (message, location) {
     if (location && location.line) {
         message += " at line #{location.line}";
