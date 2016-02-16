@@ -1,0 +1,16 @@
+{
+  "name": "avajava-compiler",
+  "version": "0.1.0",
+  "description": "A simple compiler for the Avajava programming language",
+  "dependencies": {
+    "byline": "latest",
+    "hashmap": "latest",
+    "yargs": "latest",
+    "xregexp": "latest",
+    "coffee-script": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest",
+    "should": "latest"
+  }
+}
