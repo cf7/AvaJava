@@ -1,7 +1,7 @@
 var fs = require('fs');
 var byline = require('byline');
 var XRegExp = require('xregexp').XRegExp;
-var error = require('./error');
+var error = require('../error');
 
 var LETTER = XRegExp('[\\p{L}]');
 var DIGIT = XRegExp('[\\p{Nd}]');
