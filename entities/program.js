@@ -1,18 +1,20 @@
+// baseline code from Iki
+
 class Program {
 
   constructor(block) {
     this.block = block;
   }
 
-  var toString = function() {
+  toString() {
     return "(Program " + this.block + ")";
   };
 
-  var analyze = function() {
+  analyze() {
     return this.block.analyze(initialContext());
   };
 
-  var optimize = function() {
+  optimize() {
     this.block = this.block.optimize();
     return this;
   };
