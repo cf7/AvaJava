@@ -1,4 +1,5 @@
 // baseline code from Iki
+var initialContext = require('../analyzer/analyzer.js').initialContext;
 
 class Program {
 
