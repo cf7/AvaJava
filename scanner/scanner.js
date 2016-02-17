@@ -11,6 +11,7 @@ var oneCharacterTokens = /[+\-*\/()\[\]{},:;=<>%@.Ee]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /...|\*\*\*/;
 var FLOAT = /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/;
+var stringTokens; // code for character literals and strings
 
 module.exports = function(filename, callback) {
   var baseStream = fs.createReadStream(filename, { encoding: 'utf8' });
