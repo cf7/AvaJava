@@ -10,6 +10,7 @@ var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else
 var oneCharacterTokens = /[+\-*\/()\[\]{},:;=<>%@.Ee]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /...|\*\*\*/;
+var FLOAT = /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/;
 
 module.exports = function(filename, callback) {
   var baseStream = fs.createReadStream(filename, { encoding: 'utf8' });
@@ -42,6 +43,8 @@ var scan = function (line, linNumber, tokens) {
     var emit = function (kind, lexeme) {
       tokens.push({ kind, lexeme: lexeme || kind, line: linNumber, col: start+1 });
     }
+    var substring = "";
+
     while (true) {
 
       while (/\s/.test(line[pos])) {
@@ -72,10 +75,21 @@ var scan = function (line, linNumber, tokens) {
         word = line.substring(start, pos);
         emit((KEYWORDS.test(word) ? word : 'id'), word);
       } else if (DIGIT.test(line[pos])) {
-        while (DIGIT.test(line[pos])) {
+        var substring = "";
+        var regy = /\d\s/;
+        while (!/\s/.test(line[pos])) {
+          substring = substring + line[pos];
+          if (regy.test(line.substring(pos, pos + 1))) {
+              break;
+          }
           pos++;
+        }    
+        if (FLOAT.test(substring)) {
+          console.log('floatlit');
+          emit('floatlit', substring);
         }
-        emit('intlit', line.substring(start, pos));
+        // code for integers
+        // emit('intlit', line.substring(start, pos));
       } else {
         error("Illegal character: " + line[pos], {
           line: linenumber,
