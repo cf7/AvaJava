@@ -2,8 +2,8 @@
 // baseline code from Iki
 
 var should = require('should');
-var scan = require('../scanner');
-var error = require('../error');
+var scan = require('../scanner/scanner.js');
+var error = require('../error.js');
 var i = require('util').inspect;
 
 describe('The scanner', function() {
