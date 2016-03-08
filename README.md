@@ -1,4 +1,5 @@
-![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_logo.png)
+![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
+
 <b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, and OCamlw that compiles into Python.</b> 
 It combines the most interesting parts of these languages, and also provides a new selection of functions (<i>to come</i>).<br>
 This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.<br>
