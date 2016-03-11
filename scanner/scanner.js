@@ -1,6 +1,6 @@
 var fs = require('fs');
 var byline = require('byline');
-var XRegExp = require('xregexp').XRegExp;
+var XRegExp = require('xregexp');
 var error = require('../error');
 
 var LETTER = XRegExp('[\\p{L}]');
