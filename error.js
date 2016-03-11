@@ -1,5 +1,5 @@
 //baseline code from Iki
-// testing branching
+// practicing branching
 var error = function (message, location) {
     if (location && location.line) {
         message += " at line #{location.line}";
