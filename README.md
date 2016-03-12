@@ -17,9 +17,9 @@ This language will be designed in a way to facilitate faster typing and more con
 <li> Naming Parameters
 </ul>
 
-###Grammar
+##Grammar
 
-##Microsyntax
+###Microsyntax
 
 ```
 characterLiteral ->  '\'' (letter | digit) '\'' | '\"' (letter | digit) '\"'
