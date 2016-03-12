@@ -27,7 +27,7 @@ stringLiteral -> '\'' characterLiteral* '\'' | '\"' characterLiteral* '\"'
 letter -> [a-zA-Z]
 digit -> \d
 id -> letter (letter | Digit | '_')* - keyword
-keyword -> 'var' | 'while' | 'and' | 'or' | 'not' | 'true' | 'false' | 'return' | 'for' | 'each' | 'if' | 'then' | 'else' | 'in' | 'both' | 'less than' | 'greater than'
+keyword -> 'var' | 'while' | 'and' | 'or' | 'not' | 'true' | 'false' | 'return' | 'for' | 'each' | 'if' | 'then' | 'else' | 'in' | 'both' | 'less than' | 'greater than' | 'ava'
 assignop -> '+=' | '-=' | '*=' | '/='
 relop -> '<=' | '==' | '>=' | '!=' | 'less than' | 'greater than'
 addop -> '+' | '-'
@@ -38,6 +38,40 @@ intlit -> \d+
 floatlit -> ^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$
 boollit -> 'true' | 'false'
 comment -> '//' | '***' ( [.] | [\n] )* '***'
+```
+###Macrosyntax
+```
+Program -> Block
+Block -> (Stmt ';')+
+Stmt -> Decl
+    | id '=' Exp
+    | 'while' '(' Exp ')' '{' Block '}'
+    | 'return' Exp
+    | Exp
+Print -> 'ava'
+Exp -> Decl 
+    | Assign
+    | Term (addop Term)* ';'
+    | '[' StringList ']'
+Decl -> 'var' id ';'
+    | 'function' id '(' idList? ')' '=' Exp ';'
+Assign -> id '=' Exp 
+    | '[' idList ']' '=' Exp
+
+Term -> Factor (mulop Factor)*
+Factor -> NumericLiteral | id | Call | '(' Exp ')'
+
+Call -> id ( id+ | '(' ExpList? ')' ) ';'
+
+ExpList -> Exp ( ',' Exp )*
+idList -> id (',' id)*
+PrimitiveLiteralList -> PrimitveLiteral (',' PrimitiveLiteral)*
+StringList -> stringLiteral (',' stringLiteral)*
+
+PrimitiveLiteral -> NumericLiteral | characterLiteral
+NumericLiteral -> intlit | floatlit
+SetLiteral -> '{' PrimitiveLiteralList '}'
+ListLiteral -> '[' ExpList? ']'
 ```
 
 Example Code:
