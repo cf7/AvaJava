@@ -17,6 +17,29 @@ This language will be designed in a way to facilitate faster typing and more con
 <li> Naming Parameters
 </ul>
 
+###Grammar
+
+##Microsyntax
+
+```
+characterLiteral ->  '\'' (letter | digit) '\'' | '\"' (letter | digit) '\"'
+stringLiteral -> '\'' characterLiteral* '\'' | '\"' characterLiteral* '\"'
+letter -> [a-zA-Z]
+digit -> \d
+id -> letter (letter | Digit | '_')* - keyword
+keyword -> 'var' | 'while' | 'and' | 'or' | 'not' | 'true' | 'false' | 'return' | 'for' | 'each' | 'if' | 'then' | 'else' | 'in' | 'both' | 'less than' | 'greater than'
+assignop -> '+=' | '-=' | '*=' | '/='
+relop -> '<=' | '==' | '>=' | '!=' | 'less than' | 'greater than'
+addop -> '+' | '-'
+mulop -> '*' | '/' | '%' 
+prefixop -> '-' | 'not'
+postfixop -> '!' | '++' | '--' | '^^' | '::' | '@'
+intlit -> \d+
+floatlit -> ^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$
+boollit -> 'true' | 'false'
+comment -> '//' | '***' ( [.] | [\n] )* '***'
+```
+
 Example Code:
 <br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `addOdds 3 3;`</br>
 <br>`var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1); // plain OCaml`<br> `factorial addOdds 3 3;`</br>
