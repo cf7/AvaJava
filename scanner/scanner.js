@@ -1,7 +1,7 @@
 var fs = require('fs');
 var byline = require('byline');
 var XRegExp = require('xregexp');
-var error = require('../error');
+var error = require('../error.js');
 
 var LETTER = XRegExp('[\\p{L}]');
 var DIGIT = XRegExp('[\\p{Nd}]');
@@ -30,13 +30,18 @@ module.exports = function(filename, callback) {
   var stream = byline(baseStream, { keepEmptyLines: true });
   var tokens = [];
   var linenumber = 0;
+  
+  // the 'readable' event is received when data can be read 
+  // from the stream, the stream passes data to the callback function
   stream.on('readable', function() {
     // read in the next line and send it to the scan function
     // defined later in scanner.js
-    return scan(stream.read(), ++linenumber, tokens);
+    // return the tokens that scan returns
+    // the read() function reads data from the internal buffer
+    // when there is nothing to read it returns null
+    return scan(stream.read(), linenumber++, tokens);
   });
-
-    // the stream looks for the word "end" to stop scanning,
+    // the stream looks for the 'end' event to stop reading,
     // if it encounters it, the last token pushed into tokens
     // is the EOF (End Of File) token
   return stream.once('end', function() {
@@ -60,7 +65,7 @@ var scan = function (line, lineNumber, tokens) {
     // function that will store token data to be outputted by the scanner
     // as a whole
     var emit = function (kind, lexeme) {
-      tokens.push({ kind, lexeme: lexeme || kind, line: lineNumber, col: start+1 });
+      tokens.push({ kind: kind, lexeme: (lexeme || kind), line: lineNumber, col: start+1 });
     }
     var substring = "";
 
@@ -92,7 +97,8 @@ var scan = function (line, lineNumber, tokens) {
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
         emit(line[pos++]);
-      } else if (LETTER.test(line[pos])) {
+      } else 
+      if (LETTER.test(line[pos])) {
         while (WORD_CHAR.test(line[pos]) && pos < line.length) {
           pos++;
         }
@@ -109,7 +115,6 @@ var scan = function (line, lineNumber, tokens) {
           pos++;
         }    
         if (FLOAT.test(substring)) {
-          console.log('floatlit');
           emit('floatlit', substring);
         }
         // code for integers
@@ -123,5 +128,7 @@ var scan = function (line, lineNumber, tokens) {
       }
 
     }
+
+    return tokens;
   }
 }
