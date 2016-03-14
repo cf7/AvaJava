@@ -3,15 +3,18 @@ var byline = require('byline');
 var XRegExp = require('xregexp');
 var error = require('../error.js');
 
-var LETTER = XRegExp('[\\p{L}]');
-var DIGIT = XRegExp('[\\p{Nd}]');
-var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
+// var LETTER = XRegExp('[\\p{L}]');
+var LETTER = /[A-Za-z]/;
+// var DIGIT = XRegExp('[\\p{Nd}]');
+var DIGIT = /[0-9]/;
+// var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
+var WORD_CHAR = /[A-Za-z_]/;
 var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|less than|greater than|ava)$/;
-var oneCharacterTokens = /[+\-*\/()\[\]{},:;=\<\>\%\@\.Ee\!]/;
+var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.Ee\!]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /...|\*\*\*/;
 var FLOAT = /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/;
-var stringTokens; // code for strings
+// need code for multi-line strings!!!
 
 // When other files, such as test-scanner, require scanner.js,
 // module.exports is the function that they require
@@ -29,7 +32,7 @@ module.exports = function(filename, callback) {
   // setting it to scan line by line
   var stream = byline(baseStream, { keepEmptyLines: true });
   var tokens = [];
-  var linenumber = 0;
+  var linenumber = 1;
   
   // the 'readable' event is received when data can be read 
   // from the stream, the stream passes data to the callback function
@@ -70,7 +73,6 @@ var scan = function (line, lineNumber, tokens) {
     var substring = "";
 
     while (true) {
-
       // skip spaces
       while (/\s/.test(line[pos])) {
         pos++;
@@ -89,20 +91,23 @@ var scan = function (line, lineNumber, tokens) {
 
       // checking for 1, 2, and 3 symbol groups to tokenize
       // checks them against regular expressions defined above
-      if (threeCharacterTokens.test(line.substring(pos, pos + 3))) {
-        emit(line.substring(pos, pos + 3));
-        pos += 3;
-      } else if (twoCharacterTokens.test(line.substring(pos, pos + 2))) {
+      // if (threeCharacterTokens.test(line.substring(pos, pos + 3))) {
+      //   emit(line.substring(pos, pos + 3));
+      //   pos += 3;
+      // } else 
+      if (twoCharacterTokens.test(line.substring(pos, pos + 2))) {
         emit(line.substring(pos, pos + 2));
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
-        emit(line[pos++]);
-      } else 
-      if (LETTER.test(line[pos])) {
+        console.log("oneCharacterToken: " + line[pos]);
+        emit(line[pos]);
+        pos++;
+      } else if (LETTER.test(line[pos])) {
         while (WORD_CHAR.test(line[pos]) && pos < line.length) {
           pos++;
         }
         word = line.substring(start, pos);
+        console.log(word);
         emit((KEYWORDS.test(word) ? word : 'id'), word);
       } else if (DIGIT.test(line[pos])) {
         var substring = "";
@@ -126,8 +131,7 @@ var scan = function (line, lineNumber, tokens) {
         });
         pos++;
       }
-
     }
-
+    console.log(tokens);
   }
 }

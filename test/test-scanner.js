@@ -9,7 +9,7 @@ var i = require('util').inspect;
 describe('The scanner', function() {
   it('scans a simple program', function(done) {
     return scan('test/data/good-programs/peace.txt', function(tokens) {
-      tokens.length.should.equal(13);
+      tokens.length.should.equal(15);
       i(tokens[0]).should.equal(i({
         kind: 'var',
         lexeme: 'var',
@@ -53,18 +53,48 @@ describe('The scanner', function() {
         col: 19
       }));
       i(tokens[7]).should.equal(i({
-        kind: '\"Peace\"',
-        lexeme: '\"Peace\"',
+        kind: '"',
+        lexeme: '"',
         line: 1,
         col: 23
       }));
       i(tokens[8]).should.equal(i({
+        kind: 'id',
+        lexeme: 'Peace',
+        line: 1,
+        col: 24
+      }));
+      i(tokens[9]).should.equal(i({
+        kind: '"',
+        lexeme: '"',
+        line: 1,
+        col: 29
+      }));
+      i(tokens[10]).should.equal(i({
         kind: ';',
         lexeme: ';',
         line: 1,
         col: 30
       }));
-      i(tokens[9]).should.equal(i({
+      i(tokens[11]).should.equal(i({
+        kind: 'var',
+        lexeme: 'var',
+        line: 3,
+        col: 1
+      }));
+      i(tokens[12]).should.equal(i({
+        kind: 'id',
+        lexeme: 'x',
+        line: 3,
+        col: 5
+      }));
+      i(tokens[13]).should.equal(i({
+        kind: ';',
+        lexeme: ';',
+        line: 3,
+        col: 7
+      }));
+      i(tokens[14]).should.equal(i({
         kind: 'EOF',
         lexeme: 'EOF'
       }));
