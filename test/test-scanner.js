@@ -305,7 +305,7 @@ describe('The scanner', function() {
   });
   it('scans numbers properly', function(done) {
     return scan('test/data/token-tests/numbers', function(tokens) {
-      tokens.length.should.equal(7);
+      tokens.length.should.equal(5);
       i(tokens[0]).should.equal(i({
         kind: 'intlit',
         lexeme: '1000',

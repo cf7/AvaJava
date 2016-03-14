@@ -13,8 +13,8 @@ var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else
 var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.\!]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /\.\.\.|\*\*\*/;
-var FLOAT = /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/;
-// need code for multi-line strings!!!
+var intlit = /^\d+$/;
+var FLOAT = /(\.\d+|\d+(\.\d+)?)([Ee][+-]?(\d)+)?/;
 
 // When other files, such as test-scanner, require scanner.js,
 // module.exports is the function that they require
@@ -128,7 +128,6 @@ var scan = function (line, lineNumber, tokens) {
         emit(line.substring(pos, pos + 2));
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
-        console.log("oneCharacterTokens: " + line[pos]);
         emit(line[pos]);
         pos++;
       } else if (LETTER.test(line[pos])) {
@@ -138,20 +137,19 @@ var scan = function (line, lineNumber, tokens) {
         word = line.substring(start, pos);
         emit((KEYWORDS.test(word) ? word : 'id'), word);
       } else if (DIGIT.test(line[pos])) {
-        var substring = "";
-        var regy = /\d\s/;
-        while (!/\s/.test(line[pos])) {
+        var substring = line[pos];
+        pos++;
+        while (pos < line.length && !/\s/.test(line.substring(pos, pos + 1))) {
           substring = substring + line[pos];
-          if (regy.test(line.substring(pos, pos + 1))) {
-              break;
-          }
           pos++;
-        }    
-        if (FLOAT.test(substring)) {
-          emit('floatlit', substring);
         }
-        // code for integers
-        // emit('intlit', line.substring(start, pos));
+        pos++;
+        if (intlit.test(substring)) {
+          emit('intlit', substring);
+        } else {
+          emit('floatlit', substring);
+          console.log("inside floatlit: " + tokens);
+        } 
       } else {
         error("Illegal character: " + line[pos], {
           line: lineNumber,
