@@ -129,6 +129,5 @@ var scan = function (line, lineNumber, tokens) {
 
     }
 
-    return tokens;
   }
 }

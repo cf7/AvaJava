@@ -8,7 +8,7 @@ var i = require('util').inspect;
 
 describe('The scanner', function() {
   it('scans a simple program', function(done) {
-    return scan('data/good-programs/peace', function(tokens) {
+    return scan('test/data/good-programs/peace.txt', function(tokens) {
       tokens.length.should.equal(13);
       i(tokens[0]).should.equal(i({
         kind: 'var',
@@ -72,7 +72,7 @@ describe('The scanner', function() {
     });
   });
   it('properly handles comments and blank lines', function(done) {
-    return scan('data/token-tests/comments-and-blank-lines', function(tokens) {
+    return scan('test/data/token-tests/comments-and-blank-lines', function(tokens) {
       tokens.length.should.equal(4);
       i(tokens[0]).should.equal(i({
         kind: 'var',
@@ -100,7 +100,7 @@ describe('The scanner', function() {
     });
   });
   it('reads symbolic tokens properly', function(done) {
-    return scan('data/token-tests/symbols', function(tokens) {
+    return scan('test/data/token-tests/symbols', function(tokens) {
       i(tokens[0]).should.equal(i({
         kind: '<=',
         lexeme: '<=',
@@ -175,7 +175,7 @@ describe('The scanner', function() {
     });
   });
   it('distinguishes reserved words and identifiers', function(done) {
-    return scan('data/token-tests/words', function(tokens) {
+    return scan('test/data/token-tests/words', function(tokens) {
       i(tokens[0]).should.equal(i({
         kind: 'id',
         lexeme: 'while',
@@ -280,7 +280,7 @@ describe('The scanner', function() {
     });
   });
   it('scans numbers properly', function(done) {
-    return scan('data/token-tests/numbers', function(tokens) {
+    return scan('test/data/token-tests/numbers', function(tokens) {
       tokens.length.should.equal(7);
       i(tokens[0]).should.equal(i({
         kind: 'intlit',
@@ -314,7 +314,7 @@ describe('The scanner', function() {
     });
   });
   return it('detects illegal characters', function(done) {
-    return scan('data/token-tests/illegal-char', function(tokens) {
+    return scan('test/data/token-tests/illegal-char', function(tokens) {
       error.count.should.equal(1);
       return done();
     });
