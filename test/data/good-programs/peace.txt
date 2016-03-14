@@ -1,0 +1,3 @@
+var hello = () -> ava "Peace";
+
+var x ;
