@@ -12,7 +12,7 @@ var WORD_CHAR = /[A-Za-z_]/;
 var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|less than|greater than|ava)$/;
 var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.Ee\!]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
-var threeCharacterTokens = /...|\*\*\*/;
+var threeCharacterTokens = /\.\.\.|\*\*\*/;
 var FLOAT = /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/;
 // need code for multi-line strings!!!
 
@@ -91,11 +91,11 @@ var scan = function (line, lineNumber, tokens) {
 
       // checking for 1, 2, and 3 symbol groups to tokenize
       // checks them against regular expressions defined above
-      // if (threeCharacterTokens.test(line.substring(pos, pos + 3))) {
-      //   emit(line.substring(pos, pos + 3));
-      //   pos += 3;
-      // } else 
-      if (twoCharacterTokens.test(line.substring(pos, pos + 2))) {
+      if (threeCharacterTokens.test(line.substring(pos, pos + 3))) {
+        console.log("inside 3-char: " + line.substring(pos, pos + 3));
+        //emit(line.substring(pos, pos + 3));
+        pos += 3;
+      } else if (twoCharacterTokens.test(line.substring(pos, pos + 2))) {
         emit(line.substring(pos, pos + 2));
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
