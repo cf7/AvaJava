@@ -82,8 +82,9 @@ var processMultiLineComments = function (tokens) {
         index++;
       }
     }
-    console.log("---inside processMultiLineComments---");
-    console.log(tokens);
+    // for debugging
+    // console.log("---inside processMultiLineComments---");
+    // console.log(tokens);
   return tokens;
 }
 // when module.exports calls this scan function, it passes
@@ -148,7 +149,6 @@ var scan = function (line, lineNumber, tokens) {
           emit('intlit', substring);
         } else {
           emit('floatlit', substring);
-          console.log("inside floatlit: " + tokens);
         } 
       } else {
         error("Illegal character: " + line[pos], {
@@ -158,7 +158,8 @@ var scan = function (line, lineNumber, tokens) {
         pos++;
       }
     }
-    console.log("---inside scanner.js scan---");
-    console.log(tokens);
+    // for debugging
+    // console.log("---inside scanner.js scan---");
+    // console.log(tokens);
   }
 }
