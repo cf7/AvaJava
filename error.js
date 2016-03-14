@@ -1,5 +1,8 @@
 //baseline code from Iki
 // practicing branching
+
+// string interpolation in javascript requires back-ticks around
+// the template literals `${message}`
 var error = function (message, location) {
     if (location && location.line) {
         message += " at line #{location.line}";
@@ -8,7 +11,7 @@ var error = function (message, location) {
         }
     }
     if (!error.quiet) {
-        console.log("Error: #{message}");
+        console.log(`${message}`);
     }
     return error.count++;
 };
