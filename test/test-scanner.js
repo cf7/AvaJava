@@ -153,19 +153,19 @@ describe('The scanner', function() {
         kind: '=',
         lexeme: '=',
         line: 1,
-        col: 7
+        col: 5
       }));
       i(tokens[4]).should.equal(i({
         kind: '->',
         lexeme: '->',
         line: 1,
-        col: 8
+        col: 6
       }));
       i(tokens[5]).should.equal(i({
         kind: '!=',
         lexeme: '!=',
         line: 1,
-        col: 11
+        col: 8
       }));
       i(tokens[6]).should.equal(i({
         kind: '/',
@@ -177,25 +177,25 @@ describe('The scanner', function() {
         kind: '*',
         lexeme: '*',
         line: 1,
-        col: 13
+        col: 11
       }));
       i(tokens[8]).should.equal(i({
         kind: '[',
         lexeme: '[',
         line: 1,
-        col: 14
+        col: 12
       }));
       i(tokens[9]).should.equal(i({
         kind: ']',
         lexeme: ']',
         line: 1,
-        col: 15
+        col: 13
       }));
       i(tokens[10]).should.equal(i({
         kind: '+',
         lexeme: '+',
         line: 1,
-        col: 16
+        col: 14
       }));
       i(tokens[11]).should.equal(i({
         kind: 'EOF',

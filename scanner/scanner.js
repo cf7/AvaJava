@@ -63,18 +63,14 @@ var processMultiLineComments = function (tokens) {
     var firstIndex = 0;
     var numElementsToDelete = 0;
     while (index < tokens.length) {
-      console.log("length: " + tokens.length);
       if (tokens[index].lexeme === "***" && !inside) {
-        console.log(index);
         firstIndex = index;
         numElementsToDelete++;
         inside = true;
         index++;
       }
       if (tokens[index].lexeme === "***" && inside) {
-        console.log(index);
         tokens.splice(firstIndex, numElementsToDelete + 1);
-        console.log("splice: " + tokens);
         index = 0;
         inside = false;
         firstIndex = 0;
@@ -86,6 +82,7 @@ var processMultiLineComments = function (tokens) {
         index++;
       }
     }
+    console.log("---inside processMultiLineComments---");
     console.log(tokens);
   return tokens;
 }
@@ -125,14 +122,12 @@ var scan = function (line, lineNumber, tokens) {
       // checking for 1, 2, and 3 symbol groups to tokenize
       // checks them against regular expressions defined above
       if (threeCharacterTokens.test(line.substring(pos, pos + 3))) {
-        console.log("inside 3-char: " + line.substring(pos, pos + 3));
         emit(line.substring(pos, pos + 3));
         pos += 3;
       } else if (twoCharacterTokens.test(line.substring(pos, pos + 2))) {
         emit(line.substring(pos, pos + 2));
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
-        console.log("oneCharacterToken: " + line[pos]);
         emit(line[pos]);
         pos++;
       } else if (LETTER.test(line[pos])) {
@@ -140,7 +135,6 @@ var scan = function (line, lineNumber, tokens) {
           pos++;
         }
         word = line.substring(start, pos);
-        console.log(word);
         emit((KEYWORDS.test(word) ? word : 'id'), word);
       } else if (DIGIT.test(line[pos])) {
         var substring = "";
@@ -165,6 +159,7 @@ var scan = function (line, lineNumber, tokens) {
         pos++;
       }
     }
+    console.log("---inside scanner.js scan---");
     console.log(tokens);
   }
 }
