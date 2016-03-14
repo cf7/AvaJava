@@ -107,20 +107,20 @@ describe('The scanner', function() {
       i(tokens[0]).should.equal(i({
         kind: 'var',
         lexeme: 'var',
-        line: 3,
+        line: 2,
         col: 1
       }));
       i(tokens[1]).should.equal(i({
         kind: 'id',
         lexeme: 'x',
-        line: 3,
-        col: 5
+        line: 6,
+        col: 1
       }));
       i(tokens[2]).should.equal(i({
         kind: ';',
         lexeme: ';',
-        line: 3,
-        col: 7
+        line: 7,
+        col: 1
       }));
       i(tokens[3]).should.equal(i({
         kind: 'EOF',

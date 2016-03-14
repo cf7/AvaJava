@@ -52,10 +52,43 @@ module.exports = function(filename, callback) {
       kind: 'EOF',
       lexeme: 'EOF'
     });
-    return callback(tokens);
+    return callback(processMultiLineComments(tokens));
   });
 };
 
+var processMultiLineComments = function (tokens) {
+  // processing multi-line comments
+    var index = 0;
+    var inside = false;
+    var firstIndex = 0;
+    var numElementsToDelete = 0;
+    while (index < tokens.length) {
+      console.log("length: " + tokens.length);
+      if (tokens[index].lexeme === "***" && !inside) {
+        console.log(index);
+        firstIndex = index;
+        numElementsToDelete++;
+        inside = true;
+        index++;
+      }
+      if (tokens[index].lexeme === "***" && inside) {
+        console.log(index);
+        tokens.splice(firstIndex, numElementsToDelete + 1);
+        console.log("splice: " + tokens);
+        index = 0;
+        inside = false;
+        firstIndex = 0;
+        numElementsToDelete = 0;
+      } else {
+        if (inside) {
+          numElementsToDelete++;
+        }
+        index++;
+      }
+    }
+    console.log(tokens);
+  return tokens;
+}
 // when module.exports calls this scan function, it passes
 // in an entire line of symbols stored in an array (including
 // space, tab, and newline characters)
@@ -93,7 +126,7 @@ var scan = function (line, lineNumber, tokens) {
       // checks them against regular expressions defined above
       if (threeCharacterTokens.test(line.substring(pos, pos + 3))) {
         console.log("inside 3-char: " + line.substring(pos, pos + 3));
-        //emit(line.substring(pos, pos + 3));
+        emit(line.substring(pos, pos + 3));
         pos += 3;
       } else if (twoCharacterTokens.test(line.substring(pos, pos + 2))) {
         emit(line.substring(pos, pos + 2));
