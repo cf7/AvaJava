@@ -207,7 +207,7 @@ describe('The scanner', function() {
   it('distinguishes reserved words and identifiers', function(done) {
     return scan('test/data/token-tests/words', function(tokens) {
       i(tokens[0]).should.equal(i({
-        kind: 'id',
+        kind: 'while',
         lexeme: 'while',
         line: 1,
         col: 1
@@ -219,90 +219,84 @@ describe('The scanner', function() {
         col: 7
       }));
       i(tokens[2]).should.equal(i({
-        kind: 'greater than',
-        lexeme: 'less than',
+        kind: 'true',
+        lexeme: 'true',
         line: 1,
         col: 11
       }));
       i(tokens[3]).should.equal(i({
-        kind: 'less than',
-        lexeme: 'less than',
-        line: 1,
-        col: 24
-      }));
-      i(tokens[4]).should.equal(i({
-        kind: 'true',
-        lexeme: 'true',
-        line: 1,
-        col: 34
-      }));
-      i(tokens[5]).should.equal(i({
         kind: 'false',
         lexeme: 'false',
         line: 1,
-        col: 39
+        col: 16
       }));
-      i(tokens[6]).should.equal(i({
+      i(tokens[4]).should.equal(i({
         kind: 'not',
         lexeme: 'not',
         line: 1,
-        col: 45
+        col: 22
       }));
-      i(tokens[7]).should.equal(i({
+      i(tokens[5]).should.equal(i({
         kind: 'and',
         lexeme: 'and',
         line: 1,
-        col: 49
+        col: 26
       }));
-      i(tokens[8]).should.equal(i({
+      i(tokens[6]).should.equal(i({
         kind: 'or',
         lexeme: 'or',
         line: 1,
-        col: 53
+        col: 30
       }));
-      i(tokens[9]).should.equal(i({
-        kind: 'maybe',
+      i(tokens[7]).should.equal(i({
+        kind: 'id',
         lexeme: 'maybe',
         line: 1,
-        col: 56
+        col: 33
       }));
-      i(tokens[10]).should.equal(i({
+      i(tokens[8]).should.equal(i({
         kind: 'both',
         lexeme: 'both',
         line: 1,
-        col: 62
+        col: 39
       }));
-      i(tokens[11]).should.equal(i({
+      i(tokens[9]).should.equal(i({
         kind: 'if',
         lexeme: 'if',
         line: 1,
-        col: 67
+        col: 44
       }));
-      i(tokens[12]).should.equal(i({
+      i(tokens[10]).should.equal(i({
         kind: 'then',
         lexeme: 'then',
         line: 1,
-        col: 70
+        col: 47
       }));
-      i(tokens[13]).should.equal(i({
+      i(tokens[11]).should.equal(i({
         kind: 'else',
         lexeme: 'else',
         line: 1,
-        col: 72
+        col: 52
       }));
-      i(tokens[14]).should.equal(i({
+      i(tokens[12]).should.equal(i({
         kind: 'in',
         lexeme: 'in',
         line: 1,
-        col: 77
+        col: 57
       }));
-      i(tokens[15]).should.equal(i({
+      i(tokens[13]).should.equal(i({
         kind: 'return',
         lexeme: 'return',
         line: 1,
-        col: 90
+        col: 60
       }));
-      i(tokens[16]).should.equal(i({
+      i(tokens[14]).should.equal(i({
+        kind: 'ava',
+        lexeme: 'ava',
+        line: 1,
+        col: 67
+      }));
+      i(tokens[15]).should.equal(i({
         kind: 'EOF',
         lexeme: 'EOF'
       }));

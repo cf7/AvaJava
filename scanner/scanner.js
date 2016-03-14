@@ -9,8 +9,8 @@ var LETTER = /[A-Za-z]/;
 var DIGIT = /[0-9]/;
 // var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
 var WORD_CHAR = /[A-Za-z_]/;
-var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|less than|greater than|ava)$/;
-var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.Ee\!]/;
+var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|ava)$/;
+var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.\!]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /\.\.\.|\*\*\*/;
 var FLOAT = /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/;
@@ -128,6 +128,7 @@ var scan = function (line, lineNumber, tokens) {
         emit(line.substring(pos, pos + 2));
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
+        console.log("oneCharacterTokens: " + line[pos]);
         emit(line[pos]);
         pos++;
       } else if (LETTER.test(line[pos])) {
