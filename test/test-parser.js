@@ -1,10 +1,10 @@
 var fs = require('fs');
 var path = require('path');
 var should = require('should');
-var scan = require('../scanner');
-var parse = require('../parser');
-var error = require('../error');
-var error.quiet = true;
+var scan = require('../scanner/scanner.js');
+var parse = require('../parser/parser.js');
+var error = require('../error.js');
+error.quiet = true;
 var TEST_DIR = 'test/data/syntax-errors';
 
 describe('The parser detects an error for', function() {
