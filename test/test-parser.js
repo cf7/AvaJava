@@ -21,11 +21,9 @@ describe('The parser detects an error for', function() {
   // read in the files from the TEST_DIR ("test directory")
   return fs.readdirSync(TEST_DIR).forEach( function (name) {
     if (name !== ".DS_Store") {
-      console.log(name);
       // grab the name of the file at the current index
       // find all dashes "-" and ".ava"'s in the filename and remove them
       var check = name.replace(/-/g, ' ').replace(/\.ava$/, '');
-      console.log(check);
       // mocha will print the results of the tests using the modified filenames
       // "The parser detects an error for"
       // "1) missing bracket"

@@ -79,3 +79,26 @@ var parseAssignmentStatement = function() {
   var source = parseExpression();
   return new AssignmentStatement(target, source);
 };
+
+
+
+
+var at = function(kind) {
+  if (tokens.length === 0) {
+    return false;
+  } else if (Array.isArray(kind)) {
+    return kind.some(at);
+  } else {
+    return kind === tokens[0].kind;
+  }
+};
+
+var match = function(kind) {
+  if (tokens.length === 0) {
+    return error('Unexpected end of source program');
+  } else if (kind === void 0 || kind === tokens[0].kind) {
+    return tokens.shift();
+  } else {
+    return error("Expected \"" + kind + "\" but found \"" + tokens[0].kind + "\"", tokens[0]);
+  }
+};
