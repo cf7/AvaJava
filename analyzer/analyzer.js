@@ -1,3 +1,4 @@
+"use strict";
 var error = require('../error.js');
 // var variableDeclaration = require('../entities/VariableDeclaration');
 

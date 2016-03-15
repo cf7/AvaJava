@@ -3,7 +3,7 @@ var error = require('../error.js');
 var Program = require('../entities/program.js');
 var Block = require('../entities/block.js');
 var Type = require('../entities/type.js');
-// var VariableDeclaration = require('./entities/variabledeclaration');
+var VariableDeclaration = require('../entities/variabledeclaration.js');
 // var AssignmentStatement = require('./entities/assignmentstatement');
 // var ReadStatement = require('./entities/readstatement');
 // var WriteStatement = require('./entities/writestatement');
@@ -17,6 +17,9 @@ var Type = require('../entities/type.js');
 
 module.exports = function(scannerOutput) {
   tokens = scannerOutput;
+  for (token of tokens) {
+    console.log(token);
+  }
   var program = parseProgram();
   match('EOF');
   return program;
@@ -43,22 +46,36 @@ var parseStatement = function() {
     return parseVariableDeclaration();
   } else if (at('id')) {
     return parseAssignmentStatement();
-  } else if (at('read')) {
-    return parseReadStatement();
-  } else if (at('write')) {
-    return parseWriteStatement();
-  } else if (at('while')) {
-    return parseWhileStatement();
+  // } else if (at('read')) {
+  //   return parseReadStatement();
+  // } else if (at('write')) {
+  //   return parseWriteStatement();
+  // } else if (at('while')) {
+  //   return parseWhileStatement();
   } else {
     return error('Statement expected', tokens[0]);
   }
 };
 
-// var parseVariableDeclaration = function() {
-//   var id, type;
-//   match('var');
-//   id = match('id');
-//   match(':');
-//   type = parseType();
-//   return new VariableDeclaration(id, type);
-// };
+var parseVariableDeclaration = function() {
+  match('var');
+  var id = match('id');
+  match(':');
+  var type = parseType();
+  return new VariableDeclaration(id, type);
+};
+
+var parseType = function() {
+  if (at(['int', 'bool'])) {
+    return Type.forName(match().lexeme);
+  } else {
+    return error('Type expected', tokens[0]);
+  }
+};
+
+var parseAssignmentStatement = function() {
+  var target = new VariableReference(match('id'));
+  match('=');
+  var source = parseExpression();
+  return new AssignmentStatement(target, source);
+};
