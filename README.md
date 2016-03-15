@@ -22,8 +22,11 @@ This language will be designed in a way to facilitate faster typing and more con
 ###Microsyntax
 
 ```
-characterLiteral ->  '\'' (letter | digit) '\'' | '\"' (letter | digit) '\"'
-stringLiteral -> '\'' characterLiteral* '\'' | '\"' characterLiteral* '\"'
+characterLiteral ->  \"(letter | digit } \s) \" | \(letter | digit | \s) \"
+stringLiteral -> quote1 characterLiteral* interpolatedStringLiteral* characterLiteral* quote1 | quote2 characterLiteral* interpolatedStringLiteral characterLiteral* quote2
+quote1 -> '\"'
+quote2 -> '\''
+interpolatedStringLiteral -> '#'{'id'}'
 letter -> [a-zA-Z]
 digit -> \d
 id -> letter (letter | Digit | '_')* - keyword
@@ -72,6 +75,8 @@ PrimitiveLiteral -> NumericLiteral | characterLiteral
 NumericLiteral -> intlit | floatlit
 SetLiteral -> '{' PrimitiveLiteralList '}'
 ListLiteral -> '[' ExpList? ']'
+String -> stringLiteral | interpolatedStringLiteral
+interpolatedStringLiteral -> quote1 stringLiteral? #(id) quote1| 
 ```
 
 Example Code:
