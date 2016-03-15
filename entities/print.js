@@ -1,11 +1,11 @@
 class Print {
 
-    constructor(string) {
-        this.string = string;
+    constructor(expression) {
+        this.expression = expression;
     }
 
     toString() {
-        return "( " + "ava " + this.string + " )";
+        return "( " + "ava " + this.expression + " )";
     }
 
     analyze(context) {

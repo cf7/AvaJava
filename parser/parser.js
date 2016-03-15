@@ -48,8 +48,8 @@ var parseBlock = function() {
 var parseStatement = function() {
   if (at('var')) {
     return parseVariableDeclaration();
-  } else if (at('ava')) {
-    return parsePrintStatement();
+  // } else if (at('ava')) {
+  //   return parsePrintStatement();
   } else if (at('id')) {
     return parseAssignmentStatement();
   // } else if (at('read')) {
@@ -93,12 +93,10 @@ var parseAssignmentStatement = function() {
 
 var parsePrintStatement = function () {
   // add case for when there are single quotes
-  console.log("before first match: " + tokens[0].lexeme);
   match('ava');
-  console.log("after first match: " + tokens[0].lexeme);
   var expression = parseExpression();
   match(';');
-  return new Print(string);
+  return new Print(expression);
 }
 
 var parseExpression = function () {
@@ -130,7 +128,6 @@ var match = function(kind) {
   } else if (kind === void 0 || kind === tokens[0].kind) {
     return tokens.shift();
   } else {
-    console.log("inside error");
     return error("Expected \"" + kind + "\" but found \"" + tokens[0].kind + "\"", tokens[0]);
   }
 };
