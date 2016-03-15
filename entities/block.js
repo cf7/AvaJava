@@ -1,5 +1,5 @@
 // baseline code from Iki
-
+"use strict";
 class Block {
 
   constructor(statements) {

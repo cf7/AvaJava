@@ -3,7 +3,7 @@ var error = require('../error.js');
 var Program = require('../entities/program.js');
 var Block = require('../entities/block.js');
 var Type = require('../entities/type.js');
-// var VariableDeclaration = require('./entities/variabledeclaration');
+var VariableDeclaration = require('../entities/variabledeclaration.js');
 // var AssignmentStatement = require('./entities/assignmentstatement');
 // var ReadStatement = require('./entities/readstatement');
 // var WriteStatement = require('./entities/writestatement');
@@ -17,8 +17,15 @@ var Type = require('../entities/type.js');
 
 module.exports = function(scannerOutput) {
   tokens = scannerOutput;
+  // debugging
+  for (token of tokens) {
+    console.log(token);
+  }
   var program = parseProgram();
   match('EOF');
+  // programs are accidentally passing themselves
+  // or maybe that is supposed to happen
+  // console.log("*******" + program);
   return program;
 };
 
@@ -41,24 +48,86 @@ var parseBlock = function() {
 var parseStatement = function() {
   if (at('var')) {
     return parseVariableDeclaration();
+  // } else if (at('ava')) {
+  //   return parsePrintStatement();
   } else if (at('id')) {
     return parseAssignmentStatement();
-  } else if (at('read')) {
-    return parseReadStatement();
-  } else if (at('write')) {
-    return parseWriteStatement();
-  } else if (at('while')) {
-    return parseWhileStatement();
+  // } else if (at('read')) {
+  //   return parseReadStatement();
+  // } else if (at('write')) {
+  //   return parseWriteStatement();
+  // } else if (at('while')) {
+  //   return parseWhileStatement();
   } else {
     return error('Statement expected', tokens[0]);
   }
 };
 
-// var parseVariableDeclaration = function() {
-//   var id, type;
-//   match('var');
-//   id = match('id');
-//   match(':');
-//   type = parseType();
-//   return new VariableDeclaration(id, type);
-// };
+var parseVariableDeclaration = function() {
+  // match with a 'var', if yes
+  // shift tokens left (i.e. delete current token
+  // and shift index of rest of tokens down)
+  match('var');
+  var id = match('id');
+  match(';');
+  var type = parseType();
+  return new VariableDeclaration(id, type);
+};
+
+// change parse types
+var parseType = function() {
+  if (at(['int', 'bool'])) {
+    return Type.forName(match().lexeme);
+  } else {
+    return error('Type expected', tokens[0]);
+  }
+};
+
+var parseAssignmentStatement = function() {
+  var target = new VariableReference(match('id'));
+  match('=');
+  var source = parseExpression();
+  return new AssignmentStatement(target, source);
+};
+
+
+var parsePrintStatement = function () {
+  // add case for when there are single quotes
+  match('ava');
+  var expression = parseExpression();
+  match(';');
+  return new Print(expression);
+}
+
+var parseExpression = function () {
+  console.log("inside parseExpression");
+}
+
+var at = function(kind) {
+  if (tokens.length === 0) {
+    return false;
+  } else if (Array.isArray(kind)) {
+    // if array has more than one element,
+    // recursively iterate through tokens
+    // until matching kind with an element
+    return kind.some(at);
+  } else {
+    return kind === tokens[0].kind;
+  }
+};
+
+// match shifts the tokens down the line
+// to match with the next one and so on
+// as the parser progresses through the rules
+// returns the token that is being removed
+// reason some of the parse functions above do not throw errors
+// is because match will throw an error if there is no match
+var match = function(kind) {
+  if (tokens.length === 0) {
+    return error('Unexpected end of source program');
+  } else if (kind === void 0 || kind === tokens[0].kind) {
+    return tokens.shift();
+  } else {
+    return error("Expected \"" + kind + "\" but found \"" + tokens[0].kind + "\"", tokens[0]);
+  }
+};

@@ -1,6 +1,6 @@
 ![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
 
-<b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, and OCamlw that compiles into Python.</b> 
+<b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, and OCaml that compiles into Python.</b> 
 It combines the most interesting parts of these languages, and also provides a new selection of functions (<i>to come</i>).<br>
 This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.<br>
 
@@ -22,8 +22,11 @@ This language will be designed in a way to facilitate faster typing and more con
 ###Microsyntax
 
 ```
-characterLiteral ->  '\'' (letter | digit) '\'' | '\"' (letter | digit) '\"'
-stringLiteral -> '\'' characterLiteral* '\'' | '\"' characterLiteral* '\"'
+characterLiteral ->  \"(letter | digit } \s) \" | \(letter | digit | \s) \"
+stringLiteral -> quote1 characterLiteral* interpolatedStringLiteral* characterLiteral* quote1 | quote2 characterLiteral* interpolatedStringLiteral characterLiteral* quote2
+quote1 -> '\"'
+quote2 -> '\''
+interpolatedStringLiteral -> '#'{'id'}'
 letter -> [a-zA-Z]
 digit -> \d
 id -> letter (letter | Digit | '_')* - keyword
@@ -48,7 +51,8 @@ Stmt -> Decl
     | 'while' '(' Exp ')' '{' Block '}'
     | 'return' Exp
     | Exp
-Print -> 'ava'
+    | Print
+Print -> 'ava' Exp ';'
 Exp -> Decl 
     | Assign
     | Term (addop Term)* ';'
@@ -72,6 +76,8 @@ PrimitiveLiteral -> NumericLiteral | characterLiteral
 NumericLiteral -> intlit | floatlit
 SetLiteral -> '{' PrimitiveLiteralList '}'
 ListLiteral -> '[' ExpList? ']'
+String -> stringLiteral | interpolatedStringLiteral
+interpolatedStringLiteral -> quote1 stringLiteral? #(id) quote1| 
 ```
 
 Example Code:
