@@ -12,7 +12,8 @@ describe('The parser detects an error for', function() {
   var results = [];
   for (var i = 0, len = ref.length; i < len; i++) {
     var name = ref[i];
-    var check = name.replace(/-/g, ' ').replace(/\.iki$/, '');
+    // if it has the .ava file extension
+    var check = name.replace(/-/g, ' ').replace(/\.ava$/, '');
     results.push(it(check, function(done) {
       return scan(path.join(TEST_DIR, name), function(tokens) {
         var priorErrorCount;
