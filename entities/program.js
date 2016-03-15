@@ -8,6 +8,7 @@ class Program {
     this.block = block;
   }
 
+  // the toString in each entity outputs the abstract syntax tree
   toString() {
     return "(Program " + this.block + ")";
   };
