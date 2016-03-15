@@ -17,6 +17,63 @@ This language will be designed in a way to facilitate faster typing and more con
 <li> Naming Parameters
 </ul>
 
+##Grammar
+
+###Microsyntax
+
+```
+characterLiteral ->  '\'' (letter | digit) '\'' | '\"' (letter | digit) '\"'
+stringLiteral -> '\'' characterLiteral* '\'' | '\"' characterLiteral* '\"'
+letter -> [a-zA-Z]
+digit -> \d
+id -> letter (letter | Digit | '_')* - keyword
+keyword -> 'var' | 'while' | 'and' | 'or' | 'not' | 'true' | 'false' | 'return' | 'for' | 'each' | 'if' | 'then' | 'else' | 'in' | 'both' | 'less than' | 'greater than' | 'ava'
+assignop -> '+=' | '-=' | '*=' | '/='
+relop -> '<=' | '==' | '>=' | '!=' | 'less than' | 'greater than'
+addop -> '+' | '-'
+mulop -> '*' | '/' | '%' 
+prefixop -> '-' | 'not'
+postfixop -> '!' | '++' | '--' | '^^' | '::' | '@'
+intlit -> \d+
+floatlit -> ^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$
+boollit -> 'true' | 'false'
+comment -> '//' | '***' ( [.] | [\n] )* '***'
+```
+###Macrosyntax
+```
+Program -> Block
+Block -> (Stmt ';')+
+Stmt -> Decl
+    | id '=' Exp
+    | 'while' '(' Exp ')' '{' Block '}'
+    | 'return' Exp
+    | Exp
+Print -> 'ava'
+Exp -> Decl 
+    | Assign
+    | Term (addop Term)* ';'
+    | '[' StringList ']'
+Decl -> 'var' id ';'
+    | 'function' id '(' idList? ')' '=' Exp ';'
+Assign -> id '=' Exp 
+    | '[' idList ']' '=' Exp
+
+Term -> Factor (mulop Factor)*
+Factor -> NumericLiteral | id | Call | '(' Exp ')'
+
+Call -> id ( id+ | '(' ExpList? ')' ) ';'
+
+ExpList -> Exp ( ',' Exp )*
+idList -> id (',' id)*
+PrimitiveLiteralList -> PrimitveLiteral (',' PrimitiveLiteral)*
+StringList -> stringLiteral (',' stringLiteral)*
+
+PrimitiveLiteral -> NumericLiteral | characterLiteral
+NumericLiteral -> intlit | floatlit
+SetLiteral -> '{' PrimitiveLiteralList '}'
+ListLiteral -> '[' ExpList? ']'
+```
+
 Example Code:
 <br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `addOdds 3 3;`</br>
 <br>`var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1); // plain OCaml`<br> `factorial addOdds 3 3;`</br>

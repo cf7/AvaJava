@@ -1,6 +1,6 @@
 var fs = require('fs');
 var byline = require('byline');
-var XRegExp = require('xregexp').XRegExp;
+var XRegExp = require('xregexp');
 var error = require('../error');
 
 var LETTER = XRegExp('[\\p{L}]');
@@ -35,14 +35,14 @@ module.exports = function(filename, callback) {
   });
 };
 
-var scan = function (line, linNumber, tokens) {
+var scan = function (line, lineNumber, tokens) {
   if (!line) {
     return;
   } else {
     var start = 0;
     var pos = 0;
     var emit = function (kind, lexeme) {
-      tokens.push({ kind, lexeme: lexeme || kind, line: linNumber, col: start+1 });
+      tokens.push({ kind, lexeme: lexeme || kind, line: lineNumber, col: start+1 });
     }
     var substring = "";
 
@@ -93,7 +93,7 @@ var scan = function (line, linNumber, tokens) {
         // emit('intlit', line.substring(start, pos));
       } else {
         error("Illegal character: " + line[pos], {
-          line: linenumber,
+          line: lineNumber,
           col: pos + 1
         });
         pos++;

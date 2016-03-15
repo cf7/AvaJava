@@ -4,13 +4,12 @@
   "description": "A simple compiler for the Avajava programming language",
   "dependencies": {
     "byline": "latest",
+    "coffee-script": "latest",
     "hashmap": "latest",
-    "yargs": "latest",
     "xregexp": "latest",
-    "coffee-script": "latest"
+    "yargs": "latest"
   },
   "devDependencies": {
-    "mocha": "latest",
     "should": "latest"
   }
 }
