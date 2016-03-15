@@ -199,7 +199,7 @@ Example Code:
 `false and false both false => true`<br>
 
 #####Loops: 
-`while (x and y both less than 10): ava "Hello World";` <br>
+`while (x and y both less than 10): ava "Hello Worl";` <br>
 `for x times: ava "Hello World";` <br> 
 
 #####String Operations:
