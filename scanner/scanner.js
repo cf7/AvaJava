@@ -99,6 +99,7 @@ var scan = function (line, lineNumber, tokens) {
     // function that will store token data to be outputted by the scanner
     // as a whole
     var emit = function (kind, lexeme) {
+                      // if no lexeme given, lexeme is same as kind
       tokens.push({ kind: kind, lexeme: (lexeme || kind), line: lineNumber, col: start+1 });
     }
     var substring = "";

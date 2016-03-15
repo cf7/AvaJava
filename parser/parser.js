@@ -17,11 +17,15 @@ var VariableDeclaration = require('../entities/variabledeclaration.js');
 
 module.exports = function(scannerOutput) {
   tokens = scannerOutput;
+  // debugging
   for (token of tokens) {
     console.log(token);
   }
   var program = parseProgram();
   match('EOF');
+  // programs are accidentally passing themselves
+  // or maybe that is supposed to happen
+  // console.log("*******" + program);
   return program;
 };
 
@@ -44,6 +48,8 @@ var parseBlock = function() {
 var parseStatement = function() {
   if (at('var')) {
     return parseVariableDeclaration();
+  } else if (at('ava')) {
+    return parsePrintStatement();
   } else if (at('id')) {
     return parseAssignmentStatement();
   // } else if (at('read')) {
@@ -58,13 +64,17 @@ var parseStatement = function() {
 };
 
 var parseVariableDeclaration = function() {
+  // match with a 'var', if yes
+  // shift tokens left (i.e. delete current token
+  // and shift index of rest of tokens down)
   match('var');
   var id = match('id');
-  match(':');
+  match(';');
   var type = parseType();
   return new VariableDeclaration(id, type);
 };
 
+// change parse types
 var parseType = function() {
   if (at(['int', 'bool'])) {
     return Type.forName(match().lexeme);
@@ -81,24 +91,46 @@ var parseAssignmentStatement = function() {
 };
 
 
+var parsePrintStatement = function () {
+  // add case for when there are single quotes
+  console.log("before first match: " + tokens[0].lexeme);
+  match('ava');
+  console.log("after first match: " + tokens[0].lexeme);
+  var expression = parseExpression();
+  match(';');
+  return new Print(string);
+}
 
+var parseExpression = function () {
+  console.log("inside parseExpression");
+}
 
 var at = function(kind) {
   if (tokens.length === 0) {
     return false;
   } else if (Array.isArray(kind)) {
+    // if array has more than one element,
+    // recursively iterate through tokens
+    // until matching kind with an element
     return kind.some(at);
   } else {
     return kind === tokens[0].kind;
   }
 };
 
+// match shifts the tokens down the line
+// to match with the next one and so on
+// as the parser progresses through the rules
+// returns the token that is being removed
+// reason some of the parse functions above do not throw errors
+// is because match will throw an error if there is no match
 var match = function(kind) {
   if (tokens.length === 0) {
     return error('Unexpected end of source program');
   } else if (kind === void 0 || kind === tokens[0].kind) {
     return tokens.shift();
   } else {
+    console.log("inside error");
     return error("Expected \"" + kind + "\" but found \"" + tokens[0].kind + "\"", tokens[0]);
   }
 };

@@ -4,7 +4,7 @@ var should = require('should');
 var scan = require('../scanner/scanner.js');
 var parse = require('../parser/parser.js');
 var error = require('../error.js');
-error.quiet = true;
+error.quiet = false;
 var TEST_DIR = 'test/data/syntax-errors';
 
 // ** if the first filename is .DS_Store, then
@@ -32,9 +32,10 @@ describe('The parser detects an error for', function() {
         // scan in the tokens from the file and return them
         return scan(path.join(TEST_DIR, name), function(tokens) {
           var priorErrorCount = error.count;
-          // parses the tokens array into a JSON
+          // send to parser.js
           parse(tokens);
           error.count.should.be.above(priorErrorCount);
+          console.log("error count after: " + error.count);
           return done();
         });
       });
