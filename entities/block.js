@@ -1,16 +1,17 @@
 // baseline code from Iki
 "use strict";
-class Block {
+var Block;
 
-  constructor(statements) {
+Block = (function() {
+  function Block(statements) {
     this.statements = statements;
   }
 
-  toString() {
+  Block.prototype.toString = function() {
     return "(Block " + (this.statements.join(' ')) + ")";
   };
 
-  analyze(context) {
+  Block.prototype.analyze = function(context) {
     var i, len, localContext, ref, results, statement;
     localContext = context.createChildContext();
     ref = this.statements;
@@ -22,7 +23,7 @@ class Block {
     return results;
   };
 
-  optimize() {
+  Block.prototype.optimize = function() {
     var s;
     this.statements = (function() {
       var i, len, ref, results;
@@ -49,8 +50,8 @@ class Block {
     return this;
   };
 
-}
-
-module.exports = function () {
   return Block;
-}
+
+})();
+
+module.exports = Block;

@@ -1,27 +1,30 @@
 "use strict";
-var Type = require('./type.js');
+var Type, VariableDeclaration;
 
-class VariableDeclaration {
+Type = require('./type');
 
-  constructor(id, type) {
+VariableDeclaration = (function() {
+  function VariableDeclaration(id, type) {
     this.id = id;
     this.type = type;
   }
 
-  toString() {
+  VariableDeclaration.prototype.toString = function() {
     return "(Var :" + this.id.lexeme + " " + this.type + ")";
   };
 
-  analyze(context) {
+  VariableDeclaration.prototype.analyze = function(context) {
     context.variableMustNotBeAlreadyDeclared(this.id);
     return context.addVariable(this.id.lexeme, this);
   };
 
-  optimize() {
+  VariableDeclaration.prototype.optimize = function() {
     return this;
   };
 
-}
+  return VariableDeclaration;
+
+})();
 
 VariableDeclaration.ARBITRARY = new VariableDeclaration('<arbitrary>', Type.ARBITRARY);
 

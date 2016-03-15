@@ -6,9 +6,9 @@ var argv = require('yargs').usage('$0 [-t] [-a] [-o] [-i] [--target [x86|c|js]] 
 
 var scan = require('./scanner/scanner.js');
 var parse = require('./parser/parser.js');
-var generate = (require('./generators/jsgenerator'))(argv.target);
+var generate = (require('./generators/jsgenerator.js'))//(argv.target);
 var error = require('./error.js');
-
+console.log("before scan: " + argv._[0]);
 scan(argv._[0], function(tokens) {
   var i, len, program, t;
   if (error.count > 0) {
