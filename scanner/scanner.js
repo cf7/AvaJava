@@ -130,7 +130,22 @@ var scan = function (line, lineNumber, tokens) {
         emit(line.substring(pos, pos + 2));
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
-        emit(line[pos]);
+        var string = "";
+        if (/"/.test(line[pos])) {
+          string = string + line[pos];
+          pos++
+          while (!/"/.test(line[pos]) && pos < line.length) {
+            string += line[pos];
+            pos++;
+          }
+          if (line[pos] === "\"") {
+            string += line[pos];
+            pos++;
+          }
+          pos++;
+        }
+
+        emit("stringlit", string);
         pos++;
       } else if (LETTER.test(line[pos])) {
         while (WORD_CHAR.test(line[pos]) && pos < line.length) {

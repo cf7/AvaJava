@@ -8,7 +8,7 @@ var i = require('util').inspect;
 
 describe('The scanner', function() {
   it('scans a simple program', function(done) {
-    return scan('test/data/good-programs/peace.txt', function(tokens) {
+    return scan('test/data/good-programs/peace.ava', function(tokens) {
       tokens.length.should.equal(15);
       i(tokens[0]).should.equal(i({
         kind: 'var',
