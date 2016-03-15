@@ -51,7 +51,8 @@ Stmt -> Decl
     | 'while' '(' Exp ')' '{' Block '}'
     | 'return' Exp
     | Exp
-Print -> 'ava'
+    | Print
+Print -> 'ava' Exp ';'
 Exp -> Decl 
     | Assign
     | Term (addop Term)* ';'

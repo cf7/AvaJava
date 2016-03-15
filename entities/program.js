@@ -24,6 +24,4 @@ class Program {
 
 }
 
-module.exports = function () {
-  return Program;
-}
+module.exports = Program;
