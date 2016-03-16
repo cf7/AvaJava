@@ -29,15 +29,15 @@ scan(argv._[0], function(tokens) {
     console.log(program.toString());
     return;
   }
-  program.analyze();
+  // program.analyze();
   if (error.count > 0) {
     return;
   }
   if (argv.o) {
-    program = program.optimize();
+    // program = program.optimize();
   }
   if (argv.i) {
-    program.showSemanticGraph();
+    // program.showSemanticGraph();
     return;
   }
   return generate(program);

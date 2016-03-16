@@ -131,21 +131,22 @@ var scan = function (line, lineNumber, tokens) {
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
         var string = "";
+        var encounteredString = false;
         if (/"/.test(line[pos])) {
-          string = string + line[pos];
+          encounteredString = true;
+          start = pos;
           pos++
           while (!/"/.test(line[pos]) && pos < line.length) {
-            string += line[pos];
-            pos++;
-          }
-          if (line[pos] === "\"") {
-            string += line[pos];
             pos++;
           }
           pos++;
         }
-
-        emit("stringlit", string);
+        if (encounteredString) {
+          string = line.substring(start, pos);
+          emit("stringlit", string);
+        } else {
+          emit(line[pos]);
+        }
         pos++;
       } else if (LETTER.test(line[pos])) {
         while (WORD_CHAR.test(line[pos]) && pos < line.length) {
