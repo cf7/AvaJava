@@ -91,17 +91,17 @@ var parseAssignmentStatement = function() {
 };
 
 
-var parsePrintStatement = function () {
-  // add case for when there are single quotes
-  match('ava');
-  var expression = parseExpression();
-  match(';');
-  return new Print(expression);
-}
+// var parsePrintStatement = function () {
+//   // add case for when there are single quotes
+//   match('ava');
+//   var expression = parseExpression();
+//   match(';');
+//   return new Print(expression);
+// }
 
-var parseExpression = function () {
-  console.log("inside parseExpression");
-}
+// var parseExpression = function () {
+//   console.log("inside parseExpression");
+// }
 
 var at = function(kind) {
   if (tokens.length === 0) {
