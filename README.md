@@ -22,17 +22,19 @@ This language will be designed in a way to facilitate faster typing and more con
 ###Microsyntax
 
 ```
-characterLiteral ->  \"(letter | digit } \s) \" | \(letter | digit | \s) \"
-stringLiteral -> quote1 characterLiteral* interpolatedStringLiteral* characterLiteral* quote1 | quote2 characterLiteral* interpolatedStringLiteral characterLiteral* quote2
-quote1 -> '\"'
-quote2 -> '\''
-interpolatedStringLiteral -> '#'{'id'}'
+characterLiteral ->  \"(letter | digit | \s) \" | \' (letter | digit | \s) \'
+stringLiteral -> '\"' characterLiteral* interpolatedStringLiteral* characterLiteral* '\"' | '\'' characterLiteral* interpolatedStringLiteral* characterLiteral* '\''
+interpolatedStringLiteral -> '#' '{' id '}'
+
 letter -> [a-zA-Z]
 digit -> \d
-id -> letter (letter | Digit | '_')* - keyword
-keyword -> 'var' | 'while' | 'and' | 'or' | 'not' | 'true' | 'false' | 'return' | 'for' | 'each' | 'if' | 'then' | 'else' | 'in' | 'both' | 'less than' | 'greater than' | 'ava'
+id -> letter (letter | digit | '_')* - keyword
+keyword -> 'var' | 'while' | 'and' | 'or' | 'not' 
+		| 'true' | 'false' | 'return' | 'for' | 'each' 
+		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+		
 assignop -> '+=' | '-=' | '*=' | '/='
-relop -> '<=' | '==' | '>=' | '!=' | 'less than' | 'greater than'
+relop -> '<=' | '==' | '>=' | '!='
 addop -> '+' | '-'
 mulop -> '*' | '/' | '%' 
 prefixop -> '-' | 'not'
@@ -42,6 +44,7 @@ floatlit -> ^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$
 boollit -> 'true' | 'false'
 comment -> '//' | '***' ( [.] | [\n] )* '***'
 ```
+
 ###Macrosyntax
 ```
 Program -> Block
@@ -50,34 +53,36 @@ Stmt -> Decl
     | id '=' Exp
     | 'while' '(' Exp ')' '{' Block '}'
     | 'return' Exp
-    | Exp
     | Print
 Print -> 'ava' Exp ';'
 Exp -> Decl 
     | Assign
-    | Term (addop Term)* ';'
+    | Exp1 
     | '[' StringList ']'
+    
 Decl -> 'var' id ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
 Assign -> id '=' Exp 
     | '[' idList ']' '=' Exp
 
-Term -> Factor (mulop Factor)*
-Factor -> NumericLiteral | id | Call | '(' Exp ')'
+Exp1 -> Exp2 (addop Exp2)* ';'
+Exp2 -> Exp3 (mulop Exp3)* ';'
+Exp3 -> prefixop? Exp4 ';'
+Exp4 -> Exp5 ('^^' Exp5)* ';'
+Exp5 -> '(' Exp ')' | Literal | id | Call
 
 Call -> id ( id+ | '(' ExpList? ')' ) ';'
 
 ExpList -> Exp ( ',' Exp )*
 idList -> id (',' id)*
-PrimitiveLiteralList -> PrimitveLiteral (',' PrimitiveLiteral)*
+LiteralList -> Literal (',' Literal)*
 StringList -> stringLiteral (',' stringLiteral)*
 
-PrimitiveLiteral -> NumericLiteral | characterLiteral
+Literal -> NumericLiteral | characterLiteral | stringLiteral
 NumericLiteral -> intlit | floatlit
-SetLiteral -> '{' PrimitiveLiteralList '}'
-ListLiteral -> '[' ExpList? ']'
+SetLiteral -> '{' LiteralList '}'
+List -> '[' ExpList? ']'
 String -> stringLiteral | interpolatedStringLiteral
-interpolatedStringLiteral -> quote1 stringLiteral? #(id) quote1| 
 ```
 
 ####Example Programs:
