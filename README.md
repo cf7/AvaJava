@@ -88,13 +88,15 @@ String -> stringLiteral | interpolatedStringLiteral
 ####Example Programs:
 ```
 var addOdds = (x,y) ->                                  var addOdds = function (x,y) {
-    if x%2 and y%2 both not 0 then x+y else Math.PI         if (x%2 !== 0 && y%2 !== 0) {
+    if x%2 and y%2 both not 0 then x+y else Math.PI;        if (x%2 !== 0 && y%2 !== 0) {
                                                                 return x + y;
 addOdds 3 3;                                                } else {
                                                                 return Math.PI;
                                                             }
                                                         }
+                                                        
                                                         addOdds(3,3);
+
 
 
 var factorial = (n) ->                                  var factorial = function (n) {
@@ -104,12 +106,15 @@ factorial addOdds 3 3;                                      } else {
                                                                 return n * factorial(n - 1);
                                                             }
                                                         }
+                                                        
                                                         factorial(addOdds(3,3));
+
 
 var helloWorld = () -> ava "Hello World";               var helloWorld = function () {
                                                             console.log("Hello World");
-                                                        }
+                                                        }                                             
 ```
+
 ######Execute:
 ```
 ./avajava.js [-t] [-a] pathOrFilename.ava
