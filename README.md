@@ -110,26 +110,26 @@ var helloWorld = () -> ava "Hello World";               var helloWorld = functio
                                                             console.log("Hello World");
                                                         }
 ```
-
 ######Execute:
 ```
 ./avajava.js [-t] [-a] pathOrFilename.ava
 ```
-
 ######To Compile & Run:
-`guac hellowWorld.ava`<br>
-`eat hellowWorld`<br>
-
+```
+guac hellowWorld.ava
+eat hellowWorld
+```
 #####Identifiers and Reserved Words:
 `var - variable declaration`<br>
-`reserved words - while | for | each | if | then | else | in | both | not | and | or | return`<br>
-`less than | greater than`<br>
-
+`reserved words - 'var' | 'while' | 'and' | 'or' | 'not' 
+		| 'true' | 'false' | 'return' | 'for' | 'each' 
+		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'`<br>
+		
 #####Commments:
 `Single Line Comments => // This is commented`
 <br>
 `Multi-Line Comments => ***Cada ...`<br> 
-                        `... Cada***`<br>
+                        `... Cada***`<br>                        
 ######Literals:
 `1 - integer`<br>
 `1.00 - float`<br>
