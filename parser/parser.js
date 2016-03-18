@@ -51,8 +51,8 @@ var parseStatement = function() {
     return parseVariableDeclaration();
   } else if (at('ava')) {
     return parsePrintStatement();
-  } else if (at('id')) {
-    return parseAssignmentStatement();
+  // } else if (at('id')) {
+  //   return parseAssignmentStatement();
   // } else if (at('read')) {
   //   return parseReadStatement();
   // } else if (at('write')) {
@@ -70,6 +70,10 @@ var parseVariableDeclaration = function() {
   // and shift index of rest of tokens down)
   match('var');
   var id = match('id');
+  match('=');
+  var exp = parseExpression(); // right now doesn't do anything
+  // but later when setting scope, will be passed into VariableDeclaration
+  // or a similar entity
   match(';');
   var type = parseType();
   return new VariableDeclaration(id, type);
@@ -84,12 +88,12 @@ var parseType = function() {
   }
 };
 
-var parseAssignmentStatement = function() {
-  var target = new VariableReference(match('id'));
-  match('=');
-  var source = parseExpression();
-  return new AssignmentStatement(target, source);
-};
+// var parseAssignmentStatement = function() {
+//   var target = new VariableReference(match('id'));
+//   match('=');
+//   var source = parseExpression();
+//   return new AssignmentStatement(target, source);
+// };
 
 // one of the parser tests isn't passing because for some
 // reason the parser doesn't throw an error
@@ -107,6 +111,8 @@ var parseExpression = function () {
     return parseVariableDeclaration();
   } else if (at('if')) {
     return parseConditionalExp();
+  } else if (at('(')) {
+    return parseFunctionExp();
   } else {
     return error('inside parse expression error', tokens[0]);
   }
@@ -114,6 +120,36 @@ var parseExpression = function () {
 
 var parseConditionalExp = function () {
   console.log("inside parseConditionalExp");
+  match('if');
+  parseExpression();
+  match('then');
+  parseBlock();
+  if (at('else')) {
+    match('else');
+    if (at('if')) {
+      match('if');
+      parseExpression();
+      match('then');
+      parseBlock();
+    } else {
+      parseBlock();
+    }
+  }
+  match(';');
+  // return
+}
+
+var parseFunctionExp = function () {
+  console.log("inside parseFunctionExp");
+  match('(');
+  var params = parseParams();
+  match(')');
+  match('->');
+  var exp = parseBlock();
+}
+
+var parseParams = function () {
+  console.log("inside parseParams");
 }
 
 var at = function(kind) {

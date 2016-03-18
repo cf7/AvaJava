@@ -60,13 +60,16 @@ Exp -> Decl
     | Exp1 
     | '[' StringList ']'
     | ConditionalExp
+    | FunctionExp
     
 Decl -> 'var' id ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
 Assign -> id '=' Exp 
     | '[' idList ']' '=' Exp
 ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
+FunctionExp -> '(' Params ')' '->' Block ';'
 
+Params ->
 Exp1 -> Exp2 ('or' Exp2)* ';'
 Exp2 -> Exp3 ('and' Exp3)* ';'
 Exp3 -> Exp4 (addop Exp4)* ';'
