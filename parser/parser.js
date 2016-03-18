@@ -91,7 +91,9 @@ var parseAssignmentStatement = function() {
   return new AssignmentStatement(target, source);
 };
 
-
+// one of the parser tests isn't passing because for some
+// reason the parser doesn't throw an error
+// even if match() detects one in parsePrintStatement
 var parsePrintStatement = function () {
   // add case for when there are single quotes
   match('ava');

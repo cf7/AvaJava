@@ -59,17 +59,21 @@ Exp -> Decl
     | Assign
     | Exp1 
     | '[' StringList ']'
+    | ConditionalExp
     
 Decl -> 'var' id ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
 Assign -> id '=' Exp 
     | '[' idList ']' '=' Exp
+ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
 
-Exp1 -> Exp2 (addop Exp2)* ';'
-Exp2 -> Exp3 (mulop Exp3)* ';'
-Exp3 -> prefixop? Exp4 ';'
-Exp4 -> Exp5 ('^^' Exp5)* ';'
-Exp5 -> '(' Exp ')' | Literal | id | Call
+Exp1 -> Exp2 ('or' Exp2)* ';'
+Exp2 -> Exp3 ('and' Exp3)* ';'
+Exp3 -> Exp4 (addop Exp4)* ';'
+Exp4 -> Exp5 (mulop Exp5)* ';'
+Exp5 -> prefixop? Exp6 ';'
+Exp6 -> Exp7 ('^^' Exp7)* ';'
+Exp7 -> '(' Exp ')' | Literal | id | Call
 
 Call -> id ( id+ | '(' ExpList? ')' ) ';'
 
