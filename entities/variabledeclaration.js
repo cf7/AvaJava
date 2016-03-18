@@ -1,7 +1,7 @@
 "use strict";
 var Type, VariableDeclaration;
 
-Type = require('./type');
+Type = require('./type.js');
 
 VariableDeclaration = (function() {
   function VariableDeclaration(id, type) {
@@ -10,7 +10,7 @@ VariableDeclaration = (function() {
   }
 
   VariableDeclaration.prototype.toString = function() {
-    return "(Var :" + this.id.lexeme + " " + this.type + ")";
+    return "(var " + this.id.lexeme + " " + this.type + ")";
   };
 
   VariableDeclaration.prototype.analyze = function(context) {

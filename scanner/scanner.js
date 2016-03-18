@@ -131,21 +131,22 @@ var scan = function (line, lineNumber, tokens) {
         pos += 2;
       } else if (oneCharacterTokens.test(line[pos])) {
         var string = "";
+        var encounteredString = false;
         if (/"/.test(line[pos])) {
-          string = string + line[pos];
+          encounteredString = true;
+          start = pos;
           pos++
           while (!/"/.test(line[pos]) && pos < line.length) {
-            string += line[pos];
-            pos++;
-          }
-          if (line[pos] === "\"") {
-            string += line[pos];
             pos++;
           }
           pos++;
         }
-
-        emit("stringlit", string);
+        if (encounteredString) {
+          string = line.substring(start, pos);
+          emit("stringlit", string);
+        } else {
+          emit(line[pos]);
+        }
         pos++;
       } else if (LETTER.test(line[pos])) {
         while (WORD_CHAR.test(line[pos]) && pos < line.length) {
@@ -154,18 +155,18 @@ var scan = function (line, lineNumber, tokens) {
         word = line.substring(start, pos);
         emit((KEYWORDS.test(word) ? word : 'id'), word);
       } else if (DIGIT.test(line[pos])) {
-        var substring = line[pos];
+        start = pos;
         pos++;
-        while (pos < line.length && !/\s/.test(line.substring(pos, pos + 1))) {
-          substring = substring + line[pos];
+        while (!/\s/.test(line[pos]) && !/;/.test(line[pos]) && pos < line.length) {
           pos++;
         }
-        pos++;
+        var substring = line.substring(start, pos);
         if (intlit.test(substring)) {
           emit('intlit', substring);
         } else {
           emit('floatlit', substring);
         } 
+        pos++;
       } else {
         error("Illegal character: " + line[pos], {
           line: lineNumber,

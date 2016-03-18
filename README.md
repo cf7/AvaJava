@@ -22,17 +22,19 @@ This language will be designed in a way to facilitate faster typing and more con
 ###Microsyntax
 
 ```
-characterLiteral ->  \"(letter | digit } \s) \" | \(letter | digit | \s) \"
-stringLiteral -> quote1 characterLiteral* interpolatedStringLiteral* characterLiteral* quote1 | quote2 characterLiteral* interpolatedStringLiteral characterLiteral* quote2
-quote1 -> '\"'
-quote2 -> '\''
-interpolatedStringLiteral -> '#'{'id'}'
+characterLiteral ->  \"(letter | digit | \s) \" | \' (letter | digit | \s) \'
+stringLiteral -> '\"' characterLiteral* interpolatedStringLiteral* characterLiteral* '\"' | '\'' characterLiteral* interpolatedStringLiteral* characterLiteral* '\''
+interpolatedStringLiteral -> '#' '{' id '}'
+
 letter -> [a-zA-Z]
 digit -> \d
-id -> letter (letter | Digit | '_')* - keyword
-keyword -> 'var' | 'while' | 'and' | 'or' | 'not' | 'true' | 'false' | 'return' | 'for' | 'each' | 'if' | 'then' | 'else' | 'in' | 'both' | 'less than' | 'greater than' | 'ava'
+id -> letter (letter | digit | '_')* - keyword
+keyword -> 'var' | 'while' | 'and' | 'or' | 'not' 
+		| 'true' | 'false' | 'return' | 'for' | 'each' 
+		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+		
 assignop -> '+=' | '-=' | '*=' | '/='
-relop -> '<=' | '==' | '>=' | '!=' | 'less than' | 'greater than'
+relop -> '<=' | '==' | '>=' | '!='
 addop -> '+' | '-'
 mulop -> '*' | '/' | '%' 
 prefixop -> '-' | 'not'
@@ -42,6 +44,7 @@ floatlit -> ^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$
 boollit -> 'true' | 'false'
 comment -> '//' | '***' ( [.] | [\n] )* '***'
 ```
+
 ###Macrosyntax
 ```
 Program -> Block
@@ -50,55 +53,95 @@ Stmt -> Decl
     | id '=' Exp
     | 'while' '(' Exp ')' '{' Block '}'
     | 'return' Exp
-    | Exp
     | Print
 Print -> 'ava' Exp ';'
 Exp -> Decl 
     | Assign
-    | Term (addop Term)* ';'
+    | Exp1 
     | '[' StringList ']'
+    | ConditionalExp
+    | FunctionExp
+    
 Decl -> 'var' id ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
 Assign -> id '=' Exp 
     | '[' idList ']' '=' Exp
+ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
+FunctionExp -> '(' Params ')' '->' Block ';'
 
-Term -> Factor (mulop Factor)*
-Factor -> NumericLiteral | id | Call | '(' Exp ')'
+Params ->
+Exp1 -> Exp2 ('or' Exp2)* ';'
+Exp2 -> Exp3 ('and' Exp3)* ';'
+Exp3 -> Exp4 (addop Exp4)* ';'
+Exp4 -> Exp5 (mulop Exp5)* ';'
+Exp5 -> prefixop? Exp6 ';'
+Exp6 -> Exp7 ('^^' Exp7)* ';'
+Exp7 -> '(' Exp ')' | Literal | id | Call
 
 Call -> id ( id+ | '(' ExpList? ')' ) ';'
 
 ExpList -> Exp ( ',' Exp )*
 idList -> id (',' id)*
-PrimitiveLiteralList -> PrimitveLiteral (',' PrimitiveLiteral)*
+LiteralList -> Literal (',' Literal)*
 StringList -> stringLiteral (',' stringLiteral)*
 
-PrimitiveLiteral -> NumericLiteral | characterLiteral
+Literal -> NumericLiteral | characterLiteral | stringLiteral
 NumericLiteral -> intlit | floatlit
-SetLiteral -> '{' PrimitiveLiteralList '}'
-ListLiteral -> '[' ExpList? ']'
+SetLiteral -> '{' LiteralList '}'
+List -> '[' ExpList? ']'
 String -> stringLiteral | interpolatedStringLiteral
-interpolatedStringLiteral -> quote1 stringLiteral? #(id) quote1| 
 ```
 
-Example Code:
-<br>`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> `addOdds 3 3;`</br>
-<br>`var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1); // plain OCaml`<br> `factorial addOdds 3 3;`</br>
-<br>` var helloWorld = () -> ava "Hello World"; `</br>
+####Example Programs:
+```
+var addOdds = (x,y) ->                                  var addOdds = function (x,y) {
+    if x%2 and y%2 both not 0 then x+y else Math.PI;        if (x%2 !== 0 && y%2 !== 0) {
+                                                                return x + y;
+addOdds 3 3;                                                } else {
+                                                                return Math.PI;
+                                                            }
+                                                        }
+                                                        
+                                                        addOdds(3,3);
 
+
+
+var factorial = (n) ->                                  var factorial = function (n) {
+    if n <= 1 then 1 else n * factorial(n - 1);             if (n <= 1) {
+                                                                return 1;
+factorial addOdds 3 3;                                      } else {
+                                                                return n * factorial(n - 1);
+                                                            }
+                                                        }
+                                                        
+                                                        factorial(addOdds(3,3));
+
+
+var helloWorld = () -> ava "Hello World";               var helloWorld = function () {
+                                                            console.log("Hello World");
+                                                        }                                             
+```
+
+######Execute:
+```
+./avajava.js [-t] [-a] pathOrFilename.ava
+```
 ######To Compile & Run:
-`guac hellowWorld.ava`<br>
-`eat hellowWorld`<br>
-
+```
+guac hellowWorld.ava
+eat hellowWorld
+```
 #####Identifiers and Reserved Words:
 `var - variable declaration`<br>
-`reserved words - while | for | each | if | then | else | in | both | not | and | or | return`<br>
-`less than | greater than`<br>
-
+`reserved words - 'var' | 'while' | 'and' | 'or' | 'not' 
+		| 'true' | 'false' | 'return' | 'for' | 'each' 
+		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'`<br>
+		
 #####Commments:
 `Single Line Comments => // This is commented`
 <br>
 `Multi-Line Comments => ***Cada ...`<br> 
-                        `... Cada***`<br>
+                        `... Cada***`<br>                        
 ######Literals:
 `1 - integer`<br>
 `1.00 - float`<br>

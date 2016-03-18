@@ -10,7 +10,7 @@ class Print {
     }
 
     analyze(context) {
-        return "2";
+        return this.expression.analyze(context);
     }
 
     optimize() {
