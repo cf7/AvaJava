@@ -155,18 +155,18 @@ var scan = function (line, lineNumber, tokens) {
         word = line.substring(start, pos);
         emit((KEYWORDS.test(word) ? word : 'id'), word);
       } else if (DIGIT.test(line[pos])) {
-        var substring = line[pos];
+        start = pos;
         pos++;
-        while (pos < line.length && !/\s/.test(line.substring(pos, pos + 1))) {
-          substring = substring + line[pos];
+        while (!/\s/.test(line[pos]) && !/;/.test(line[pos]) && pos < line.length) {
           pos++;
         }
-        pos++;
+        var substring = line.substring(start, pos);
         if (intlit.test(substring)) {
           emit('intlit', substring);
         } else {
           emit('floatlit', substring);
         } 
+        pos++;
       } else {
         error("Illegal character: " + line[pos], {
           line: lineNumber,
