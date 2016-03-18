@@ -4,7 +4,8 @@ var Program = require('../entities/program.js');
 var Block = require('../entities/block.js');
 var Type = require('../entities/type.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
-// var AssignmentStatement = require('./entities/assignmentstatement');
+var Print = require('../entities/print.js');
+var AssignmentStatement = require('../entities/assignmentstatement.js');
 // var ReadStatement = require('./entities/readstatement');
 // var WriteStatement = require('./entities/writestatement');
 // var WhileStatement = require('./entities/whilestatement');
@@ -13,7 +14,7 @@ var VariableDeclaration = require('../entities/variabledeclaration.js');
 // var VariableReference = require('./entities/variablereference');
 // var BinaryExpression = require('./entities/binaryexpression');
 // var UnaryExpression = require('./entities/unaryexpression');
-// var tokens = [];
+var tokens = [];
 
 module.exports = function(scannerOutput) {
   tokens = scannerOutput;
@@ -48,8 +49,8 @@ var parseBlock = function() {
 var parseStatement = function() {
   if (at('var')) {
     return parseVariableDeclaration();
-  // } else if (at('ava')) {
-  //   return parsePrintStatement();
+  } else if (at('ava')) {
+    return parsePrintStatement();
   } else if (at('id')) {
     return parseAssignmentStatement();
   // } else if (at('read')) {
@@ -91,17 +92,27 @@ var parseAssignmentStatement = function() {
 };
 
 
-// var parsePrintStatement = function () {
-//   // add case for when there are single quotes
-//   match('ava');
-//   var expression = parseExpression();
-//   match(';');
-//   return new Print(expression);
-// }
+var parsePrintStatement = function () {
+  // add case for when there are single quotes
+  match('ava');
+  var expression = parseExpression();
+  match(';');
+  return new Print(expression);
+}
 
-// var parseExpression = function () {
-//   console.log("inside parseExpression");
-// }
+var parseExpression = function () {
+  if (at('var')) {
+    return parseVariableDeclaration();
+  } else if (at('if')) {
+    return parseConditionalExp();
+  } else {
+    return error('inside parse expression error', tokens[0]);
+  }
+}
+
+var parseConditionalExp = function () {
+  console.log("inside parseConditionalExp");
+}
 
 var at = function(kind) {
   if (tokens.length === 0) {

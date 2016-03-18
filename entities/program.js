@@ -1,13 +1,10 @@
 // baseline code from Iki
 "use strict";
 
-var HashMap, Program, initialContext;
+var initialContext = require('../analyzer/analyzer.js').initialContext;
+var HashMap = require('hashmap').HashMap;
 
-initialContext = require('../analyzer/analyzer.js').initialContext;
-
-HashMap = require('hashmap').HashMap;
-
-Program = (function() {
+var Program = (function() {
   function Program(block) {
     this.block = block;
   }

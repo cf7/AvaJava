@@ -1,7 +1,5 @@
 "use strict";
 
-var VariableReference;
-
 class VariableReference {
   constructor(token) {
     this.token = token;

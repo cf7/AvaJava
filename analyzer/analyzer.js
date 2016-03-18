@@ -1,11 +1,9 @@
 "use strict";
-var AnalysisContext, VariableDeclaration, error;
 
-error = require('../error.js');
+var error = require('../error.js');
+var VariableDeclaration = require('../entities/variabledeclaration.js');
 
-VariableDeclaration = require('../entities/variabledeclaration.js');
-
-AnalysisContext = (function() {
+var AnalysisContext = (function() {
   function AnalysisContext(parent) {
     this.parent = parent;
     this.symbolTable = {};

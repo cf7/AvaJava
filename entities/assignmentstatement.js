@@ -34,5 +34,3 @@ AssignmentStatement = (function() {
 })();
 
 module.exports = AssignmentStatement;
-
-module.exports = AssignmentStatement;

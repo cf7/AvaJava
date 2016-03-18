@@ -11,13 +11,7 @@ var TEST_DIR = 'test/data/syntax-errors';
 // ** the test-parser will test filenames themselves as code
 // ** because they are accidentally tokenized by scan
 
-// this code doesn't work
-// the for loop and callback are too slow
-// by the time the callback happens, the loop is already at the last file
-// in the directory, have to use a forEach loop, then each iteration
-// gets its own name
 describe('The parser detects an error for', function() {
-
   // read in the files from the TEST_DIR ("test directory")
   return fs.readdirSync(TEST_DIR).forEach( function (name) {
     if (name !== ".DS_Store") {
