@@ -214,11 +214,15 @@ eat hellowWorld
 `[1,2,3]++ => [2,3,4]`<br>
 `[1,2,3]^^2 => [1,4,9]`<br>
 
-#####Sets (just objects):
-`{ x: 2, y:3, z: { "inside": 3 } }`<br>
+#####Objects:
+`{ x:2, y:3, z: { inside: 3 } }`<br>
+
+#####Sets:
+`{ 2, 3, 4}`<br>
 
 #####Tuples:
 `(x,y,z)`<br>
+`((1,2), (2,3), (3,4))`<br>
 
 #####Functions:
 `var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> 

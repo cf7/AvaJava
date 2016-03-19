@@ -42,9 +42,9 @@ var gen = function(e) {
 var generator = {
   Program: function(program) {
     indentLevel = 0;
-    emit('(function () {');
+    emit('(() -> ');
     gen(program.block);
-    return emit('}());');
+    return emit(');');
   },
   Block: function(block) {
     var i, len, ref, statement;

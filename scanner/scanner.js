@@ -135,17 +135,14 @@ var scan = function (line, lineNumber, tokens) {
         if (/"/.test(line[pos])) {
           encounteredString = true;
           start = pos;
-          console.log("start: " + start);
           pos++
           while (!/"/.test(line[pos]) && pos < line.length) {
             pos++;
           }
           pos++;
-          console.log("pos: " + pos);
           string = line.substring(start, pos); // substring excludes the char at the end
           emit("stringlit", string);
         }
-        console.log(line[pos]);
         if (oneCharacterTokens.test(line[pos])) {
           emit(line[pos]);
           pos++;
