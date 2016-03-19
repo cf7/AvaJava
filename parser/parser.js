@@ -77,7 +77,7 @@ var parseStatement = function() {
   // } else if (at('while')) {
   //   return parseWhileStatement();
   } else {
-    return error('Statement expected', tokens[0]);
+    return parseExpression();//error('Statement expected', tokens[0]);
   }
 };
 
@@ -100,7 +100,9 @@ var parseVariableDeclaration = function() {
 // change parse types
 var parseType = function() {
   if (at(['int', 'float', 'bool', 'string'])) {
-    return Type.forName(match().lexeme);
+    return Type.forName(match().lexeme); // ned to return type into Type class for analyzer
+    // so analyzer can check if it is valid, and if yes, set the type for this variable
+    // in the environment
   } else {
     return error('Type expected', tokens[0]);
   }
@@ -131,15 +133,69 @@ var parseExpression = function () {
     return parseConditionalExp();
   } else if (at('(')) {
     return parseFunctionExp();
-  } else if (at('stringlit')) { // hardcoding for now, change to Exp2 later
-    return parseExp2();
+  } else if (at('stringlit')) { // hardcoding for now, change to Exp1 later
+    return parseExp1();
   } else {
-    return error('inside parse expression error', tokens[0]);
+    return parseExp1(); //error('inside parse expression error', tokens[0]);
   }
   // need cases for 'both' and 'not' keywords
 }
 
-var parseExp2 = function () { // this will become Exp7 when the other expression are added
+var parseExp1 = function () {
+  console.log("inside parseExp1");
+  var exp2 = parseExp2();
+  while (at('or')) {
+    match('or');
+    var secondExp2 = parseExp2();
+  }
+  // return statement
+}
+
+var parseExp2 = function () {
+  console.log("inside parseExp2");
+  var exp3 = parseExp3();
+  while (at('and')) {
+    match('and');
+    var secondExp3 = parseExp3();
+  }
+  // return statement
+}
+
+var parseExp3 = function () {
+  console.log("inside parseExp3");
+  var exp4 = parseExp4();
+  while (at(['<=', '==', '>=', '!='])) {
+    match();
+    var secondExp4 = parseExp4();
+  }
+  // return statement
+}
+
+var parseExp4 = function () {
+  console.log("inside parseExp4");
+  var exp5 = parseExp5();
+  while (at(['+', '-'])) {
+    match();
+    var secondExp5 = parseExp5();
+  }
+  // return statement
+}
+
+var parseExp5 = function () {
+  console.log("inside parseExp5");
+  // var exp6 = parseExp6();
+  // while (at(['*', '/'])) {
+  //   match();
+  //   var secondExp6 = parseExp6();
+  // }
+  // // return statement
+}
+
+// parseExp6
+
+// parseExp7
+
+var parseExp8 = function () { // this will become Exp7 when the other expression are added
   if (at('(')) {
     match('(');
     parseExpression();
@@ -150,7 +206,7 @@ var parseExp2 = function () { // this will become Exp7 when the other expression
     match('id');
     // parseId
   } else {
-    error('inside parseExp2 error', tokens[0]);
+    error('inside parseExp8 error', tokens[0]);
   }
 }
 
@@ -198,6 +254,18 @@ var parseFunctionExp = function () {
 
 var parseArgs = function () {
   console.log("inside parseArgs");
+  match('id');
+  var exp = parseExpression();
+  var exps = [];
+  while (at(',')) {
+    match(',');
+    exps.push(parseExpression());
+  }
+  // return
+}
+
+var parseExpList = function () {
+  console.log("inside parseExpList");
 }
 
 var at = function(kind) {
