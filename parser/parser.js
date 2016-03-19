@@ -36,15 +36,32 @@ var parseProgram = function() {
 
 var parseBlock = function() {
   var statements = [];
+  var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
     match(';');
-    if (!at(['var', 'id', 'read', 'write', 'while'])) {
+    if (!at(['var', 'id', 'while'])) {
+      break;
+    } else if (error.count > numberErrors) {
       break;
     }
   }
   return new Block(statements);
 };
+
+var parseFunctionBlock = function () {
+  console.log("inside parseFunctionBlock");
+  var statements = [];
+  var numberErrors = error.count;
+  while (true) {
+    statements.push(parseStatement());
+    if (!at(['var', 'id', 'while'])) {
+      break;
+    } else if (error.count > numberErrors) {
+      break;
+    }
+  }
+}
 
 var parseStatement = function() {
   if (at('var')) {
@@ -62,7 +79,6 @@ var parseStatement = function() {
   } else {
     return error('Statement expected', tokens[0]);
   }
-  match(';');
 };
 
 var parseVariableDeclaration = function() {
@@ -77,14 +93,13 @@ var parseVariableDeclaration = function() {
     // but later when setting scope, will be passed into VariableDeclaration
     // or a similar entity
   }
-  // match(';');
   // var type = parseType();
-  return new VariableDeclaration(id) //, type);
+  return new VariableDeclaration(id); //, type);
 };
 
 // change parse types
 var parseType = function() {
-  if (at(['int', 'bool', 'string', ])) {
+  if (at(['int', 'float', 'bool', 'string'])) {
     return Type.forName(match().lexeme);
   } else {
     return error('Type expected', tokens[0]);
@@ -174,14 +189,15 @@ var parseExpWithBoth = function () {
 var parseFunctionExp = function () {
   console.log("inside parseFunctionExp");
   match('(');
-  var params = parseParams();
+  var params = parseArgs();
   match(')');
   match('->');
-  var exp = parseBlock();
+  var exp = parseFunctionBlock();
+  // return
 }
 
-var parseParams = function () {
-  console.log("inside parseParams");
+var parseArgs = function () {
+  console.log("inside parseArgs");
 }
 
 var at = function(kind) {
