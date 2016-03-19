@@ -113,9 +113,32 @@ var parseExpression = function () {
     return parseConditionalExp();
   } else if (at('(')) {
     return parseFunctionExp();
+  } else if (at('stringlit')) { // hardcoding for now, change to Exp2 later
+    return parseExpression2();
   } else {
     return error('inside parse expression error', tokens[0]);
   }
+  // need cases for 'both' and 'not' keywords
+}
+
+var parseExpression2 = function () { // this will become Exp7 when the other expression are added
+  if (at('(')) {
+    match('(');
+    parseExpression();
+    match(')');
+  } else if (at('stringlit')) { // hardcoding for now, change to 'literal' later
+    parseStringLiteral();
+  } else if (at('id')) {
+    match('id');
+    // parseId
+  } else {
+    error('inside parseExpression2 error', tokens[0]);
+  }
+}
+
+var parseStringLiteral = function () {
+  match('stringlit');
+  console.log("inside parseStringLiteral");
 }
 
 var parseConditionalExp = function () {
@@ -123,20 +146,26 @@ var parseConditionalExp = function () {
   match('if');
   parseExpression();
   match('then');
-  parseBlock();
+  parseBlock(); // need to figure out how to return
+  // without explicitly calling a return statement
   if (at('else')) {
     match('else');
     if (at('if')) {
-      match('if');
-      parseExpression();
-      match('then');
-      parseBlock();
+      parseConditionalExp();
     } else {
       parseBlock();
     }
   }
   match(';');
-  // return
+  // add case for return statements
+}
+
+var parseReturnStatement = function () {
+  console.log("inside parseReturnStatement");
+}
+
+var parseExpWithBoth = function () {
+  console.log("inside parseExpWithBoth");
 }
 
 var parseFunctionExp = function () {

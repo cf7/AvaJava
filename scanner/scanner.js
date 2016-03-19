@@ -140,14 +140,15 @@ var scan = function (line, lineNumber, tokens) {
             pos++;
           }
           pos++;
-        }
-        if (encounteredString) {
           string = line.substring(start, pos);
           emit("stringlit", string);
-        } else {
-          emit(line[pos]);
+          pos++;
         }
-        pos++;
+        console.log(line[pos]);
+        if (oneCharacterTokens.test(line[pos])) {
+          emit(line[pos]);
+          pos++;
+        }
       } else if (LETTER.test(line[pos])) {
         while (WORD_CHAR.test(line[pos]) && pos < line.length) {
           pos++;
