@@ -121,7 +121,7 @@ var parseExpression = function () {
   // need cases for 'both' and 'not' keywords
 }
 
-var parseExpression2 = function () { // this will become Exp7 when the other expression are added
+var parseExp2 = function () { // this will become Exp7 when the other expression are added
   if (at('(')) {
     match('(');
     parseExpression();

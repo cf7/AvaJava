@@ -50,33 +50,35 @@ comment -> '//' | '***' ( [.] | [\n] )* '***'
 Program -> Block
 Block -> (Stmt ';')+
 Stmt -> Decl
-    | id '=' Exp
-    | 'while' '(' Exp ')' '{' Block '}'
+	| Assign
+	| 'while' '(' Exp ')' '{' Block '}'
     | 'return' Exp
     | Print
+    | Exp
+    
 Print -> 'ava' Exp ';'
-Exp -> Decl 
-    | Assign
-    | Exp1 
+Exp -> Exp1 
     | '[' StringList ']'
     | ConditionalExp
     | FunctionExp
     
-Decl -> 'var' id ';'
+Decl -> 'var' id ('=' Exp)? ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
-Assign -> id '=' Exp 
-    | '[' idList ']' '=' Exp
+Assign -> id '=' Exp ';'
+    | '[' idList ']' '=' Exp ';'
 ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
-FunctionExp -> '(' Params ')' '->' Block ';'
+FunctionExp -> Params '->' Block ';'
 
-Params ->
-Exp1 -> Exp2 ('or' Exp2)* ';'
-Exp2 -> Exp3 ('and' Exp3)* ';'
-Exp3 -> Exp4 (addop Exp4)* ';'
-Exp4 -> Exp5 (mulop Exp5)* ';'
-Exp5 -> prefixop? Exp6 ';'
-Exp6 -> Exp7 ('^^' Exp7)* ';'
-Exp7 -> '(' Exp ')' | Literal | id | Call
+Args -> '(' ExpList ')'
+Exp1 -> Exp2 ('or' Exp2)*
+Exp2 -> Exp3 ('and' Exp3)*
+Exp3 -> Exp4 (relop Exp4)*
+Exp3 -> Exp4 (addop Exp4)*
+Exp4 -> Exp5 (mulop Exp5)*
+Exp5 -> prefixop? Exp6
+Exp6 -> Exp7 postfixop?
+Exp7 -> Exp8 ('^^' Exp8)* ';'
+Exp8 -> '(' Exp ')' | Literal | id | Call 
 
 Call -> id ( id+ | '(' ExpList? ')' ) ';'
 
@@ -85,7 +87,7 @@ idList -> id (',' id)*
 LiteralList -> Literal (',' Literal)*
 StringList -> stringLiteral (',' stringLiteral)*
 
-Literal -> NumericLiteral | characterLiteral | stringLiteral
+Literal -> NumericLiteral | characterLiteral | stringLiteral | boolit
 NumericLiteral -> intlit | floatlit
 SetLiteral -> '{' LiteralList '}'
 List -> '[' ExpList? ']'
