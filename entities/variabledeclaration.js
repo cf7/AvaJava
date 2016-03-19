@@ -4,13 +4,13 @@ var Type, VariableDeclaration;
 Type = require('./type.js');
 
 VariableDeclaration = (function() {
-  function VariableDeclaration(id, type) {
+  function VariableDeclaration(id) {//, type) {
     this.id = id;
-    this.type = type;
+    // this.type = type;
   }
 
   VariableDeclaration.prototype.toString = function() {
-    return "(var " + this.id.lexeme + " " + this.type + ")";
+    return "(var " + this.id.lexeme + " " + ")"; // this.type + ")";
   };
 
   VariableDeclaration.prototype.analyze = function(context) {
@@ -26,6 +26,6 @@ VariableDeclaration = (function() {
 
 })();
 
-VariableDeclaration.ARBITRARY = new VariableDeclaration('<arbitrary>', Type.ARBITRARY);
+VariableDeclaration.ARBITRARY = new VariableDeclaration('<arbitrary>') //, Type.ARBITRARY);
 
 module.exports = VariableDeclaration;

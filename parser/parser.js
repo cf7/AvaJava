@@ -62,6 +62,7 @@ var parseStatement = function() {
   } else {
     return error('Statement expected', tokens[0]);
   }
+  match(';');
 };
 
 var parseVariableDeclaration = function() {
@@ -70,18 +71,20 @@ var parseVariableDeclaration = function() {
   // and shift index of rest of tokens down)
   match('var');
   var id = match('id');
-  match('=');
-  var exp = parseExpression(); // right now doesn't do anything
-  // but later when setting scope, will be passed into VariableDeclaration
-  // or a similar entity
-  match(';');
-  var type = parseType();
-  return new VariableDeclaration(id, type);
+  if (at('=')) {
+    match('=');
+    var exp = parseExpression(); // right now doesn't do anything
+    // but later when setting scope, will be passed into VariableDeclaration
+    // or a similar entity
+  }
+  // match(';');
+  // var type = parseType();
+  return new VariableDeclaration(id) //, type);
 };
 
 // change parse types
 var parseType = function() {
-  if (at(['int', 'bool'])) {
+  if (at(['int', 'bool', 'string', ])) {
     return Type.forName(match().lexeme);
   } else {
     return error('Type expected', tokens[0]);
@@ -102,7 +105,7 @@ var parsePrintStatement = function () {
   // add case for when there are single quotes
   match('ava');
   var expression = parseExpression();
-  match(';');
+  // match(';');
   return new Print(expression);
 }
 
@@ -114,7 +117,7 @@ var parseExpression = function () {
   } else if (at('(')) {
     return parseFunctionExp();
   } else if (at('stringlit')) { // hardcoding for now, change to Exp2 later
-    return parseExpression2();
+    return parseExp2();
   } else {
     return error('inside parse expression error', tokens[0]);
   }
@@ -132,7 +135,7 @@ var parseExp2 = function () { // this will become Exp7 when the other expression
     match('id');
     // parseId
   } else {
-    error('inside parseExpression2 error', tokens[0]);
+    error('inside parseExp2 error', tokens[0]);
   }
 }
 
@@ -156,7 +159,7 @@ var parseConditionalExp = function () {
       parseBlock();
     }
   }
-  match(';');
+  // match(';');
   // add case for return statements
 }
 

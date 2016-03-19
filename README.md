@@ -1,7 +1,7 @@
 ![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
 
 <b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, and OCaml that compiles into Python.</b> 
-It combines the most interesting parts of these languages, and also provides a new selection of functions (<i>to come</i>).<br>
+It combines the most interesting parts of these languages, and also provides a new selection of operators (<i>to come</i>).<br>
 This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.<br>
 
 ####<i>Features/Planned Implementation (Subject to Change)</i>
@@ -12,9 +12,9 @@ This language will be designed in a way to facilitate faster typing and more con
 <li> List Comprehensions
 <li> Higher Order Functions
 <li> Currying
-<li> User-defined types (and thus Optional Typing)
+<li> User-defined types
 <li> Default Parameters
-<li> Naming Parameters
+<li> Named Parameters
 </ul>
 
 ##Grammar
@@ -67,7 +67,7 @@ Decl -> 'var' id ('=' Exp)? ';'
 Assign -> id '=' Exp ';'
     | '[' idList ']' '=' Exp ';'
 ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
-FunctionExp -> Params '->' Block ';'
+FunctionExp -> Args '->' Block ';'
 
 Args -> '(' ExpList ')'
 Exp1 -> Exp2 ('or' Exp2)*
