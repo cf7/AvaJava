@@ -6,6 +6,10 @@ var Type = require('../entities/type.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
 var Print = require('../entities/print.js');
 var AssignmentStatement = require('../entities/assignmentstatement.js');
+var IfElseStatements = require('../entities/ifelseexpressions.js');
+var IntLiteral = require('../entities/integerliteral.js');
+var BinaryExpression = require('../entities/binaryexpression.js');
+var UnaryExpression = require('../entities/unaryexpression.js');
 // var ReadStatement = require('./entities/readstatement');
 // var WriteStatement = require('./entities/writestatement');
 // var WhileStatement = require('./entities/whilestatement');
@@ -99,7 +103,7 @@ var parseIfBlock = function () {
   var statements = [];
   var numberErrors = error.count;
   if (at('return')) {
-    parseReturnStatement();
+    statements.push(parseReturnStatement());
   }
   // while (true) {
   //   statements.push(parseStatement());
@@ -112,7 +116,8 @@ var parseIfBlock = function () {
   //     break;
   //   }
   // }
-  // return statement
+  return new Block(statements);
+  console.log("leaving parseIfBlock");
 }
 
 var parseFunctionExp = function () {
@@ -123,13 +128,14 @@ var parseFunctionExp = function () {
   match('->');
   var exp = parseFunctionBlock();
   // return
+  console.log("leaving parseFunctionExp");
 }
 
 var parseArgs = function () {
   console.log("inside parseArgs");
   var exp = parseExpList();
-  
   // return
+  console.log("leaving parseArgs");
 }
 
 var parseFunctionBlock = function () {
@@ -157,6 +163,7 @@ var parseExpList = function () {
     exps.push(parseExpression());
   }
   // return statement
+  console.log("leaving parseExpList");
 }
 
 
@@ -179,20 +186,23 @@ var parsePrintStatement = function () {
 }
 
 var parseConditionalExp = function () {
+  var elseifs;
+  var elseBody;
   console.log("inside parseConditionalExp");
   match('if');
-  parseExpression();
+  var conditional = parseExpression();
   match('then');
-  parseIfBlock(); // need to figure out how to return
+  var body = parseIfBlock(); // need to figure out how to return
   // without explicitly calling a return statement
   if (at('else')) {
     match('else');
     if (at('if')) {
-      parseConditionalExp();
+      elseifs = parseConditionalExp();
     } else {
-      parseBlock();
+      elseBody = parseIfBlock();
     }
   }
+  return new IfElseStatements(conditional, body, elseifs, elseBody);
   // match(';');
   // add case for return statements
 }
@@ -211,85 +221,110 @@ var parseExpression = function () {
 }
 
 var parseExp1 = function () {
+  var op, left, right;
   console.log("inside parseExp1");
-  var exp2 = parseExp2();
+  left = parseExp2();
   while (at('or')) {
-    match('or');
-    var secondExp2 = parseExp2();
+    op = match('or');
+    right = parseExp2();
+    left = new BinaryExpression(op, left, right);
   }
+  return left;
   // return statement
 }
 
 var parseExp2 = function () {
+  var op, left, right;
   console.log("inside parseExp2");
-  var exp3 = parseExp3();
+  left = parseExp3();
   while (at('and')) {
-    match('and');
-    var secondExp3 = parseExp3();
+    op = match('and');
+    right = parseExp3();
+    left = new BinaryExpression(op, left, right);
   }
-  // return statement
+  return left;
 }
 
 var parseExp3 = function () {
+  var op, left, right;
   console.log("inside parseExp3");
-  var exp4 = parseExp4();
+  left = parseExp4();
   while (at(['<=', '==', '>=', '!='])) {
-    match();
-    var secondExp4 = parseExp4();
+    op = match();
+    right = parseExp4();
+    left = new BinaryExpression(op, left, right);
   }
+  return left;
   // return statement
 }
 
 var parseExp4 = function () {
-  console.log("inside parseExp4");
-  var exp5 = parseExp5();
+  var op, left, right;
+  console.log("inside parseExp5");
+  left = parseExp5();
   while (at(['+', '-'])) {
-    match();
-    var secondExp5 = parseExp5();
+    op = match();
+    right = parseExp5();
+    left = new BinaryExpression(op, left, right);
   }
+  return left;
   // return statement
 }
 
 // ** remember can store the things that are being matched!
 // ** may need them to pass to a different parsing branch
 var parseExp5 = function () {
+  var op, left, right;
   console.log("inside parseExp5");
-  var exp6 = parseExp6();
+  left = parseExp6();
   while (at(['*', '/'])) {
-    match();
-    var secondExp6 = parseExp6();
+    op = match();
+    right = parseExp6();
+    left = new BinaryExpression(op, left, right);
   }
+  return left;
   // return statement
 }
 
 // parseExp6
 var parseExp6 = function () {
+  var op, operand;
   console.log("inside parseExp6");
   if (at(['-', 'not'])) {
-    match(); // need to branch to a different case for negation
+    op = match(); // need to branch to a different case for negation
+    operand = parseExp7();
+    return new UnaryExpression(op, operand);
+  } else {
+    return parseExp7();
   }
-  var exp7 = parseExp7();
   // return statement
 }
 
 // parseExp7
 var parseExp7 = function () {
+  var op, operand;
   console.log("inside parseExp7");
   var exp8 = parseExp8();
   if (at(['!', '++', '--', '^^', '::', '@'])) {
-    match();
+    op = match();
+    operand = parseExp8();
+    return new PostfixExpression(op, operand);
+  } else {
+    return parseExp8();
   }
-  var secondExp8 = parseExp8();
   // return statement
 }
 
 var parseExp8 = function () {
+  var op, left, right;
   console.log("inside parseExp8");
-  var exp9 = parseExp9();
+  left = parseExp9();
   while (at('^^')) {
-    match();
-    var secondExp9 = parseExp9();
+    op = match();
+    right = parseExp9();
+    left = new BinaryExpression(op, left, right);
   }
+  return left;
   // return statement
 }
 
@@ -297,14 +332,14 @@ var parseExp9 = function () {
   console.log("inside parseExp9");
   if (at('(')) {
     match('(');
-    parseExpression();
+    return parseExpression();
     match(')');
   } else if (at('intlit')) {
-    parseIntLiteral();
+    return parseIntLiteral();
   } else if (at('floatlit')) {
-    parseFloatLiteral();
+    return parseFloatLiteral();
   } else if (at('stringlit')) { // hardcoding for now, change to 'literal' later
-    parseStringLiteral();
+    return parseStringLiteral();
   } else if (at('id')) {
     match('id');
     // parseId
@@ -318,7 +353,7 @@ var parseExp9 = function () {
 
 var parseIntLiteral = function () {
   console.log("inside parseIntLiteral");
-  match('intlit');
+  return new IntegerLiteral(match());
 }
 
 var parseFloatLiteral = function () {
@@ -334,7 +369,8 @@ var parseStringLiteral = function () {
 var parseReturnStatement = function () {
   console.log("inside parseReturnStatement");
   match('return');
-  var exp = parseExpression();
+  return parseExpression();
+  console.log("leaving parseReturnStatement");
 }
 
 var parseExpWithBoth = function () {
