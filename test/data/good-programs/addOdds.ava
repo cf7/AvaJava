@@ -1,1 +1,1 @@
-var addOdds = (x,y) -> if x%2 and y%2 both not 0 then x+y else Math.PI;
+var addOdds = (x,y) -> if x%2 and y%2 both not 0 then return x+y else return Math.PI;

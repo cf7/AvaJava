@@ -67,9 +67,9 @@ Decl -> 'var' id ('=' Exp)? ';'
 Assign -> id '=' Exp ';'
     | '[' idList ']' '=' Exp ';'
 ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
-FunctionExp -> Args '->' Block ';'
+FunctionExp -> '(' Args ')' '->' Block ';'
 
-Args -> '(' ExpList ')'
+Args -> ExpList
 Exp1 -> Exp2 ('or' Exp2)*
 Exp2 -> Exp3 ('and' Exp3)*
 Exp3 -> Exp4 (relop Exp4)*
@@ -77,8 +77,8 @@ Exp4 -> Exp5 (addop Exp5)*
 Exp5 -> Exp6 (mulop Exp6)*
 Exp6 -> prefixop? Exp7
 Exp7 -> Exp8 postfixop?
-Exp8 -> Exp9 ('^^' Exp9)* ';'
-Exp9 -> '(' Exp ')' | Literal | id | Call 
+Exp8 -> Exp9 ('^^' Exp9)*
+Exp9 -> '(' Exp ')' | id | Call | intlit | floatlit | stringLiteral | boolit | characterLiteral
 
 Call -> id ( id+ | '(' ExpList? ')' ) ';'
 
