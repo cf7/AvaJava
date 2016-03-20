@@ -6,6 +6,10 @@ BinaryExpression = (function () {
         this.right = right;
     }
     
+    BinaryExpression.prototype.toString = function() {
+        return `${op.lexeme} ${left} ${right}`;
+    };
+    
     return BinaryExpression;
 })();
 

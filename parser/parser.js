@@ -10,12 +10,13 @@ var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntLiteral = require('../entities/integerliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
+var FunctionCall = require('../entities/functioncall.js');
 // var ReadStatement = require('./entities/readstatement');
 // var WriteStatement = require('./entities/writestatement');
 // var WhileStatement = require('./entities/whilestatement');
 // var IntegerLiteral = require('./entities/integerliteral');
-// var BooleanLiteral = require('./entities/booleanliteral');
-// var VariableReference = require('./entities/variablereference');
+var BooleanLiteral = require('../entities/booleanliteral.js');
+var VariableReference = require('../entities/variablereference.js');
 // var BinaryExpression = require('./entities/binaryexpression');
 // var UnaryExpression = require('./entities/unaryexpression');
 var tokens = [];
@@ -52,7 +53,11 @@ var parseBlock = function() {
   return new Block(statements);
 };
 
+// ** semi-colons are currently being matched only after FunctionBlocks!
+
 var parseStatement = function() {
+  // since parseBlock no longer matches ';'s, need to match ';'
+  // within each of these parseFunctions below
   if (at('var')) {
     return parseVariableDeclaration();
   } else if (at('ava')) {
@@ -76,17 +81,29 @@ var parseVariableDeclaration = function() {
   // match with a 'var', if yes
   // shift tokens left (i.e. delete current token
   // and shift index of rest of tokens down)
+  var exp = {};
   match('var');
   var id = match('id');
   if (at('=')) {
     match('=');
-    var exp = parseExpression(); // right now doesn't do anything
+    exp = parseExpression(); // right now doesn't do anything
     // but later when setting scope, will be passed into VariableDeclaration
     // or a similar entity
   }
   // var type = parseType();
-  return new VariableDeclaration(id); //, type);
+  return new VariableDeclaration(id, exp); //, type);
 };
+
+var parseVariableReference = function () {
+  console.log("inside parseVariableReference");
+  var id = match('id');
+  if (at('(')) {
+    return parseFunctionCall(id); // pass in id?
+  } else {
+    return new VariableReference(id);
+  }
+  console.log("leaving parseVariableReference");
+}
 
 // change parse types
 var parseType = function() {
@@ -126,8 +143,7 @@ var parseFunctionExp = function () {
   var params = parseArgs();
   match(')');
   match('->');
-  var exp = parseFunctionBlock();
-  // return
+  return parseFunctionBlock(); // ast return cuts off here
   console.log("leaving parseFunctionExp");
 }
 
@@ -152,6 +168,19 @@ var parseFunctionBlock = function () {
     }
   }
   console.log("leaving parseFunctionBlock");
+}
+
+var parseFunctionCall = function (id) {
+  console.log("inside parseFunctionCall: id " + id.lexeme);
+  if (at('id')) { // use later for currying
+    // parseFunctionCall
+  }
+  match('('); // hardcoding for now until adding currying
+  var params = parseArgs();
+  match(')');
+    console.log("leaving parseFunctionCall");
+
+  return new FunctionCall(id, params);
 }
 
 var parseExpList = function () {
@@ -186,8 +215,8 @@ var parsePrintStatement = function () {
 }
 
 var parseConditionalExp = function () {
-  var elseifs;
-  var elseBody;
+  var elseifs = {};
+  var elseBody = {};
   console.log("inside parseConditionalExp");
   match('if');
   var conditional = parseExpression();
@@ -249,7 +278,7 @@ var parseExp3 = function () {
   var op, left, right;
   console.log("inside parseExp3");
   left = parseExp4();
-  while (at(['<=', '==', '>=', '!='])) {
+  if (at(['<=', '==', '>=', '!='])) {
     op = match();
     right = parseExp4();
     left = new BinaryExpression(op, left, right);
@@ -319,7 +348,7 @@ var parseExp8 = function () {
   var op, left, right;
   console.log("inside parseExp8");
   left = parseExp9();
-  while (at('^^')) {
+  if (at('^^')) {
     op = match();
     right = parseExp9();
     left = new BinaryExpression(op, left, right);
@@ -341,14 +370,13 @@ var parseExp9 = function () {
   } else if (at('stringlit')) { // hardcoding for now, change to 'literal' later
     return parseStringLiteral();
   } else if (at('id')) {
-    match('id');
-    // parseId
-
+    return parseVariableReference();
     // How do we distinguish between an id and a function Call?
-  } 
+  } else if (at(['true', 'false'])) {
+    return new BooleanLiteral(match());
   // else {
   //   error('inside parseExp9 error', tokens[0]);
-  // }
+  }
 }
 
 var parseIntLiteral = function () {

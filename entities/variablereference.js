@@ -1,24 +1,25 @@
-"use strict";
+var VariableReference;
 
-class VariableReference {
-  constructor(token) {
+VariableReference = (function() {
+  function VariableReference(token) {
     this.token = token;
   }
 
-  toString() {
+  VariableReference.prototype.toString = function() {
     return this.token.lexeme;
   };
 
-  analyze(context) {
+  VariableReference.prototype.analyze = function(context) {
     this.referent = context.lookupVariable(this.token);
     return this.type = this.referent.type;
   };
 
-  optimize() {
+  VariableReference.prototype.optimize = function() {
     return this;
   };
 
+  return VariableReference;
 
-}
+})();
 
 module.exports = VariableReference;
