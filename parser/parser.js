@@ -13,6 +13,7 @@ var UnaryExpression = require('../entities/unaryexpression.js');
 var Function = require('../entities/function.js');
 var FunctionCall = require('../entities/functioncall.js');
 var ReturnStatement = require('../entities/returnstatement.js');
+var StringLiteral = require('../entities/stringliteral.js');
 // var ReadStatement = require('./entities/readstatement');
 // var WriteStatement = require('./entities/writestatement');
 // var WhileStatement = require('./entities/whilestatement');
@@ -31,9 +32,7 @@ module.exports = function(scannerOutput) {
   }
   var program = parseProgram();
   match('EOF');
-  // programs are accidentally passing themselves
-  // or maybe that is supposed to happen
-  // console.log("*******" + program);
+
   return program;
 };
 
@@ -54,8 +53,6 @@ var parseBlock = function() {
   }
   return new Block(statements);
 };
-
-// ** semi-colons are currently being matched only after FunctionBlocks!
 
 var parseStatement = function() {
   // since parseBlock no longer matches ';'s, need to match ';'
@@ -415,7 +412,7 @@ var parseFloatLiteral = function () {
 
 var parseStringLiteral = function () {
   console.log("inside parseStringLiteral");
-  match('stringlit');
+  return new StringLiteral(match());
 }
 
 var parseReturnStatement = function () {
