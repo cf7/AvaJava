@@ -1,8 +1,7 @@
 // baseline code from Iki
 "use strict";
-var Block;
 
-Block = (function() {
+var Block = (function() {
   function Block(statements) {
     this.statements = statements;
   }

@@ -140,11 +140,9 @@ var scan = function (line, lineNumber, tokens) {
             pos++;
           }
           pos++;
-          string = line.substring(start, pos);
+          string = line.substring(start, pos); // substring excludes the char at the end
           emit("stringlit", string);
-          pos++;
         }
-        console.log(line[pos]);
         if (oneCharacterTokens.test(line[pos])) {
           emit(line[pos]);
           pos++;
@@ -158,7 +156,7 @@ var scan = function (line, lineNumber, tokens) {
       } else if (DIGIT.test(line[pos])) {
         start = pos;
         pos++;
-        while (!/\s/.test(line[pos]) && !/;/.test(line[pos]) && pos < line.length) {
+        while (!oneCharacterTokens.test(line[pos]) && !/\s/.test(line[pos]) && pos < line.length) {
           pos++;
         }
         var substring = line.substring(start, pos);
@@ -167,7 +165,6 @@ var scan = function (line, lineNumber, tokens) {
         } else {
           emit('floatlit', substring);
         } 
-        pos++;
       } else {
         error("Illegal character: " + line[pos], {
           line: lineNumber,

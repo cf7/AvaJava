@@ -1,7 +1,7 @@
 ![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
 
 <b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, and OCaml that compiles into Python.</b> 
-It combines the most interesting parts of these languages, and also provides a new selection of functions (<i>to come</i>).<br>
+It combines the most interesting parts of these languages, and also provides a new selection of operators (<i>to come</i>).<br>
 This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.<br>
 
 ####<i>Features/Planned Implementation (Subject to Change)</i>
@@ -12,9 +12,9 @@ This language will be designed in a way to facilitate faster typing and more con
 <li> List Comprehensions
 <li> Higher Order Functions
 <li> Currying
-<li> User-defined types (and thus Optional Typing)
+<li> User-defined types
 <li> Default Parameters
-<li> Naming Parameters
+<li> Named Parameters
 </ul>
 
 ##Grammar
@@ -50,33 +50,35 @@ comment -> '//' | '***' ( [.] | [\n] )* '***'
 Program -> Block
 Block -> (Stmt ';')+
 Stmt -> Decl
-    | id '=' Exp
-    | 'while' '(' Exp ')' '{' Block '}'
+	| Assign
+	| 'while' '(' Exp ')' '{' Block '}'
     | 'return' Exp
-    | Print
-Print -> 'ava' Exp ';'
-Exp -> Decl 
-    | Assign
-    | Exp1 
-    | '[' StringList ']'
     | ConditionalExp
+    | Print
+    | Exp
+    
+Print -> 'ava' Exp ';'
+Exp -> Exp1 
+    | '[' StringList ']'
     | FunctionExp
     
-Decl -> 'var' id ';'
+Decl -> 'var' id ('=' Exp)? ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
-Assign -> id '=' Exp 
-    | '[' idList ']' '=' Exp
+Assign -> id '=' Exp ';'
+    | '[' idList ']' '=' Exp ';'
 ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
-FunctionExp -> '(' Params ')' '->' Block ';'
+FunctionExp -> '(' Args ')' '->' Block ';'
 
-Params ->
-Exp1 -> Exp2 ('or' Exp2)* ';'
-Exp2 -> Exp3 ('and' Exp3)* ';'
-Exp3 -> Exp4 (addop Exp4)* ';'
-Exp4 -> Exp5 (mulop Exp5)* ';'
-Exp5 -> prefixop? Exp6 ';'
-Exp6 -> Exp7 ('^^' Exp7)* ';'
-Exp7 -> '(' Exp ')' | Literal | id | Call
+Args -> ExpList
+Exp1 -> Exp2 ('or' Exp2)*
+Exp2 -> Exp3 ('and' Exp3)*
+Exp3 -> Exp4 (relop Exp4)?
+Exp4 -> Exp5 (addop Exp5)*
+Exp5 -> Exp6 (mulop Exp6)*
+Exp6 -> prefixop? Exp7
+Exp7 -> Exp8 postfixop?
+Exp8 -> Exp9 ('^^' Exp9)?
+Exp9 -> '(' Exp ')' | id | Call | intlit | floatlit | stringLiteral | boolit | characterLiteral
 
 Call -> id ( id+ | '(' ExpList? ')' ) ';'
 
@@ -85,7 +87,7 @@ idList -> id (',' id)*
 LiteralList -> Literal (',' Literal)*
 StringList -> stringLiteral (',' stringLiteral)*
 
-Literal -> NumericLiteral | characterLiteral | stringLiteral
+Literal -> NumericLiteral | characterLiteral | stringLiteral | boolit
 NumericLiteral -> intlit | floatlit
 SetLiteral -> '{' LiteralList '}'
 List -> '[' ExpList? ']'
@@ -212,11 +214,15 @@ eat hellowWorld
 `[1,2,3]++ => [2,3,4]`<br>
 `[1,2,3]^^2 => [1,4,9]`<br>
 
-#####Sets (just objects):
-`{ x: 2, y:3, z: { "inside": 3 } }`<br>
+#####Objects:
+`{ x:2, y:3, z: { inside: 3 } }`<br>
+
+#####Sets:
+`{ 2, 3, 4}`<br>
 
 #####Tuples:
 `(x,y,z)`<br>
+`((1,2), (2,3), (3,4))`<br>
 
 #####Functions:
 `var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> 
