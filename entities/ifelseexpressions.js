@@ -1,5 +1,6 @@
 var IfElseStatements = (function () {
     function IfElseStatements(conditionalExp, body, elseifs, elseBody) {
+        console.log("elseifs: " + elseifs[0]);
         this.conditional = conditionalExp;
         this.body = body || {};
         this.elseifs = elseifs || {};
@@ -7,8 +8,8 @@ var IfElseStatements = (function () {
     }
 
     IfElseStatements.prototype.toString = function() {
-        return '( if ' + '( ' + this.conditional + ' )' + ' then ' + (this.body) + ' else ' + (this.elseifs) + ' )';
-        // add elseBody
+        // add elseifs!!!
+        return '( if ' + '( ' + this.conditional + ' )' + ' then ' + (this.body) + ' else ' + (this.elseBody) + ' )';
     };
 
     return IfElseStatements;
