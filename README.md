@@ -53,13 +53,13 @@ Stmt -> Decl
 	| Assign
 	| 'while' '(' Exp ')' '{' Block '}'
     | 'return' Exp
+    | ConditionalExp
     | Print
     | Exp
     
 Print -> 'ava' Exp ';'
 Exp -> Exp1 
     | '[' StringList ']'
-    | ConditionalExp
     | FunctionExp
     
 Decl -> 'var' id ('=' Exp)? ';'

@@ -10,7 +10,9 @@ var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntLiteral = require('../entities/integerliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
+var Function = require('../entities/function.js');
 var FunctionCall = require('../entities/functioncall.js');
+var ReturnStatement = require('../entities/returnstatement.js');
 // var ReadStatement = require('./entities/readstatement');
 // var WriteStatement = require('./entities/writestatement');
 // var WhileStatement = require('./entities/whilestatement');
@@ -64,6 +66,8 @@ var parseStatement = function() {
     return parsePrintStatement();
   } else if (at('return')) {
     return parseReturnStatement();
+  } else if (at('if')) {
+    return parseConditionalExp();
   // } else if (at('id')) {
   //   return parseAssignmentStatement();
   // } else if (at('read')) {
@@ -97,12 +101,15 @@ var parseVariableDeclaration = function() {
 var parseVariableReference = function () {
   console.log("inside parseVariableReference");
   var id = match('id');
+    console.log("matched " + id.lexeme);
+
   if (at('(')) {
+    console.log("going inside");
     return parseFunctionCall(id); // pass in id?
   } else {
+    console.log("inside - id is " + id.lexeme);
     return new VariableReference(id);
   }
-  console.log("leaving parseVariableReference");
 }
 
 // change parse types
@@ -119,20 +126,20 @@ var parseType = function() {
 var parseIfBlock = function () {
   var statements = [];
   var numberErrors = error.count;
-  if (at('return')) {
-    statements.push(parseReturnStatement());
-  }
-  // while (true) {
-  //   statements.push(parseStatement());
-  //   if (at(match(';'))) {
-  //     match(';');
-  //   }
-  //   if (!at(['var', 'id', 'while'])) {
-  //     break;
-  //   } else if (error.count > numberErrors) {
-  //     break;
-  //   }
+  // if (at('return')) {
+  //   statements.push(parseReturnStatement());
   // }
+  while (true) {
+    statements.push(parseStatement());
+    // if (at(match(';'))) {
+    //   match(';');
+    // }
+    if (!at(['var', 'id', 'while'])) {
+      break;
+    } else if (error.count > numberErrors) {
+      break;
+    }
+  }
   return new Block(statements);
   console.log("leaving parseIfBlock");
 }
@@ -141,17 +148,38 @@ var parseFunctionExp = function () {
   console.log("inside parseFunctionExp");
   match('(');
   var params = parseArgs();
+  console.log("params " + params);
   match(')');
   match('->');
-  return parseFunctionBlock(); // ast return cuts off here
-  console.log("leaving parseFunctionExp");
+  var body = parseFunctionBlock();
+    console.log("leaving parseFunctionExp");
+
+  return new Function(params, body); // ast return cuts off here
 }
 
 var parseArgs = function () {
   console.log("inside parseArgs");
-  var exp = parseExpList();
+    console.log("leaving parseArgs");
+    var exps = parseExpList();
+    console.log("parseArgs exps: " + exps);
+  return exps;
   // return
-  console.log("leaving parseArgs");
+}
+
+var parseExpList = function () {
+  console.log("inside parseExpList");
+  var exps = [];
+  console.log("exps before: " + exps[0]);
+  exps.push(parseExpression());
+  console.log("exps after: " + exps[0]);
+  while (at(',')) {
+    match(',');
+    exps.push(parseExpression());
+  }
+    console.log("leaving parseExpList");
+  console.log(exps);
+  return exps;
+  // return statement
 }
 
 var parseFunctionBlock = function () {
@@ -160,14 +188,19 @@ var parseFunctionBlock = function () {
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
-    match(';');
+    if (at(';')) {
+      match(';');
+    }
     if (!at(['var', 'id', 'while'])) {
       break;
     } else if (error.count > numberErrors) {
       break;
     }
   }
-  console.log("leaving parseFunctionBlock");
+  // only print block statement, need to return entity that also includes args
+    console.log("leaving parseFunctionBlock");
+
+  return new Block(statements);
 }
 
 var parseFunctionCall = function (id) {
@@ -181,18 +214,6 @@ var parseFunctionCall = function (id) {
     console.log("leaving parseFunctionCall");
 
   return new FunctionCall(id, params);
-}
-
-var parseExpList = function () {
-  console.log("inside parseExpList");
-  var exps = [];
-  exps.push(parseExpression());
-  while (at(',')) {
-    match(',');
-    exps.push(parseExpression());
-  }
-  // return statement
-  console.log("leaving parseExpList");
 }
 
 
@@ -239,8 +260,8 @@ var parseConditionalExp = function () {
 var parseExpression = function () {
   if (at('var')) {
     return parseVariableDeclaration();
-  } else if (at('if')) {
-    return parseConditionalExp();
+  // } else if (at('if')) {
+  //   return parseConditionalExp();
   } else if (at('(')) {
     return parseFunctionExp();
   } else {
@@ -331,16 +352,16 @@ var parseExp6 = function () {
 
 // parseExp7
 var parseExp7 = function () {
-  var op, operand;
-  console.log("inside parseExp7");
-  var exp8 = parseExp8();
-  if (at(['!', '++', '--', '^^', '::', '@'])) {
-    op = match();
-    operand = parseExp8();
-    return new PostfixExpression(op, operand);
-  } else {
-    return parseExp8();
-  }
+  return parseExp8();
+  // var op, operand;
+  // console.log("inside parseExp7");
+  // var operand = parseExp8();
+  // if (at(['!', '++', '--', '^^', '::', '@'])) {
+  //   op = match();
+  //   return new PostfixExpression(op, operand);
+  // } else {
+  //   return operand;
+  // }
   // return statement
 }
 
@@ -353,6 +374,7 @@ var parseExp8 = function () {
     right = parseExp9();
     left = new BinaryExpression(op, left, right);
   }
+  console.log("leaving parseExp8");
   return left;
   // return statement
 }
@@ -370,18 +392,20 @@ var parseExp9 = function () {
   } else if (at('stringlit')) { // hardcoding for now, change to 'literal' later
     return parseStringLiteral();
   } else if (at('id')) {
-    return parseVariableReference();
+    var varref = parseVariableReference();
+    console.log("Exp9 varref: " + varref);
+    return varref; //parseVariableReference();
     // How do we distinguish between an id and a function Call?
   } else if (at(['true', 'false'])) {
     return new BooleanLiteral(match());
-  // else {
+  // } else {
   //   error('inside parseExp9 error', tokens[0]);
   }
 }
 
 var parseIntLiteral = function () {
   console.log("inside parseIntLiteral");
-  return new IntegerLiteral(match());
+  return new IntLiteral(match());
 }
 
 var parseFloatLiteral = function () {
@@ -397,8 +421,9 @@ var parseStringLiteral = function () {
 var parseReturnStatement = function () {
   console.log("inside parseReturnStatement");
   match('return');
-  return parseExpression();
-  console.log("leaving parseReturnStatement");
+  var exp = parseExpression();
+    console.log("leaving parseReturnStatement");
+  return new ReturnStatement(exp);//parseExpression();
 }
 
 var parseExpWithBoth = function () {

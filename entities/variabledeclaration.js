@@ -1,9 +1,8 @@
 "use strict";
-var Type, VariableDeclaration;
 
-Type = require('./type.js');
+var Type = require('./type.js');
 
-VariableDeclaration = (function() {
+var VariableDeclaration = (function() {
   function VariableDeclaration(id, exp) {//, type) {
     this.id = id;
     this.exp = exp;

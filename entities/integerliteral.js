@@ -1,4 +1,4 @@
-IntegerLiteral = (function () {
+var IntegerLiteral = (function () {
     function IntegerLiteral (value) {
         this.value = value;
     }
