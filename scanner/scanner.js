@@ -84,7 +84,7 @@ var processMultiLineComments = function (tokens) {
     }
     // for debugging
     // console.log("---inside processMultiLineComments---");
-    // console.log(tokens);
+    console.log(tokens);
   return tokens;
 }
 // when module.exports calls this scan function, it passes
