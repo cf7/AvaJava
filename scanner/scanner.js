@@ -154,11 +154,42 @@ var scan = function (line, lineNumber, tokens) {
         word = line.substring(start, pos);
         emit((KEYWORDS.test(word) ? word : 'id'), word);
       } else if (DIGIT.test(line[pos])) {
+
+
         start = pos;
         pos++;
+
+        // start collecting first set of digits
         while (!oneCharacterTokens.test(line[pos]) && !/\s/.test(line[pos]) && pos < line.length) {
           pos++;
         }
+
+        // ***
+        // Hard coding scientific notation and floating point for now
+        // ***
+
+        // if scientific notation, should be an E or e in the position before the
+        // current position at this point
+        // Lookbehind and Lookahead
+        var scientificNotation = false;
+        if (/[+\-]/.test(line[pos])) {
+          // if valid sci notation, do same loop as before
+          if (/[Ee]/.test(line[pos - 1]) && DIGIT.test(line[pos + 1])) {
+            pos++;
+            while (!oneCharacterTokens.test(line[pos]) && !/\s/.test(line[pos]) && pos < line.length) {
+              pos++;
+            }
+          }
+        }
+        // floating point numbers
+        if (/[.]/.test(line[pos]) && DIGIT.test(line[pos + 1])) {
+          pos++;
+          while (!oneCharacterTokens.test(line[pos]) && !/\s/.test(line[pos]) && pos < line.length) {
+              pos++;
+          }
+        }
+
+        // see what we have
         var substring = line.substring(start, pos);
         if (intlit.test(substring)) {
           emit('intlit', substring);

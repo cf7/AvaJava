@@ -339,6 +339,7 @@ describe('The scanner', function() {
   });
   return it('detects illegal characters', function(done) {
     return scan('test/data/token-tests/illegal-char', function(tokens) {
+      console.log("error count: " + error.count);
       error.count.should.equal(1);
       return done();
     });
