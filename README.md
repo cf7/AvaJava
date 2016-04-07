@@ -22,27 +22,28 @@ This language will be designed in a way to facilitate faster typing and more con
 ###Microsyntax
 
 ```
-characterLiteral ->  \"(letter | digit | \s) \" | \' (letter | digit | \s) \'
-stringLiteral -> '\"' characterLiteral* interpolatedStringLiteral* characterLiteral* '\"' | '\'' characterLiteral* interpolatedStringLiteral* characterLiteral* '\''
-interpolatedStringLiteral -> '#' '{' id '}'
+characterLiteral ::=  letter | digit | [\s]
+stringLiteral    ::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 
-letter -> [a-zA-Z]
-digit -> \d
-id -> letter (letter | digit | '_')* - keyword
-keyword -> 'var' | 'while' | 'and' | 'or' | 'not' 
-		| 'true' | 'false' | 'return' | 'for' | 'each' 
-		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+letter    ::=  [a-zA-Z]
+digit     ::=  [\d]
+keyword   ::=  'var' | 'while' | 'and' | 'or' | 'not' 
+           |   'true' | 'false' | 'return' | 'for' | 'each' 
+	   |   'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+id        ::=  letter (letter | digit | '_')*
 		
-assignop -> '+=' | '-=' | '*=' | '/='
-relop -> '<=' | '==' | '>=' | '!='
-addop -> '+' | '-'
-mulop -> '*' | '/' | '%' 
-prefixop -> '-' | 'not'
-postfixop -> '!' | '++' | '--' | '^^' | '::' | '@'
-intlit -> \d+
-floatlit -> ^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$
-boollit -> 'true' | 'false'
-comment -> '//' | '***' ( [.] | [\n] )* '***'
+assignop  ::=  '=' | '+=' | '-=' | '*=' | '/='
+relop     ::=  '<=' | '==' | '>=' | '!='
+appendop  ::=  '@'
+consop    ::=  '::'
+addop     ::=  '+' | '-'
+mulop     ::=  '*' | '/' | '%' 
+prefixop  ::=  '-' | 'not'
+postfixop ::=  '!' | '++' | '--'
+intlit    ::=  [\d]+
+floatlit  ::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
+boollit   ::=  'true' | 'false'
+comment   ::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
 ```
 
 ###Macrosyntax
@@ -73,12 +74,14 @@ Args -> ExpList
 Exp1 -> Exp2 ('or' Exp2)*
 Exp2 -> Exp3 ('and' Exp3)*
 Exp3 -> Exp4 (relop Exp4)?
-Exp4 -> Exp5 (addop Exp5)*
-Exp5 -> Exp6 (mulop Exp6)*
-Exp6 -> prefixop? Exp7
-Exp7 -> Exp8 postfixop?
-Exp8 -> Exp9 ('^^' Exp9)?
-Exp9 -> '(' Exp ')' | id | Call | intlit | floatlit | stringLiteral | boolit | characterLiteral
+Exp4 -> Exp5 (appendop Exp5)*
+Exp5 -> Exp6 (consop Exp6)*
+Exp6 -> Exp7 (addop Exp7)*
+Exp7 -> Exp8 (mulop Exp8)*
+Exp8 -> prefixop? Exp9
+Exp9 -> Exp10 postfixop?
+Exp10 -> Exp11 ('^^' Exp9)?
+Exp11 -> '(' Exp ')' | id | Call | intlit | floatlit | stringLiteral | boolit
 
 Call -> id ( id+ | '(' ExpList? ')' ) ';'
 
@@ -91,7 +94,7 @@ Literal -> NumericLiteral | characterLiteral | stringLiteral | boolit
 NumericLiteral -> intlit | floatlit
 SetLiteral -> '{' LiteralList '}'
 List -> '[' ExpList? ']'
-String -> stringLiteral | interpolatedStringLiteral
+String -> stringLiteral
 ```
 
 ####Example Programs:
@@ -221,8 +224,11 @@ eat hellowWorld
 `{ 2, 3, 4}`<br>
 
 #####Tuples:
-`(x,y,z)`<br>
-`((1,2), (2,3), (3,4))`<br>
+
+```
+(x,y,z)
+((1,2), (2,3), (3,4))
+```
 
 #####Functions:
 `var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> 
