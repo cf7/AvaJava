@@ -1,4 +1,4 @@
-BinaryExpression = (function () {
+var BinaryExpression = (function () {
 
     function BinaryExpression (op, left, right) {
         console.log(op.lexeme);

@@ -1,0 +1,2 @@
+var thisFunction = (x, y) -> x + y;
+thisFunction(2,3,4);
