@@ -72,7 +72,7 @@ FunctionExp -> '(' Args ')' '->' Block ';'
 
 Args -> ExpList
 Exp1 -> Exp2 ('or' Exp2)*
-Exp2 -> Exp3 ('and' Exp3)*
+Exp2 -> Exp3 ('and' Exp3)* ('both' Exp)?
 Exp3 -> Exp4 (relop Exp4)?
 Exp4 -> Exp5 (appendop Exp5)*
 Exp5 -> Exp6 (consop Exp6)*

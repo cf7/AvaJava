@@ -16,6 +16,7 @@ var ReturnStatement = require('../entities/returnstatement.js');
 var StringLiteral = require('../entities/stringliteral.js');
 var BooleanLiteral = require('../entities/booleanliteral.js');
 var VariableReference = require('../entities/variablereference.js');
+var BothExpression = require('../entities/bothexpression.js');
 // var BinaryExpression = require('./entities/binaryexpression');
 // var UnaryExpression = require('./entities/unaryexpression');
 var tokens = [];
@@ -281,9 +282,15 @@ var parseExp2 = function () {
   console.log("inside parseExp2");
   left = parseExp3();
   while (at('and')) {
+    console.log("inside binary parseExp2");
     op = match('and');
     right = parseExp3();
     left = new BinaryExpression(op, left, right);
+  }
+  if (at('both')) {   // avajava feature, using 'both' keyword
+    match('both');
+    right = parseExpression();
+    left = new BothExpression(left, right); // pass in left side and right side
   }
   return left;
 }
@@ -320,7 +327,7 @@ var parseExp5 = function () {
   var op, left, right;
   console.log("inside parseExp5");
   left = parseExp6();
-  while (at(['*', '/'])) {
+  while (at(['*', '/', '%'])) {
     op = match();
     right = parseExp6();
     left = new BinaryExpression(op, left, right);

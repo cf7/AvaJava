@@ -4,6 +4,10 @@ var UnaryExpression = (function () {
         this.operand = operand;
     }
     
+    UnaryExpression.prototype.toString = function() {
+        return `${this.operator.lexeme} ${this.operand}`;
+    };
+    
     return UnaryExpression;
 })();
 
