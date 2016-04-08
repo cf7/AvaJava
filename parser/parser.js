@@ -78,7 +78,7 @@ var parseVariableDeclaration = function() {
   // match with a 'var', if yes
   // shift tokens left (i.e. delete current token
   // and shift index of rest of tokens down)
-  var exp = {};
+  var exp;
   match('var');
   var id = match('id');
   if (at('=')) {

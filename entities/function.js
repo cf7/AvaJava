@@ -12,14 +12,15 @@ Function = (function () {
         var localContext = context.createChildContext();
         var results = [];
         localContext.setInsideFunction(true);
+
+        // need to analyze variables too
         for (var i = 0; i < this.args.length; i++) {
             localContext.addVariable(this.args[i]);
         }
-        for (var i = 0; i < this.body.length; i++) {
-            results.push(this.body[i].analyze(localContext));
-        }
+        
         console.log("*******inside function's analyze*******");
-        return results;
+
+        return this.body.analyze(localContext);
     };
 
     return Function;

@@ -35,7 +35,7 @@ var makeVariable = (function(lastId, map) {
 })(0, new HashMap());
 
 var gen = function(e) {
-  console.log("inside gen: " + e);
+  // console.log("inside gen: " + e);
   return generator[e.constructor.name](e);
 };
 

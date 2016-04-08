@@ -8,6 +8,11 @@ var StringLiteral = (function () {
         return '( ' + this.string.lexeme + ' )';
     };
 
+    StringLiteral.prototype.analyze = function(context) {
+        // do something with the string and context
+        console.log("---=---made it down to strings---=---");
+    };
+
     return StringLiteral;
 })();
 
