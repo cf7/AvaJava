@@ -15,7 +15,9 @@ var VariableDeclaration = (function() {
 
   VariableDeclaration.prototype.analyze = function(context) {
     context.variableMustNotBeAlreadyDeclared(this.id);
-    return context.addVariable(this.id.lexeme, this);
+    context.addVariable(this.id.lexeme, this); // adds var to symbol table and returns symbol table
+    console.log("--------inside varDecl analyze-------");
+    return this.exp.analyze(context);
   };
 
   VariableDeclaration.prototype.optimize = function() {
