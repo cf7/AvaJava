@@ -33,7 +33,7 @@ keyword   ::=  'var' | 'while' | 'and' | 'or' | 'not'
 id        ::=  letter (letter | digit | '_')*
 		
 assignop  ::=  '=' | '+=' | '-=' | '*=' | '/='
-relop     ::=  '<=' | '==' | '>=' | '!='
+relop     ::=  '<' | '>' | '<=' | '==' | '>=' | '!='
 appendop  ::=  '@'
 consop    ::=  '::'
 addop     ::=  '+' | '-'

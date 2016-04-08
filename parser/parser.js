@@ -299,7 +299,7 @@ var parseExp3 = function () {
   var op, left, right;
   console.log("inside parseExp3");
   left = parseExp4();
-  if (at(['<=', '==', '>=', '!='])) {
+  if (at(['<', '>', '<=', '==', '>=', '!='])) {
     op = match();
     right = parseExp4();
     left = new BinaryExpression(op, left, right);
