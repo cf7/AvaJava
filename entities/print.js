@@ -11,13 +11,11 @@ class Print {
 
     analyze(context) {
         console.log("=====inside print analyze=====");
-        // for (var i = 0; i < this.expression.length; i++) {
-        //     if (this.expression[i].getToken().kind === "id") {
-        //         console.log("***lookingup***: " + this.expression[i].getToken().lexeme);
-        //         context.lookupVariable(this.expression[i].getToken());
-        //     }
-        // }
-        return this.expression.analyze(context);
+        console.log(this.expression);
+        if (this.expression.getToken().kind === "id") {
+            console.log("***lookingup***: " + this.expression.getToken().lexeme);
+            context.lookupVariable(this.expression.getToken());
+        }
     }
 
     optimize() {

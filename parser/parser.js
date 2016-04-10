@@ -44,7 +44,8 @@ var parseBlock = function() {
   while (true) {
     statements.push(parseStatement());
     match(';');
-    if (!at(['var', 'id', 'while'])) {
+    console.log("matched semicolon");
+    if (!at(['var', 'id', 'while', 'ava'])) {
       break;
     } else if (error.count > numberErrors) {
       break;
