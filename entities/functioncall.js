@@ -1,12 +1,17 @@
 var FunctionCall = (function () {
-    function FunctionCall (id, args) {
+    function FunctionCall (id, params) {
         this.id = id;
-        this.args = args;
+        this.params = params;
     }
 
     FunctionCall.prototype.toString = function() {
-        return '( ' + this.id.lexeme + ' ( ' + (this.args.join(' ')) + ' )' + ' )';
+        return '( ' + this.id.lexeme + ' ( ' + (this.params.join(' ')) + ' )' + ' )';
     };
+
+    FunctionCall.prototype.analyze = function(context) {
+        
+    };
+
     return FunctionCall;
 })();
 

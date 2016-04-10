@@ -100,6 +100,9 @@ var parseVariableReference = function () {
   if (at('(')) {
     console.log("going inside");
     return parseFunctionCall(id); // pass in id?
+  } else if (at(['id', 'intlit', 'stringlit', 'boolit'])) { // hardcoding varref cases for now
+    var kind = match();
+    return parseFunctionCall(kind);
   } else {
     console.log("inside - id is " + id.lexeme);
     return new VariableReference(id);
@@ -199,14 +202,21 @@ var parseFunctionBlock = function () {
 
 var parseFunctionCall = function (id) {
   console.log("inside parseFunctionCall: id " + id.lexeme);
+  var params = [];
   if (at('id')) { // use later for currying
-    // parseFunctionCall
+    params.push(parseVariableReference(match('id')));
   }
-  match('('); // hardcoding for now until adding currying
-  var params = parseArgs();
-  match(')');
-    console.log("leaving parseFunctionCall");
-
+  if (at('(')) {
+    match('('); // hardcoding for now until adding currying
+    params.concat(parseArgs());
+    match(')');
+  } else {
+    while (!at(';')) {
+      params.push(parseExpression());
+    }
+  }
+  console.log("params: " + params);
+  console.log("leaving parseFunctionCall");
   return new FunctionCall(id, params);
 }
 
