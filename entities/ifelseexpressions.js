@@ -18,6 +18,10 @@ var IfElseStatements = (function () {
         }
     };
 
+    IfElseStatements.prototype.analyze = function(context) {
+        
+    };
+    
     return IfElseStatements;
 })();
 

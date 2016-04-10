@@ -7,6 +7,9 @@ var IntegerLiteral = (function () {
         return '( ' + this.value.lexeme + ' )';
     };
     
+    IntegerLiteral.prototype.analyze = function(context) {
+        console.log("--=--made it down to integers--=--");
+    };
     return IntegerLiteral;
 })();
 

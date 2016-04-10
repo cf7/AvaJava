@@ -17,6 +17,7 @@ var Block = (function() {
     results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       statement = ref[i];
+      console.log("CURRENT STATEMENT: " + statement);
       results.push(statement.analyze(localContext));
     }
     return results;
