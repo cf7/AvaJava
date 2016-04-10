@@ -17,18 +17,21 @@ var FunctionCall = (function () {
 
     FunctionCall.prototype.analyze = function(context) {
         console.log(".........................al;kjdfl;asjdfkl;asjfkljaslkfjasl;jdf");
-        console.log("current function: " + context.lookupVariable(this.id).getExp());
-        console.log("numberArgs: " + context.lookupVariable(this.id).getExp().getNumberArgs());
-
-        if (context.lookupVariable(this.id).getExp().getNumberArgs() !== this.params.length) {
-            error("Incorrect number of argument inputs.");
-        } else {
-            for (var i = 0; i < this.params.length; i++) {
-                if (this.params[i].getToken().kind === "id") {
-                    console.log("***lookingup***: " + this.params[i].getToken().lexeme);
-                    context.lookupVariable(this.params[i].getToken());
+        try {
+            console.log("current function: " + context.lookupVariable(this.id).getExp());
+            console.log("numberArgs: " + context.lookupVariable(this.id).getExp().getNumberArgs());
+            if (context.lookupVariable(this.id).getExp().getNumberArgs() !== this.params.length) {
+                error("Incorrect number of argument inputs.");
+            } else {
+                for (var i = 0; i < this.params.length; i++) {
+                    if (this.params[i].getToken().kind === "id") {
+                        console.log("***lookingup***: " + this.params[i].getToken().lexeme);
+                        context.lookupVariable(this.params[i].getToken());
+                    }
                 }
             }
+        } catch (typeerror) {
+            error(this.id.lexeme + " is not a function", this.id);
         }
     };
 
