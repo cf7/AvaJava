@@ -45,7 +45,7 @@ var parseBlock = function() {
     statements.push(parseStatement());
     match(';');
     console.log("matched semicolon");
-    if (!at(['var', 'id', 'while', 'ava'])) {
+    if (!at(['var', 'id', 'while', 'ava', 'return'])) { // hardcoded 'return' for error outside of function block
       break;
     } else if (error.count > numberErrors) {
       break;
@@ -161,9 +161,9 @@ var parseFunctionExp = function () {
 
 var parseArgs = function () {
   console.log("inside parseArgs");
-    console.log("leaving parseArgs");
     var exps = parseExpList();
     console.log("parseArgs exps: " + exps);
+        console.log("leaving parseArgs");
   return exps;
   // return
 }
@@ -192,6 +192,7 @@ var parseFunctionBlock = function () {
     statements.push(parseStatement());
     if (at('end')) {
       match('end');
+      console.log("matched end");
       break;
     }
     if (!at(['var', 'id', 'while'])) {
