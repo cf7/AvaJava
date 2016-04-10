@@ -179,7 +179,7 @@ var parseExpList = function () {
     exps.push(parseExpression());
   }
     console.log("leaving parseExpList");
-  console.log(exps);
+  console.log("exps: " + exps);
   return exps;
   // return statement
 }
@@ -404,6 +404,8 @@ var parseExp9 = function () {
     match('(');
     return parseExpression();
     match(')');
+  } else if (at('[')) {
+    return parseList();
   } else if (at('intlit')) {
     return parseIntLiteral();
   } else if (at('floatlit')) {
@@ -420,6 +422,15 @@ var parseExp9 = function () {
   // } else {
   //   error('inside parseExp9 error', tokens[0]);
   }
+}
+
+var parseList = function () {
+  console.log("inside parseList");
+  match('[');
+  var exps = parseExpList();
+  match(']');
+  console.log("leaving parseList");
+  return exps;
 }
 
 var parseIntLiteral = function () {

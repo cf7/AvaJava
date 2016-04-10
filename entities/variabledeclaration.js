@@ -18,13 +18,20 @@ var VariableDeclaration = (function() {
   };
 
   VariableDeclaration.prototype.analyze = function(context) {
+    // need to account for if variable is a single number
+    // a list of expressions
+    // or a function
     context.variableMustNotBeAlreadyDeclared(this.id);
     context.addVariable(this.id.lexeme, this); // adds var to symbol table and returns symbol table
     console.log("--------inside varDecl analyze-------");
     console.log("current variable: " + this.exp);
+    var results = [];
     if (this.exp) {
-      return this.exp.analyze(context);
+        for (var i = 0; i < this.exp.length; i++) {
+          results.push(this.exp[i].analyze(context));
+        }
     }
+    return results;
   };
 
   VariableDeclaration.prototype.optimize = function() {
