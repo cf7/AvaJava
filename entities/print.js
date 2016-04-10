@@ -11,11 +11,7 @@ class Print {
 
     analyze(context) {
         console.log("=====inside print analyze=====");
-        console.log(this.expression);
-        if (this.expression.getToken().kind === "id") {
-            console.log("***lookingup***: " + this.expression.getToken().lexeme);
-            context.lookupVariable(this.expression.getToken());
-        }
+        return this.expression.analyze(context);
     }
 
     optimize() {
