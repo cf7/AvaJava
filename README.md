@@ -61,12 +61,13 @@ Stmt -> Decl
 Print -> 'ava' Exp ';'
 Exp -> Exp1 
     | '[' StringList ']'
-    | FunctionExp
+    | FunctionExp        
     
 Decl -> 'var' id ('=' Exp)? ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
 Assign -> id '=' Exp ';'
     | '[' idList ']' '=' Exp ';'
+VarRef -> id | Call
 ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
 FunctionExp -> '(' Args ')' '->' Block ';'
 
@@ -81,7 +82,7 @@ Exp7 -> Exp8 (mulop Exp8)*
 Exp8 -> prefixop? Exp9
 Exp9 -> Exp10 postfixop?
 Exp10 -> Exp11 ('^^' Exp11)?
-Exp11 -> '(' Exp ')' | id | Call | intlit | floatlit | stringLiteral | boolit
+Exp11 -> '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit
 
 Call -> id ( id+ | '(' ExpList? ')' ) ';'
 

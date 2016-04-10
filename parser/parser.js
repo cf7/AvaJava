@@ -95,14 +95,11 @@ var parseVariableDeclaration = function() {
 var parseVariableReference = function () {
   console.log("inside parseVariableReference");
   var id = match('id');
-    console.log("matched " + id.lexeme);
+  console.log("matched " + id.lexeme);
 
-  if (at('(')) {
+  if (at(['(', 'id'])) {
     console.log("going inside");
     return parseFunctionCall(id); // pass in id?
-  } else if (at(['id', 'intlit', 'stringlit', 'boolit'])) { // hardcoding varref cases for now
-    var kind = match();
-    return parseFunctionCall(kind);
   } else {
     console.log("inside - id is " + id.lexeme);
     return new VariableReference(id);
@@ -204,11 +201,11 @@ var parseFunctionCall = function (id) {
   console.log("inside parseFunctionCall: id " + id.lexeme);
   var params = [];
   if (at('id')) { // use later for currying
-    params.push(parseVariableReference(match('id')));
+    params.push(parseVariableReference());
   }
   if (at('(')) {
     match('('); // hardcoding for now until adding currying
-    params.concat(parseArgs());
+    params = params.concat(parseArgs());
     match(')');
   } else {
     while (!at(';')) {

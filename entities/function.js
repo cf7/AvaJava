@@ -5,7 +5,7 @@ Function = (function () {
     }
 
     Function.prototype.toString = function() {
-        return '( args' + this.args.join(' ') + ' ( ' + this.body + ' ) ' + ' ) ';
+        return '( args' + ' ( ' + this.args.join(' ') + ' ) ' + ' ( ' + this.body + ' ) ' + ' ) ';
     };
 
     Function.prototype.analyze = function(context) {
