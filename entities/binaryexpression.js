@@ -11,6 +11,10 @@ var BinaryExpression = (function () {
         return `${this.operator.lexeme} ${this.left} ${this.right}`;
     };
     
+    BinaryExpression.prototype.analyze = function(context) {
+        
+    };
+    
     return BinaryExpression;
 })();
 

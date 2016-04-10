@@ -4,6 +4,9 @@ Function = (function () {
         this.body = body; // an array of statements
     }
 
+    Function.prototype.getNumberArgs = function() {
+        return this.args.length;
+    };
     Function.prototype.toString = function() {
         return '( args' + ' ( ' + this.args.join(' ') + ' ) ' + ' ( ' + this.body + ' ) ' + ' ) ';
     };

@@ -9,6 +9,10 @@ var VariableDeclaration = (function() {
     // this.type = type;
   }
 
+  VariableDeclaration.prototype.getExp = function() {
+    return this.exp;
+  };
+  
   VariableDeclaration.prototype.toString = function() {
     return "(var " + this.id.lexeme + " " + this.exp + " )"; // this.type + ")";
   };
