@@ -340,7 +340,9 @@ describe('The scanner', function() {
   return it('detects illegal characters', function(done) {
     return scan('test/data/token-tests/illegal-char', function(tokens) {
       console.log("error count: " + error.count);
-      error.count.should.equal(1);
+      error.count.should.equal(1); // not working right now because error count
+      // is actually accumulating from other errors and maybe even other tests
+      // so, there is actually more than one error
       return done();
     });
   });

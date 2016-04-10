@@ -9,7 +9,13 @@ var FunctionCall = (function () {
     };
 
     FunctionCall.prototype.analyze = function(context) {
-        
+        console.log(".........................al;kjdfl;asjdfkl;asjfkljaslkfjasl;jdf");
+        for (var i = 0; i < this.params.length; i++) {
+            if (this.params[i].kind === "id") {
+                console.log("***lookingup***: " + this.params[i].lexeme);
+                context.lookupVariable(this.params[i]);
+            }
+        }
     };
 
     return FunctionCall;

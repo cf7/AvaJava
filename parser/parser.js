@@ -38,22 +38,26 @@ var parseProgram = function() {
 };
 
 var parseBlock = function() {
+  console.log("inside parseBlock");
   var statements = [];
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
+    match(';');
     if (!at(['var', 'id', 'while'])) {
       break;
     } else if (error.count > numberErrors) {
       break;
     }
   }
+  console.log("leaving parseBlock");
   return new Block(statements);
 };
 
 var parseStatement = function() {
   // since parseBlock no longer matches ';'s, need to match ';'
   // within each of these parseFunctions below
+  console.log("inside parseStatement");
   if (at('var')) {
     return parseVariableDeclaration();
   } else if (at('ava')) {
@@ -79,6 +83,7 @@ var parseVariableDeclaration = function() {
   // match with a 'var', if yes
   // shift tokens left (i.e. delete current token
   // and shift index of rest of tokens down)
+  console.log("inside parseVariableDeclaration");
   var exp;
   match('var');
   var id = match('id');
@@ -89,6 +94,7 @@ var parseVariableDeclaration = function() {
     // or a similar entity
   }
   // var type = parseType();
+  console.log("leaving parseVariableDeclaration");
   return new VariableDeclaration(id, exp); //, type);
 };
 
@@ -97,7 +103,7 @@ var parseVariableReference = function () {
   var id = match('id');
   console.log("matched " + id.lexeme);
 
-  if (at(['(', 'id'])) {
+  if (at('(')) { //, 'id'])) { // currying
     console.log("going inside");
     return parseFunctionCall(id); // pass in id?
   } else {
@@ -118,6 +124,7 @@ var parseType = function() {
 };
 
 var parseIfBlock = function () {
+  console.log("inside parseIfBlock");
   var statements = [];
   var numberErrors = error.count;
   // if (at('return')) {
@@ -134,8 +141,8 @@ var parseIfBlock = function () {
       break;
     }
   }
-  return new Block(statements);
   console.log("leaving parseIfBlock");
+  return new Block(statements);
 }
 
 var parseFunctionExp = function () {
@@ -177,13 +184,14 @@ var parseExpList = function () {
 }
 
 var parseFunctionBlock = function () {
-  console.log("inside parseFunctionBlock");
+  console.log("#########inside parseFunctionBlock##########");
   var statements = [];
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
-    if (at(';')) {
-      match(';');
+    if (at('end')) {
+      match('end');
+      break;
     }
     if (!at(['var', 'id', 'while'])) {
       break;
@@ -192,7 +200,7 @@ var parseFunctionBlock = function () {
     }
   }
   // only print block statement, need to return entity that also includes args
-    console.log("leaving parseFunctionBlock");
+    console.log("##########leaving parseFunctionBlock##########");
 
   return new Block(statements);
 }
@@ -201,17 +209,18 @@ var parseFunctionCall = function (id) {
   console.log("inside parseFunctionCall: id " + id.lexeme);
   var params = [];
   if (at('id')) { // use later for currying
-    params.push(parseVariableReference());
+    // params.push(parseVariableReference());
   }
   if (at('(')) {
     match('('); // hardcoding for now until adding currying
     params = params.concat(parseArgs());
     match(')');
-  } else {
-    while (!at([';', 'EOF'])) { // 'EOF' case accounts for missing semicolons
-      params.push(parseExpression());
-    }
-  }
+  } 
+  // else { // currying
+  //   while (!at([';', 'EOF'])) { // 'EOF' case accounts for missing semicolons
+  //     params.push(parseExpression());
+  //   }
+  // }
   console.log("params: " + params);
   console.log("leaving parseFunctionCall");
   return new FunctionCall(id, params);
@@ -299,6 +308,7 @@ var parseExp2 = function () {
     right = parseExpression();
     left = new BothExpression(left, right); // pass in left side and right side
   }
+  console.log("leaving parseExp2");
   return left;
 }
 
