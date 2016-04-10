@@ -208,7 +208,7 @@ var parseFunctionCall = function (id) {
     params = params.concat(parseArgs());
     match(')');
   } else {
-    while (!at([';', 'EOF'])) { // 'EOF' case accounts for missing semi-colons
+    while (!at([';', 'EOF'])) { // 'EOF' case accounts for missing semicolons
       params.push(parseExpression());
     }
   }
