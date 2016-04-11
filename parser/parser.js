@@ -23,6 +23,8 @@ var WhileLoop = require('../entities/whileloop.js');
 
 var tokens = [];
 
+var blockStatementKeywords = ['var', 'id', 'while', 'ava', 'return', 'for', 'if'];
+
 module.exports = function(scannerOutput) {
   console.log("********************PARSER******************");
   tokens = scannerOutput;
@@ -48,7 +50,7 @@ var parseBlock = function() {
     statements.push(parseStatement());
     match(';');
     console.log("matched semicolon");
-    if (!at(['var', 'id', 'while', 'ava', 'return', 'for'])) { // hardcoded 'return' for error outside of function block
+    if (!at(blockStatementKeywords)) { // hardcoded 'return' for error outside of function block
       break;
     } else if (error.count > numberErrors) {
       break;
@@ -143,7 +145,7 @@ var parseIfBlock = function () {
     // if (at(match(';'))) {
     //   match(';');
     // }
-    if (!at(['var', 'id', 'while'])) {
+    if (!at(blockStatementKeywords)) {
       break;
     } else if (error.count > numberErrors) {
       break;
@@ -202,7 +204,7 @@ var parseFunctionBlock = function () {
       console.log("matched end");
       break;
     }
-    if (!at(['var', 'id', 'while'])) {
+    if (!at(blockStatementKeywords)) {
       break;
     } else if (error.count > numberErrors) {
       break;
@@ -294,25 +296,29 @@ var parseWhileLoop = function () {
 }
 
 var parseConditionalExp = function () {
-  var elseifs = {};
-  var elseBody = {};
+  var elseifs;
+  var elseBody;
   console.log("inside parseConditionalExp");
   match('if');
+  if (at('(')) { // parantheses optional
+    match('(');
+  }
   var conditional = parseExpression();
+  if (at(')')) {
+    match(')');
+  }
   match('then');
-  var body = parseIfBlock(); // need to figure out how to return
-  // without explicitly calling a return statement
+  var body = parseIfBlock();
   if (at('else')) {
     match('else');
     if (at('if')) {
       elseifs = parseConditionalExp();
+      console.log(".............. " + elseifs);
     } else {
       elseBody = parseIfBlock();
     }
   }
   return new IfElseStatements(conditional, body, elseifs, elseBody);
-  // match(';');
-  // add case for return statements
 }
 
 var parseExpression = function () {

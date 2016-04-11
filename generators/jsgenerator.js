@@ -42,12 +42,14 @@ var gen = function(e) {
 };
 
 var generator = {
+
   Program: function(program) {
     indentLevel = 0;
     emit('(() -> ');
     gen(program.block);
     return emit(');');
   },
+
   Block: function(block) {
     var i, len, ref, statement;
     indentLevel++;
@@ -58,6 +60,7 @@ var generator = {
     }
     return indentLevel--;
   },
+
   VariableDeclaration: function(v) {
     // var initializer = { // typechecking?
     //   'int': '0',
@@ -65,18 +68,38 @@ var generator = {
     // }[v.type];
     return emit("var " + (makeVariable(v)) + " = " + gen(v.exp) + ";"); //initializer + ";");
   },
+
   AssignmentStatement: function(s) {
     return emit((gen(s.target)) + " = " + (gen(s.source)) + ";");
   },
+
   Function: function (f) {
     return emit("function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }");
   },
+
   Array: function (a) {
     var string = "";
     for (var i = 0; i < a.length; i++) {
       string += emit(gen(a[i]));
     }
     return string;
+  },
+
+  IfElseStatements: function (ifelse) {
+    if (ifelse.elseifs) {
+      console.log("inside elseifs");
+      return emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }');
+    } else if (ifelse.elseBody) {
+      console.log("inside else");
+      return emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }');
+    } else {
+      console.log("inside no else");
+      return emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body));
+    }
+  },
+
+  ReturnStatement: function (r) {
+    return emit('return ' + gen(r.value) + ';');
   },
   // ReadStatement: function(s) {
   //   var i, len, ref, results, v;
@@ -103,9 +126,9 @@ var generator = {
   //   gen(s.body);
   //   return emit('}');
   // },
-  // IntegerLiteral: function(literal) {
-  //   return literal.toString();
-  // },
+  IntegerLiteral: function(literal) {
+    return literal.toString();
+  },
   // BooleanLiteral: function(literal) {
   //   return literal.toString();
   // },
@@ -115,7 +138,7 @@ var generator = {
   // UnaryExpression: function(e) {
   //   return "(" + (makeOp(e.op.lexeme)) + " " + (gen(e.operand)) + ")";
   // },
-  // BinaryExpression: function(e) {
-  //   return "(" + (gen(e.left)) + " " + (makeOp(e.op.lexeme)) + " " + (gen(e.right)) + ")";
-  // }
+  BinaryExpression: function(e) {
+    return "(" + (gen(e.left)) + " " + (makeOp(e.operator.lexeme)) + " " + (gen(e.right)) + ")";
+  }
 };
