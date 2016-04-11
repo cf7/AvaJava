@@ -9,7 +9,7 @@ var LETTER = /[A-Za-z]/;
 var DIGIT = /[0-9]/;
 // var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
 var WORD_CHAR = /[A-Za-z_]/;
-var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|ava|end)$/;
+var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|ava|end|times)$/;
 var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.\!]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /\.\.\.|\*\*\*/;

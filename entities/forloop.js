@@ -8,11 +8,16 @@ class ForLoop {
     }
 
     toString() {
-        return `for each ${this.id} in ${this.exp} { ${this.body} }`;
+        if (!this.id) {
+            return `for ${this.exp} times { ${this.body} }`;
+        } else {
+            return `for each ${this.id} in ${this.exp} { ${this.body} }`;
+        }
     }
 
     analyze(context) {
         // should have own local context for body
+        // check for iterable type
     }
 
 }

@@ -256,14 +256,21 @@ var parsePrintStatement = function () {
 var parseForLoop = function () {
   console.log("inside parseLoop");
   var id;
+  var counter;
   var exp;
   var body;
   match('for');
-  if (at('each')) {
+  if (at('each')) { // for each loop
     match('each');
     id = parseVariableDeclaration();
     match('in');
     exp = parseExpression();
+    match('{');
+    body = parseBlock();
+    match('}');
+  } else { // counter for loop
+    exp = parseExpression();
+    match('times');
     match('{');
     body = parseBlock();
     match('}');

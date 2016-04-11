@@ -3,7 +3,7 @@ var error = require('../error.js');
 var FunctionCall = (function () {
     function FunctionCall (id, params) {
         this.id = id;
-        this.params = params;
+        this.params = params; // array of exp objects, need to get tokens
     }
 
     // need to be able to get token to lookupvariable

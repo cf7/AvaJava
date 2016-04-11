@@ -1,0 +1,3 @@
+var x = 10;
+
+for x times { ava "Hello World"; };
