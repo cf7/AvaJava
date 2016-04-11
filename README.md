@@ -56,12 +56,14 @@ Stmt -> Decl
     | 'return' Exp
     | ConditionalExp
     | Print    
+    | Loop
     | Exp
     
-Print -> 'ava' Exp ';'
-Exp -> Exp1 
+Print ::= 'ava' Exp ';'
+Exp ::= Exp1 
     | '[' StringList ']'
     | FunctionExp
+Loop ::= 'for' 'each' id 'in' Exp '{' Block '}'
 Decl -> 'var' id ('=' Exp)? ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
 Assign -> id '=' Exp ';'

@@ -10,6 +10,7 @@ var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntLiteral = require('../entities/integerliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
+var PostfixExpression = require('../entities/postfixexpression.js');
 var Function = require('../entities/function.js');
 var FunctionCall = require('../entities/functioncall.js');
 var ReturnStatement = require('../entities/returnstatement.js');
@@ -17,8 +18,8 @@ var StringLiteral = require('../entities/stringliteral.js');
 var BooleanLiteral = require('../entities/booleanliteral.js');
 var VariableReference = require('../entities/variablereference.js');
 var BothExpression = require('../entities/bothexpression.js');
-// var BinaryExpression = require('./entities/binaryexpression');
-// var UnaryExpression = require('./entities/unaryexpression');
+var ForLoop = require('../entities/forloop.js');
+
 var tokens = [];
 
 module.exports = function(scannerOutput) {
@@ -45,7 +46,7 @@ var parseBlock = function() {
     statements.push(parseStatement());
     match(';');
     console.log("matched semicolon");
-    if (!at(['var', 'id', 'while', 'ava', 'return'])) { // hardcoded 'return' for error outside of function block
+    if (!at(['var', 'id', 'while', 'ava', 'return', 'for'])) { // hardcoded 'return' for error outside of function block
       break;
     } else if (error.count > numberErrors) {
       break;
@@ -67,6 +68,8 @@ var parseStatement = function() {
     return parseReturnStatement();
   } else if (at('if')) {
     return parseConditionalExp();
+  } else if (at('for')) {
+    return parseLoop();
   // } else if (at('id')) {
   //   return parseAssignmentStatement();
   // } else if (at('read')) {
@@ -247,6 +250,25 @@ var parsePrintStatement = function () {
   return new Print(expression);
 }
 
+var parseLoop = function () {
+  console.log("inside parseLoop");
+  var id;
+  var exp;
+  var body;
+  match('for');
+  if (at('each')) {
+    match('each');
+    id = parseVariableDeclaration();
+    match('in');
+    exp = parseExpression();
+    match('{');
+    body = parseBlock();
+    match('}');
+  }
+  console.log("leaving parseLoop");
+  return new ForLoop(id, exp, body);
+}
+
 var parseConditionalExp = function () {
   var elseifs = {};
   var elseBody = {};
@@ -371,17 +393,17 @@ var parseExp6 = function () {
 
 // parseExp7
 var parseExp7 = function () {
-  return parseExp8();
-  // var op, operand;
-  // console.log("inside parseExp7");
-  // var operand = parseExp8();
-  // if (at(['!', '++', '--', '^^', '::', '@'])) {
-  //   op = match();
-  //   return new PostfixExpression(op, operand);
-  // } else {
-  //   return operand;
-  // }
-  // return statement
+  var op, operand;
+  console.log("inside parseExp7");
+  var operand = parseExp8();
+  if (at(['!', '++', '--', '^^', '::', '@'])) {
+    op = match();
+    console.log("leaving parseExp7");
+    return new PostfixExpression(op, operand);
+  } else {
+    console.log("leaving parseExp7");
+    return operand;
+  }
 }
 
 var parseExp8 = function () {
