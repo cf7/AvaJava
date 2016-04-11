@@ -52,7 +52,6 @@ Program -> Block
 Block -> (Stmt ';')+
 Stmt -> Decl
 	| Assign
-	| 'while' '(' Exp ')' '{' Block '}'
     | 'return' Exp
     | ConditionalExp
     | Print    
@@ -64,6 +63,7 @@ Exp ::= Exp1
     | '[' StringList ']'
     | FunctionExp
 Loop ::= 'for' 'each' id 'in' Exp '{' Block '}'
+	| 'while' '(' Exp ')' '{' Block '}'
 Decl -> 'var' id ('=' Exp)? ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
 Assign -> id '=' Exp ';'

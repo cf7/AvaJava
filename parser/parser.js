@@ -19,6 +19,7 @@ var BooleanLiteral = require('../entities/booleanliteral.js');
 var VariableReference = require('../entities/variablereference.js');
 var BothExpression = require('../entities/bothexpression.js');
 var ForLoop = require('../entities/forloop.js');
+var WhileLoop = require('../entities/whileloop.js');
 
 var tokens = [];
 
@@ -69,7 +70,9 @@ var parseStatement = function() {
   } else if (at('if')) {
     return parseConditionalExp();
   } else if (at('for')) {
-    return parseLoop();
+    return parseForLoop();
+  } else if (at('while')) {
+    return parseWhileLoop();
   // } else if (at('id')) {
   //   return parseAssignmentStatement();
   // } else if (at('read')) {
@@ -250,7 +253,7 @@ var parsePrintStatement = function () {
   return new Print(expression);
 }
 
-var parseLoop = function () {
+var parseForLoop = function () {
   console.log("inside parseLoop");
   var id;
   var exp;
@@ -267,6 +270,19 @@ var parseLoop = function () {
   }
   console.log("leaving parseLoop");
   return new ForLoop(id, exp, body);
+}
+
+var parseWhileLoop = function () {
+  console.log("inside parseWhileLoop");
+  match('while');
+  match('(');
+  var condition = parseExpression();
+  match(')');
+  match('{');
+  var body = parseBlock();
+  match('}');
+  console.log("leaving parseWhileLoop");
+  return new WhileLoop(condition, body);
 }
 
 var parseConditionalExp = function () {
