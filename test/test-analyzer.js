@@ -6,11 +6,11 @@ path = require('path');
 
 should = require('should');
 
-scan = require('../scanner');
+scan = require('../scanner/scanner.js');
 
-parse = require('../parser');
+parse = require('../parser/parser.js');
 
-error = require('../error');
+error = require('../error.js');
 
 error.quiet = true;
 
@@ -18,18 +18,20 @@ TEST_DIR = 'test/data/semantic-errors';
 
 describe('The analyzer detects an error for', function() {
   return fs.readdirSync(TEST_DIR).forEach(function(name) {
-    var check;
-    check = name.replace(/-/g, ' ').replace(/\.iki$/, '');
-    return it(check, function(done) {
-      return scan(path.join(TEST_DIR, name), function(tokens) {
-        var priorErrorCount, program;
-        priorErrorCount = error.count;
-        program = parse(tokens);
-        error.count.should.equal(priorErrorCount);
-        program.analyze();
-        error.count.should.be.above(priorErrorCount);
-        return done();
+    if (name !== ".DS_Store") {
+      var check;
+      check = name.replace(/-/g, ' ').replace(/\.ava$/, '');
+      return it(check, function(done) {
+        return scan(path.join(TEST_DIR, name), function(tokens) {
+          var priorErrorCount, program;
+          priorErrorCount = error.count;
+          program = parse(tokens);
+          error.count.should.equal(priorErrorCount);
+          program.analyze();
+          error.count.should.be.above(priorErrorCount);
+          return done();
+        });
       });
-    });
+    }
   });
 });
