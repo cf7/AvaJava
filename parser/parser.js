@@ -313,7 +313,6 @@ var parseConditionalExp = function () {
     match('else');
     if (at('if')) {
       elseifs = parseConditionalExp();
-      console.log(".............. " + elseifs);
     } else {
       elseBody = parseIfBlock();
     }

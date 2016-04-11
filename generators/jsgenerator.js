@@ -3,7 +3,7 @@
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
 
-module.exports = function(program) {
+module.exports = function (program) {
   console.log("**********************GENERATOR********************");
   console.log(program);
   return gen(program);
@@ -12,12 +12,12 @@ module.exports = function(program) {
 var indentPadding = 4;
 var indentLevel = 0;
 
-var emit = function(line) {
+var emit = function (line) {
   var pad = indentPadding * indentLevel;
-  return console.log(Array(pad + 1).join(' ') + line);
+  return console.log(Array(pad + 1).join(' ') + line); // emits as soon as called, can't use recursion
 };
 
-var makeOp = function(op) {
+var makeOp = function (op) {
   return {
     not: '!',
     and: '&&',
@@ -36,32 +36,33 @@ var makeVariable = (function(lastId, map) {
   };
 })(0, new HashMap());
 
-var gen = function(e) {
+var gen = function (e) {
   console.log("inside gen: " + e.constructor.name);
-  return generator[e.constructor.name](e);
+  return generator[e.constructor.name](e); // find corresponding entity name in generator object
 };
 
 var generator = {
 
-  Program: function(program) {
+  Program: function (program) {
     indentLevel = 0;
     emit('(() -> ');
     gen(program.block);
     return emit(');');
   },
 
-  Block: function(block) {
+  Block: function (block) {
     var i, len, ref, statement;
     indentLevel++;
     ref = block.statements;
     for (i = 0, len = ref.length; i < len; i++) {
       statement = ref[i];
-      gen(statement);
+      gen(statement); // this code currently emits from the inside to utilize indents and newlines
+      // However, may be able to emit from the outside and simply make inside collecting strings
     }
     return indentLevel--;
   },
 
-  VariableDeclaration: function(v) {
+  VariableDeclaration: function (v) {
     // var initializer = { // typechecking?
     //   'int': '0',
     //   'bool': 'false'
@@ -69,7 +70,7 @@ var generator = {
     return emit("var " + (makeVariable(v)) + " = " + gen(v.exp) + ";"); //initializer + ";");
   },
 
-  AssignmentStatement: function(s) {
+  AssignmentStatement: function (s) {
     return emit((gen(s.target)) + " = " + (gen(s.source)) + ";");
   },
 
@@ -78,29 +79,46 @@ var generator = {
   },
 
   Array: function (a) {
-    var string = "";
-    for (var i = 0; i < a.length; i++) {
-      string += emit(gen(a[i]));
+    var string = '[ ';
+    string += gen(a[0]);
+    for (var i = 1; i < a.length; i++) {
+      string += ', ' + gen(a[i]);
     }
+    string += ' ]';
     return string;
   },
 
+  EmitIfElse: function (string) {
+    return emit(string);
+  },
+
   IfElseStatements: function (ifelse) {
+    var string = "";
+    // can still use gen() without using emit(), use gen() to traverse
+    // gen() allows recursion from outside this function! 
+    // allows it to leave and come back
+    // basically use generator['key'](input) to get same effect
     if (ifelse.elseifs) {
-      console.log("inside elseifs");
-      return emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }');
+      console.log("inside elseifs ......" + ifelse.elseifs);
+      string += 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } else ' + gen(ifelse.elseifs);
     } else if (ifelse.elseBody) {
-      console.log("inside else");
-      return emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }');
+      console.log("inside else ........" + ifelse.elseBody);
+      string += 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }';
     } else {
       console.log("inside no else");
-      return emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body));
+      string += 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }';
     }
+    generator['EmitIfElse'](string);
   },
 
   ReturnStatement: function (r) {
     return emit('return ' + gen(r.value) + ';');
   },
+
+  Print: function (p) {
+    return 'console.log(' + p.expression + ')';
+  },
+
   // ReadStatement: function(s) {
   //   var i, len, ref, results, v;
   //   ref = s.varrefs;
@@ -126,9 +144,15 @@ var generator = {
   //   gen(s.body);
   //   return emit('}');
   // },
-  IntegerLiteral: function(literal) {
+
+  IntegerLiteral: function (literal) {
+    return literal.toString(); // sometimes may not want to emit, just return a string
+  },
+
+  StringLiteral: function (literal) {
     return literal.toString();
   },
+
   // BooleanLiteral: function(literal) {
   //   return literal.toString();
   // },
