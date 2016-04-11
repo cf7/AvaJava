@@ -1,10 +1,8 @@
 "use strict";
 
-var AssignmentStatement, VariableReference;
+var VariableReference = require('./variablereference');
 
-VariableReference = require('./variablereference');
-
-AssignmentStatement = (function() {
+var AssignmentStatement = (function() {
   function AssignmentStatement(target, source) {
     this.target = target;
     this.source = source;
@@ -15,18 +13,18 @@ AssignmentStatement = (function() {
   };
 
   AssignmentStatement.prototype.analyze = function(context) {
-    this.target.analyze(context);
-    this.source.analyze(context);
-    return this.source.type.mustBeCompatibleWith(this.target.type, 'Type mismatch in assignment');
+    // this.target.analyze(context);
+    // this.source.analyze(context);
+    // return this.source.type.mustBeCompatibleWith(this.target.type, 'Type mismatch in assignment');
   };
 
   AssignmentStatement.prototype.optimize = function() {
-    this.target = this.target.optimize();
-    this.source = this.source.optimize();
-    if (this.source instanceof VariableReference && this.target.referent === this.source.referent) {
-      null;
-    }
-    return this;
+    // this.target = this.target.optimize();
+    // this.source = this.source.optimize();
+    // if (this.source instanceof VariableReference && this.target.referent === this.source.referent) {
+    //   null;
+    // }
+    // return this;
   };
 
   return AssignmentStatement;

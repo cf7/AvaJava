@@ -73,8 +73,8 @@ var parseStatement = function() {
     return parseForLoop();
   } else if (at('while')) {
     return parseWhileLoop();
-  // } else if (at('id')) {
-  //   return parseAssignmentStatement();
+  } else if (at('id')) {
+    return parseAssignmentStatement();
   // } else if (at('read')) {
   //   return parseReadStatement();
   // } else if (at('write')) {
@@ -235,12 +235,12 @@ var parseFunctionCall = function (id) {
 }
 
 
-// var parseAssignmentStatement = function() {
-//   var target = new VariableReference(match('id'));
-//   match('=');
-//   var source = parseExpression();
-//   return new AssignmentStatement(target, source);
-// };
+var parseAssignmentStatement = function() {
+  var target = new VariableReference(match('id'));
+  match('=');
+  var source = parseExpression();
+  return new AssignmentStatement(target, source);
+};
 
 // one of the parser tests isn't passing because for some
 // reason the parser doesn't throw an error
