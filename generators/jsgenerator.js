@@ -4,6 +4,8 @@ var util = require('util');
 var HashMap = require('hashmap').HashMap;
 
 module.exports = function(program) {
+  console.log("**********************GENERATOR********************");
+  console.log(program);
   return gen(program);
 };
 
@@ -35,7 +37,7 @@ var makeVariable = (function(lastId, map) {
 })(0, new HashMap());
 
 var gen = function(e) {
-  // console.log("inside gen: " + e);
+  console.log("inside gen: " + e.constructor.name);
   return generator[e.constructor.name](e);
 };
 
@@ -57,14 +59,24 @@ var generator = {
     return indentLevel--;
   },
   VariableDeclaration: function(v) {
-    var initializer = {
-      'int': '0',
-      'bool': 'false'
-    }[v.type];
-    return emit("var " + (makeVariable(v)) + " = " + initializer + ";");
+    // var initializer = { // typechecking?
+    //   'int': '0',
+    //   'bool': 'false'
+    // }[v.type];
+    return emit("var " + (makeVariable(v)) + " = " + gen(v.exp) + ";"); //initializer + ";");
   },
   AssignmentStatement: function(s) {
     return emit((gen(s.target)) + " = " + (gen(s.source)) + ";");
+  },
+  Function: function (f) {
+    return emit("function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }");
+  },
+  Array: function (a) {
+    var string = "";
+    for (var i = 0; i < a.length; i++) {
+      string += emit(gen(a[i]));
+    }
+    return string;
   },
   // ReadStatement: function(s) {
   //   var i, len, ref, results, v;
@@ -97,9 +109,9 @@ var generator = {
   // BooleanLiteral: function(literal) {
   //   return literal.toString();
   // },
-  // VariableReference: function(v) {
-  //   return makeVariable(v.referent);
-  // },
+  VariableReference: function(v) {
+    return makeVariable(v.referent);
+  },
   // UnaryExpression: function(e) {
   //   return "(" + (makeOp(e.op.lexeme)) + " " + (gen(e.operand)) + ")";
   // },

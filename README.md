@@ -28,8 +28,8 @@ stringLiteral    ::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 letter    ::=  [a-zA-Z]
 digit     ::=  [\d]
 keyword   ::=  'var' | 'while' | 'and' | 'or' | 'not' 
-           |   'true' | 'false' | 'return' | 'for' | 'each' 
-	   |   'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+           	| 'true' | 'false' | 'return' | 'for' | 'each' 
+	   		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
 id        ::=  letter (letter | digit | '_')*
 		
 assignop  ::=  '=' | '+=' | '-=' | '*=' | '/='
@@ -48,23 +48,23 @@ comment   ::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
 
 ###Macrosyntax
 ```
-Program -> Block
-Block -> (Stmt ';')+
-Stmt -> Decl
-	| Assign
-    | 'return' Exp
-    | ConditionalExp
-    | Print    
-    | Loop
-    | Exp
+Program 	::= Block
+Block 		::= (Stmt ';')+
+Stmt 		::= Decl
+				| Assign
+    			| 'return' Exp
+    			| ConditionalExp
+    			| Print    
+    			| Loop
+    			| Exp
     
-Print ::= 'ava' Exp ';'
-Exp ::= Exp1 
-    | '[' StringList ']'
-    | FunctionExp
-Loop ::= ForLoop
-	| 'while' '(' Exp ')' '{' Block '}'
-ForLoop ::= 'for' 'each' id 'in' Exp '{' Block '}' | 'for' 
+Print 		::= 'ava' Exp ';'
+Exp 		::= Exp1 
+    			| '[' StringList ']'
+    			| FunctionExp
+Loop 		::= ForLoop
+				| 'while' '(' Exp ')' '{' Block '}'
+ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' | 'for' 
 Decl -> 'var' id ('=' Exp)? ';'
     | 'function' id '(' idList? ')' '=' Exp ';'
 Assign -> id '=' Exp ';'

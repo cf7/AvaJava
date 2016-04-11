@@ -33,7 +33,7 @@ module.exports = function(filename, callback) {
   var stream = byline(baseStream, { keepEmptyLines: true });
   var tokens = [];
   var linenumber = 1;
-  
+  console.log("*******************SCANNER*****************");
   // the 'readable' event is received when data can be read 
   // from the stream, the stream passes data to the callback function
   stream.on('readable', function() {

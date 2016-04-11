@@ -10,7 +10,6 @@ var VariableReference = (function() {
   };
   
   VariableReference.prototype.toString = function() {
-    console.log("toString varref token: " + this.token.lexeme);
     return '( ' + this.token.lexeme + ' )';
   };
 

@@ -24,6 +24,7 @@ var WhileLoop = require('../entities/whileloop.js');
 var tokens = [];
 
 module.exports = function(scannerOutput) {
+  console.log("********************PARSER******************");
   tokens = scannerOutput;
   // debugging
   for (token of tokens) {
