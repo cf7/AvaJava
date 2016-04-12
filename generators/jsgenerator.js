@@ -67,6 +67,9 @@ var generator = {
     ref = block.statements;
     for (i = 0, len = ref.length; i < len; i++) {
       statement = ref[i];
+      // ** edge case: BinaryExpression outside of a function or loop
+      // ** can't emit itself
+
       // console.log("alksdjf;aljsdf  ---   " + statement.constructor.name);
       string = gen(statement); // this code currently emits from the inside to utilize indents and newlines
       // However, may be able to emit from the outside and simply make inside collecting strings
@@ -151,6 +154,14 @@ var generator = {
     return emit('while (' + gen(w.condition) + ') { ' + gen(w.body) + ' }');
   },
 
+  ForLoop: function (f) {
+    if (!this.id) {
+        return emit('for ' + gen(f.exp) + ' times { ' + gen(f.body) + ' }');
+    } else {
+        return emit( 'for each ' + makeVariable(f.id.lexeme) + ' in ' + gen(f.exp) + ' { ' + gen(f.body) + ' }');
+    }
+  },
+
   PostfixExpression: function (pfx) {
     return gen(pfx.operand) + makeOp(pfx.operator.lexeme);
   },
@@ -201,6 +212,7 @@ var generator = {
   //   return "(" + (makeOp(e.op.lexeme)) + " " + (gen(e.operand)) + ")";
   // },
   BinaryExpression: function(e) {
+    console.log("inside BinaryExpression: " + e.operator.lexeme);
     return "(" + (gen(e.left)) + " " + (makeOp(e.operator.lexeme)) + " " + (gen(e.right)) + ")";
   }
 };

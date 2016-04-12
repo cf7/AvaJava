@@ -8,10 +8,11 @@ var BinaryExpression = (function () {
     }
     
     BinaryExpression.prototype.toString = function() {
-        return `${this.operator.lexeme} ${this.left} ${this.right}`;
+        return `( ${this.operator.lexeme} ${this.left} ${this.right} )`;
     };
     
     BinaryExpression.prototype.analyze = function(context) {
+        // typechecking
         
     };
     

@@ -379,11 +379,35 @@ var parseExp3 = function () {
 
 var parseExp4 = function () {
   var op, left, right;
-  console.log("inside parseExp5");
+  console.log("inside parseExp4");
   left = parseExp5();
+  // if (at(['@'])) {
+  //   op = match();
+  //   right = parseExp5();
+  //   left = new BinaryExpression(op, left, right);
+  // }
+  return left;
+}
+
+var parseExp5 = function () {
+  var op, left, right;
+  console.log("inside parseExp5");
+  left = parseExp6();
+  // if (at(['::'])) {
+  //   op = match();
+  //   right = parseExp6();
+  //   left = new BinaryExpression(op, left, right);
+  // }
+  return left;
+}
+
+var parseExp6 = function () {
+  var op, left, right;
+  console.log("inside parseExp6");
+  left = parseExp7();
   while (at(['+', '-'])) {
     op = match();
-    right = parseExp5();
+    right = parseExp7();
     left = new BinaryExpression(op, left, right);
   }
   return left;
@@ -392,13 +416,13 @@ var parseExp4 = function () {
 
 // ** remember can store the things that are being matched!
 // ** may need them to pass to a different parsing branch
-var parseExp5 = function () {
+var parseExp7 = function () {
   var op, left, right;
-  console.log("inside parseExp5");
-  left = parseExp6();
+  console.log("inside parseExp7");
+  left = parseExp8();
   while (at(['*', '/', '%'])) {
     op = match();
-    right = parseExp6();
+    right = parseExp8();
     left = new BinaryExpression(op, left, right);
   }
   return left;
@@ -406,50 +430,49 @@ var parseExp5 = function () {
 }
 
 // parseExp6
-var parseExp6 = function () {
+var parseExp8 = function () {
   var op, operand;
-  console.log("inside parseExp6");
+  console.log("inside parseExp8");
   if (at(['-', 'not'])) {
     op = match(); // need to branch to a different case for negation
-    operand = parseExp7();
+    operand = parseExp9();
     return new UnaryExpression(op, operand);
   } else {
-    return parseExp7();
+    return parseExp9();
   }
   // return statement
 }
 
 // parseExp7
-var parseExp7 = function () {
+var parseExp9 = function () {
   var op, operand;
-  console.log("inside parseExp7");
-  var operand = parseExp8();
-  if (at(['!', '++', '--', '^^', '::', '@'])) {
+  console.log("inside parseExp9");
+  var operand = parseExp10();
+  if (at(['!', '++', '--'])) {
     op = match();
-    console.log("leaving parseExp7");
+    console.log("leaving parseExp9");
     return new PostfixExpression(op, operand);
   } else {
-    console.log("leaving parseExp7");
+    console.log("leaving parseExp9");
     return operand;
   }
 }
 
-var parseExp8 = function () {
+var parseExp10 = function () {
   var op, left, right;
-  console.log("inside parseExp8");
-  left = parseExp9();
+  console.log("inside parseExp10");
+  left = parseExp11();
   if (at('^^')) {
     op = match();
-    right = parseExp9();
+    right = parseExp11();
     left = new BinaryExpression(op, left, right);
   }
-  console.log("leaving parseExp8");
+  console.log("leaving parseExp10");
   return left;
-  // return statement
 }
 
-var parseExp9 = function () {
-  console.log("inside parseExp9");
+var parseExp11 = function () {
+  console.log("inside parseExp11");
   if (at('(')) {
     match('(');
     return parseExpression();
