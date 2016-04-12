@@ -116,10 +116,13 @@ var parseVariableReference = function () {
   if (at('(')) { //, 'id'])) { // currying
     console.log("going inside");
     return parseFunctionCall(id); // pass in id?
+  } else if (at('=')) {
+    return parseAssignmentStatement(id);
   } else {
     console.log("inside - id is " + id.lexeme);
     return new VariableReference(id);
   }
+
 }
 
 // change parse types
@@ -238,8 +241,8 @@ var parseFunctionCall = function (id) {
 }
 
 
-var parseAssignmentStatement = function() {
-  var target = new VariableReference(match('id'));
+var parseAssignmentStatement = function(id) {
+  var target = new VariableReference(id);
   match('=');
   var source = parseExpression();
   return new AssignmentStatement(target, source);
