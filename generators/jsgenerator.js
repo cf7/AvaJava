@@ -33,6 +33,7 @@ var makeOp = function (op) {
 
 var makeVariable = function(v) { // if stops working, see original Iki version
   console.log('inside makeVariable: ' + v);
+  console.log('map has ' + v + ': ' + map.has(v));
   if (!map.has(v)) {
     map.set(v, ++lastId);
   }
@@ -83,8 +84,12 @@ var generator = {
     //   'int': '0',
     //   'bool': 'false'
     // }[v.type];
+    if (v.exp) {
                         // change to just 'v' when analyzer is working
-    return emit("var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp) + ";"); //initializer + ";");
+      return emit("var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp) + ";"); //initializer + ";");
+    } else {
+      return emit("var " + (makeVariable(v.id.lexeme)) + ";");
+    }
   },
 
   AssignmentStatement: function (s) {
@@ -155,9 +160,11 @@ var generator = {
   },
 
   ForLoop: function (f) {
-    if (!this.id) {
+    if (!f.id) {
+        console.log("inside ForLoop: " + f);
         return emit('for ' + gen(f.exp) + ' times { ' + gen(f.body) + ' }');
     } else {
+        console.log("inside ForLoop: " + f);
         return emit( 'for each ' + makeVariable(f.id.lexeme) + ' in ' + gen(f.exp) + ' { ' + gen(f.body) + ' }');
     }
   },
@@ -206,7 +213,7 @@ var generator = {
   // },
   VariableReference: function(v) {
     console.log("inside VariableReference: " + v.token.lexeme);
-    return makeVariable(v.token.lexeme); // late pass in v.referent once analyzer is working
+    return makeVariable(v.token.lexeme); // later pass in v.referent once analyzer is working
   },
   // UnaryExpression: function(e) {
   //   return "(" + (makeOp(e.op.lexeme)) + " " + (gen(e.operand)) + ")";

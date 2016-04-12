@@ -260,7 +260,7 @@ var parsePrintStatement = function () {
 }
 
 var parseForLoop = function () {
-  console.log("inside parseLoop");
+  console.log("inside parseForLoop");
   var id;
   var counter;
   var exp;
@@ -268,6 +268,10 @@ var parseForLoop = function () {
   match('for');
   if (at('each')) { // for each loop
     match('each');
+    // simulate having a variable to maintain syntax
+    if (!at('var')) { // var optional in for each loops
+      tokens.unshift({ kind: 'var', lexeme: 'var', line: tokens[0].line, col: tokens[0].col });
+    }
     id = parseVariableDeclaration();
     match('in');
     exp = parseExpression();
@@ -281,7 +285,7 @@ var parseForLoop = function () {
     body = parseBlock();
     match('}');
   }
-  console.log("leaving parseLoop");
+  console.log("leaving parseForLoop");
   return new ForLoop(id, exp, body);
 }
 
