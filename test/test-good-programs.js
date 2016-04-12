@@ -16,6 +16,7 @@ TEST_DIR = 'test/data/good-programs';
 
 describe('The compiler', function() {
   return fs.readdirSync(TEST_DIR).forEach(function(name) {
+    error.count = 0;
     if (name !== ".DS_Store") {
       return it("should compile " + name + " without errors", function(done) {
         return scan(path.join(TEST_DIR, name), function(tokens) {

@@ -18,6 +18,7 @@ TEST_DIR = 'test/data/semantic-errors';
 
 describe('The analyzer detects an error for', function() {
   return fs.readdirSync(TEST_DIR).forEach(function(name) {
+    error.count = 0;
     if (name !== ".DS_Store") {
       var check;
       check = name.replace(/-/g, ' ').replace(/\.ava$/, '');
