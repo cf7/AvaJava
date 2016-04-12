@@ -76,8 +76,8 @@ var parseStatement = function() {
     return parseForLoop();
   } else if (at('while')) {
     return parseWhileLoop();
-  } else if (at('id')) {
-    return parseAssignmentStatement();
+  // } else if (at('id')) { // need to have lookahead before adding Assignment
+  //   return parseAssignmentStatement();
   // } else if (at('read')) {
   //   return parseReadStatement();
   // } else if (at('write')) {
