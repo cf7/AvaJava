@@ -31,8 +31,8 @@ var makeOp = function (op) {
   }[op] || op;
 };
 
-var makeVariable = function(v) {
-  console.log(v);
+var makeVariable = function(v) { // if stops working, see original Iki version
+  console.log('inside makeVariable: ' + v);
   if (!map.has(v)) {
     map.set(v, ++lastId);
   }
@@ -40,7 +40,7 @@ var makeVariable = function(v) {
 };
 
 var gen = function (e) {
-  // console.log("inside gen: " + e.constructor.name);
+  console.log("inside gen: " + e.constructor.name);
   return generator[e.constructor.name](e); // find corresponding entity name in generator object
   // and pass in the entity into its matching function
 };
@@ -75,7 +75,7 @@ var generator = {
     //   'bool': 'false'
     // }[v.type];
                         // change to just 'v' when analyzer is working
-    return emit("var " + (makeVariable(v.lexeme)) + " = " + gen(v.exp) + ";"); //initializer + ";");
+    return emit("var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp) + ";"); //initializer + ";");
   },
 
   AssignmentStatement: function (s) {
@@ -170,7 +170,8 @@ var generator = {
   //   return literal.toString();
   // },
   VariableReference: function(v) {
-    return makeVariable(v.lexeme); // late pass in v.referrent once analyzer is working
+    console.log("inside VariableReference: " + v.token.lexeme);
+    return makeVariable(v.token.lexeme); // late pass in v.referent once analyzer is working
   },
   // UnaryExpression: function(e) {
   //   return "(" + (makeOp(e.op.lexeme)) + " " + (gen(e.operand)) + ")";
