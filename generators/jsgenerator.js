@@ -146,6 +146,10 @@ var generator = {
     console.log("inside FunctionCall: " + c.id.lexeme);
     return emit(c.id.lexeme + "(" + gen(c.params) + ")");
   },
+
+  WhileLoop: function (w) {
+    return emit('while (' + gen(w.condition) + ') { ' + gen(w.body) + ' }');
+  },
   // ReadStatement: function(s) {
   //   var i, len, ref, results, v;
   //   ref = s.varrefs;

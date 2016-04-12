@@ -9,7 +9,9 @@ var IntegerLiteral = (function () {
     
     IntegerLiteral.prototype.analyze = function(context) {
         console.log("--=--made it down to integers--=--");
+        // add typechecking
     };
+
     return IntegerLiteral;
 })();
 

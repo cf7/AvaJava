@@ -12,7 +12,8 @@ class PostfixExpression {
     }
 
     analyze(context) {
-
+        // typechecking
+        return this.operand.analyze(context);
     }
 
 }
