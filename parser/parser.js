@@ -7,7 +7,7 @@ var VariableDeclaration = require('../entities/variabledeclaration.js');
 var Print = require('../entities/print.js');
 var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
-var IntLiteral = require('../entities/integerliteral.js');
+var IntegerLiteral = require('../entities/integerliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -484,7 +484,7 @@ var parseExp11 = function () {
   } else if (at('[')) {
     return parseList();
   } else if (at('intlit')) {
-    return parseIntLiteral();
+    return parseIntegerLiteral();
   } else if (at('floatlit')) {
     return parseFloatLiteral();
   } else if (at('stringlit')) { // hardcoding for now, change to 'literal' later
@@ -510,9 +510,9 @@ var parseList = function () {
   return exps;
 }
 
-var parseIntLiteral = function () {
-  console.log("inside parseIntLiteral");
-  return new IntLiteral(match());
+var parseIntegerLiteral = function () {
+  console.log("inside parseIntegerLiteral");
+  return new IntegerLiteral(match());
 }
 
 var parseFloatLiteral = function () {

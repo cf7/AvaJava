@@ -1,7 +1,25 @@
-// baseline generator code from iki
-
+var scanner = require('../scanner/scanner.js');
+var error = require('../error.js');
+var Program = require('../entities/program.js');
+var Block = require('../entities/block.js');
+var Type = require('../entities/type.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
+var Print = require('../entities/print.js');
+var AssignmentStatement = require('../entities/assignmentstatement.js');
+var IfElseStatements = require('../entities/ifelseexpressions.js');
+var IntegerLiteral = require('../entities/integerliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
+var UnaryExpression = require('../entities/unaryexpression.js');
+var PostfixExpression = require('../entities/postfixexpression.js');
+var Function = require('../entities/function.js');
+var FunctionCall = require('../entities/functioncall.js');
+var ReturnStatement = require('../entities/returnstatement.js');
+var StringLiteral = require('../entities/stringliteral.js');
+var BooleanLiteral = require('../entities/booleanliteral.js');
+var VariableReference = require('../entities/variablereference.js');
+var BothExpression = require('../entities/bothexpression.js');
+var ForLoop = require('../entities/forloop.js');
+var WhileLoop = require('../entities/whileloop.js');
 
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
@@ -169,9 +187,22 @@ var generator = {
   },
 
   ForLoop: function (f) {
+    var index = { kind: 'id', lexeme: 'i' };
+    var indexExp = { kind: 'intlit', lexeme: '0' };
+    var op = { kind: '<', lexeme: '<' };
+    var left = new VariableReference(index); // don't gen() these because will
+    // be passed into gen() later on (in BinaryExpression)
+    var right = f.exp; // this is also a VariableReference
+    var incrementOp = { kind: '++', lexeme: '++' };
+    var operand = new VariableReference(index);
+
     if (!f.id) {
         console.log("inside ForLoop: " + f);
-        return emit('for ' + gen(f.exp) + ' times { ' + gen(f.body) + ' }');
+        // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
+        return emit('for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
+          + ' ' + gen(new BinaryExpression(op, left, right)) + '; '
+          +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
+          + gen(f.body) + ' }');
     } else {
         console.log("inside ForLoop: " + f.id);
         return emit( 'for (' + gen(f.id).replace(';','') + ' of ' + gen(f.exp) + ') { ' + gen(f.body) + ' }');
