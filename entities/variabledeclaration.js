@@ -4,6 +4,7 @@ var Type = require('./type.js');
 
 var VariableDeclaration = (function() {
   function VariableDeclaration(id, exp) {//, type) {
+    console.log("alskdjfl;kasjdflkajs  : " + id.lexeme);
     this.id = id;
     this.exp = exp;
     // this.type = type;
@@ -14,7 +15,11 @@ var VariableDeclaration = (function() {
   };
   
   VariableDeclaration.prototype.toString = function() {
-    return "(var " + this.id.lexeme + " " + this.exp + " )"; // this.type + ")";
+    if (this.exp) {
+      return "(var " + this.id.lexeme + " " + this.exp + " )"; // this.type + ")";
+    } else {
+      return "(var " + this.id.lexeme + " )";
+    }
   };
 
   VariableDeclaration.prototype.analyze = function(context) {

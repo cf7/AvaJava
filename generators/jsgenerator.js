@@ -1,5 +1,8 @@
 // baseline generator code from iki
 
+var VariableDeclaration = require('../entities/variabledeclaration.js');
+var BinaryExpression = require('../entities/binaryexpression.js');
+
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
 var map;
@@ -68,12 +71,18 @@ var generator = {
     ref = block.statements;
     for (i = 0, len = ref.length; i < len; i++) {
       statement = ref[i];
-      // ** edge case: BinaryExpression outside of a function or loop
-      // ** can't emit itself
-
+      console.log("inside Block for loop: " + statement);
+      // ** edge case: BinaryExpression outside of a function or loop can't emit itself
+      // ** edge case: VariableDeclaration outside of function or loop
+      if (statement instanceof BinaryExpression) {
+        emit(gen(statement));
+      } else if (statement instanceof VariableDeclaration) {
+        emit(gen(statement));
+      } else {
       // console.log("alksdjf;aljsdf  ---   " + statement.constructor.name);
-      string = gen(statement); // this code currently emits from the inside to utilize indents and newlines
+        string = gen(statement); // this code currently emits from the inside to utilize indents and newlines
       // However, may be able to emit from the outside and simply make inside collecting strings
+      }
     }
     indentLevel--;
     return string;
@@ -85,10 +94,10 @@ var generator = {
     //   'bool': 'false'
     // }[v.type];
     if (v.exp) {
-                        // change to just 'v' when analyzer is working
-      return emit("var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp) + ";"); //initializer + ";");
+                    // change to just 'v' when analyzer is working
+      return "var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp) + ";" //initializer + ";");
     } else {
-      return emit("var " + (makeVariable(v.id.lexeme)) + ";");
+      return "var " + (makeVariable(v.id.lexeme)) + ";";
     }
   },
 
@@ -164,8 +173,8 @@ var generator = {
         console.log("inside ForLoop: " + f);
         return emit('for ' + gen(f.exp) + ' times { ' + gen(f.body) + ' }');
     } else {
-        console.log("inside ForLoop: " + f);
-        return emit( 'for each ' + makeVariable(f.id.lexeme) + ' in ' + gen(f.exp) + ' { ' + gen(f.body) + ' }');
+        console.log("inside ForLoop: " + f.id);
+        return emit( 'for (' + gen(f.id).replace(';','') + ' of ' + gen(f.exp) + ') { ' + gen(f.body) + ' }');
     }
   },
 
