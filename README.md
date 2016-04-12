@@ -74,29 +74,29 @@ VarRef 		::= Call | Assign | id
 ConditionalExp ::= 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
 
 
-Args -> ExpList
-Exp1 -> Exp2 ('or' Exp2)*
-Exp2 -> Exp3 ('and' Exp3)* ('both' Exp)?
-Exp3 -> Exp4 (relop Exp4)?
-Exp4 -> Exp5 (appendop Exp5)*
-Exp5 -> Exp6 (consop Exp6)*
-Exp6 -> Exp7 (addop Exp7)*
-Exp7 -> Exp8 (mulop Exp8)*
-Exp8 -> prefixop? Exp9
-Exp9 -> Exp10 postfixop?
-Exp10 -> Exp11 ('^^' Exp11)?
-Exp11 -> '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit | List
+Args 		::= ExpList
+Exp1 		::= Exp2 ('or' Exp2)*
+Exp2 		::= Exp3 ('and' Exp3)* ('both' Exp)?
+Exp3 		::= Exp4 (relop Exp4)?
+Exp4 		::= Exp5 (appendop Exp5)*
+Exp5 		::= Exp6 (consop Exp6)*
+Exp6 		::= Exp7 (addop Exp7)*
+Exp7 		::= Exp8 (mulop Exp8)*
+Exp8 		::= prefixop? Exp9
+Exp9 		::= Exp10 postfixop?
+Exp10 		::= Exp11 ('^^' Exp11)?
+Exp11 		::= '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit | List
 
-ExpList -> Exp ( ',' Exp )*
-idList -> id (',' id)*
-LiteralList -> Literal (',' Literal)*
-StringList -> stringLiteral (',' stringLiteral)*
+ExpList 	::= Exp ( ',' Exp )*
+idList 		::= id (',' id)*
+LiteralList	::= Literal (',' Literal)*
+StringList 	::= stringLiteral (',' stringLiteral)*
 
-Literal -> NumericLiteral | characterLiteral | stringLiteral | boolit
-NumericLiteral -> intlit | floatlit
-SetLiteral -> '{' LiteralList '}'
-List -> '[' ExpList? ']'
-String -> stringLiteral
+Literal 	::= NumericLiteral | characterLiteral | stringLiteral | boolit
+NumericLiteral	::= intlit | floatlit
+SetLiteral 	::= '{' LiteralList '}'
+List 		::= '[' ExpList? ']'
+String 		::= stringLiteral
 ```
 
 ####Example Programs:
