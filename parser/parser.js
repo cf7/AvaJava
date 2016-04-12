@@ -299,15 +299,10 @@ var parseConditionalExp = function () {
   var elseifs;
   var elseBody;
   var body;
+  var parentheses = false;
   console.log("inside parseConditionalExp");
   match('if');
-  if (at('(')) { // parantheses optional
-    match('(');
-  }
   var conditional = parseExpression();
-  if (at(')')) {
-    match(')');
-  }
   match('then');
   body = parseIfBlock();
   if (at('else')) {
