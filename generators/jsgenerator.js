@@ -2,10 +2,14 @@
 
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
+var map;
+var lastId;
 
 module.exports = function (program) {
   console.log("**********************GENERATOR********************");
   console.log(program);
+  map = new HashMap();
+  lastId = 0;
   return gen(program);
 };
 
@@ -27,18 +31,18 @@ var makeOp = function (op) {
   }[op] || op;
 };
 
-var makeVariable = (function(lastId, map) {
-  return function(v) {
-    if (!map.has(v)) {
-      map.set(v, ++lastId);
-    }
-    return '_v' + map.get(v);
-  };
-})(0, new HashMap());
+var makeVariable = function(v) {
+  console.log(v);
+  if (!map.has(v)) {
+    map.set(v, ++lastId);
+  }
+  return '_v' + map.get(v);
+};
 
 var gen = function (e) {
-  console.log("inside gen: " + e.constructor.name);
+  // console.log("inside gen: " + e.constructor.name);
   return generator[e.constructor.name](e); // find corresponding entity name in generator object
+  // and pass in the entity into its matching function
 };
 
 var generator = {
@@ -52,14 +56,17 @@ var generator = {
 
   Block: function (block) {
     var i, len, ref, statement;
+    var string = "";
     indentLevel++;
     ref = block.statements;
     for (i = 0, len = ref.length; i < len; i++) {
       statement = ref[i];
-      gen(statement); // this code currently emits from the inside to utilize indents and newlines
+      // console.log("alksdjf;aljsdf  ---   " + statement.constructor.name);
+      string = gen(statement); // this code currently emits from the inside to utilize indents and newlines
       // However, may be able to emit from the outside and simply make inside collecting strings
     }
-    return indentLevel--;
+    indentLevel--;
+    return string;
   },
 
   VariableDeclaration: function (v) {
@@ -67,7 +74,8 @@ var generator = {
     //   'int': '0',
     //   'bool': 'false'
     // }[v.type];
-    return emit("var " + (makeVariable(v)) + " = " + gen(v.exp) + ";"); //initializer + ";");
+                        // change to just 'v' when analyzer is working
+    return emit("var " + (makeVariable(v.lexeme)) + " = " + gen(v.exp) + ";"); //initializer + ";");
   },
 
   AssignmentStatement: function (s) {
@@ -88,27 +96,30 @@ var generator = {
     return string;
   },
 
-  EmitIfElse: function (string) {
-    return emit(string);
-  },
-
+  // if getting numbers from gen() while generating a block, might
+  // be because block returns indentlevel
   IfElseStatements: function (ifelse) {
-    var string = "";
     // can still use gen() without using emit(), use gen() to traverse
     // gen() allows recursion from outside this function! 
     // allows it to leave and come back
     // basically use generator['key'](input) to get same effect
     if (ifelse.elseifs) {
-      console.log("inside elseifs ......" + ifelse.elseifs);
-      string += 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } else ' + gen(ifelse.elseifs);
+      // console.log("inside elseifs ......" + ifelse.elseifs);
+      // console.log("alsdkjas;lj ===== " + "console.log(" + gen(ifelse.body) + ")");
+      emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } else ');
+      emit(gen(ifelse.elseifs));
+
     } else if (ifelse.elseBody) {
-      console.log("inside else ........" + ifelse.elseBody);
-      string += 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }';
+      // console.log("inside else ........" + ifelse.elseBody.statements.constructor.name);
+      emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }');
+
     } else {
-      console.log("inside no else");
-      string += 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }';
+
+      // console.log("inside no else");
+      emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }');
+
     }
-    generator['EmitIfElse'](string);
+    return;
   },
 
   ReturnStatement: function (r) {
@@ -116,7 +127,8 @@ var generator = {
   },
 
   Print: function (p) {
-    return 'console.log(' + p.expression + ')';
+    // console.log("inside Print: " + gen(p.expression));
+    return "console.log(" + gen(p.expression) + ")";
   },
 
   // ReadStatement: function(s) {
@@ -150,6 +162,7 @@ var generator = {
   },
 
   StringLiteral: function (literal) {
+    // console.log("inside StringLiteral: " + literal.toString());
     return literal.toString();
   },
 
@@ -157,7 +170,7 @@ var generator = {
   //   return literal.toString();
   // },
   VariableReference: function(v) {
-    return makeVariable(v.referent);
+    return makeVariable(v.lexeme); // late pass in v.referrent once analyzer is working
   },
   // UnaryExpression: function(e) {
   //   return "(" + (makeOp(e.op.lexeme)) + " " + (gen(e.operand)) + ")";

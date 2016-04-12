@@ -298,6 +298,7 @@ var parseWhileLoop = function () {
 var parseConditionalExp = function () {
   var elseifs;
   var elseBody;
+  var body;
   console.log("inside parseConditionalExp");
   match('if');
   if (at('(')) { // parantheses optional
@@ -308,7 +309,7 @@ var parseConditionalExp = function () {
     match(')');
   }
   match('then');
-  var body = parseIfBlock();
+  body = parseIfBlock();
   if (at('else')) {
     match('else');
     if (at('if')) {
