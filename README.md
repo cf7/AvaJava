@@ -51,7 +51,6 @@ comment   ::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
 Program 	::= Block
 Block 		::= (Stmt ';')+
 Stmt 		::= Decl
-				| Assign
     			| 'return' Exp
     			| ConditionalExp
     			| Print    
@@ -65,13 +64,14 @@ Exp 		::= Exp1
 Loop 		::= ForLoop
 				| 'while' '(' Exp ')' '{' Block '}'
 ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' | 'for' 
-Decl -> 'var' id ('=' Exp)? ';'
-    | 'function' id '(' idList? ')' '=' Exp ';'
-Assign -> id '=' Exp ';'
-    | '[' idList ']' '=' Exp ';'
-VarRef -> id | Call
-ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
-FunctionExp -> '(' Args ')' '->' Block ;'
+Decl 		::=	'var' id ('=' Exp)? ';'
+    			| 'function' id '(' idList? ')' '=' Exp ';'
+FunctionExp	::= '(' Args ')' '->' Block ;'
+Call 		::=	id ( id+ | '(' ExpList? ')' ) ';'
+Assign 		::= id '=' Exp ';'
+    			| '[' idList ']' '=' Exp ';'
+VarRef 		::= Call | Assign | id
+ConditionalExp ::= 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
 
 
 Args -> ExpList
@@ -86,8 +86,6 @@ Exp8 -> prefixop? Exp9
 Exp9 -> Exp10 postfixop?
 Exp10 -> Exp11 ('^^' Exp11)?
 Exp11 -> '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit | List
-
-Call -> id ( id+ | '(' ExpList? ')' ) ';'
 
 ExpList -> Exp ( ',' Exp )*
 idList -> id (',' id)*
