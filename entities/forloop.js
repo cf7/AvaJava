@@ -16,12 +16,12 @@ class ForLoop {
     }
 
     analyze(context) {
-        this.exp.analyze(context); // analyze with broader context
-        var localContext = context.createChildContext();
-        localContext.addVariable(this.id.lexeme, this.id);
-        // should have own local context for body
-        return this.body.analyze(localContext);
-        // check for iterable type
+        // this.exp.analyze(context); // analyze with broader context
+        // var localContext = context.createChildContext();
+        // localContext.addVariable(this.id.lexeme, this.id);
+        // // should have own local context for body
+        // return this.body.analyze(localContext);
+        // // check for iterable type
     }
 
 }

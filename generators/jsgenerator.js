@@ -23,8 +23,8 @@ var WhileLoop = require('../entities/whileloop.js');
 
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
-var map;
-var lastId;
+// var map;
+// var lastId;
 
 module.exports = function (program) {
   console.log("**********************GENERATOR********************");
@@ -52,14 +52,23 @@ var makeOp = function (op) {
   }[op] || op;  // otherwise, if operators are same, keep op
 };
 
-var makeVariable = function(v) { // if stops working, see original Iki version
-  console.log('inside makeVariable: ' + v);
-  console.log('map has ' + v + ': ' + map.has(v));
-  if (!map.has(v)) {
-    map.set(v, ++lastId);
-  }
-  return '_v' + map.get(v);
-};
+// both work
+var makeVariable = (function(lastId, map) {
+  return function(v) {
+    if (!map.has(v)) {
+      map.set(v, ++lastId);
+    }
+    return '_v' + map.get(v);
+  };
+})(0, new HashMap());
+// var makeVariable = function(v) { // if stops working, see original Iki version
+//   console.log('inside makeVariable: ' + v);
+//   console.log('map has ' + v + ': ' + map.has(v));
+//   if (!map.has(v)) {
+//     map.set(v, ++lastId);
+//   }
+//   return '_v' + map.get(v);
+// };
 
 var gen = function (e) {
   console.log("inside gen: " + e.constructor.name);
