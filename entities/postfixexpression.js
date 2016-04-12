@@ -3,6 +3,7 @@
 class PostfixExpression {
 
     constructor(op, operand) {
+        console.log("--------------postfixexpr---------: " + op.lexeme);
         this.operator = op;
         this.operand = operand;
     }

@@ -21,14 +21,14 @@ var emit = function (line) {
   return console.log(Array(pad + 1).join(' ') + line); // emits as soon as called, can't use recursion
 };
 
-var makeOp = function (op) {
-  return {
-    not: '!',
+var makeOp = function (op) { 
+  return {    // only add to this list if Avajava operator looks different in javascript
+    not: '!', 
     and: '&&',
     or: '||',
     '==': '===',
     '!=': '!=='
-  }[op] || op;
+  }[op] || op;  // otherwise, if operators are same, keep op
 };
 
 var makeVariable = function(v) { // if stops working, see original Iki version
@@ -150,6 +150,11 @@ var generator = {
   WhileLoop: function (w) {
     return emit('while (' + gen(w.condition) + ') { ' + gen(w.body) + ' }');
   },
+
+  PostfixExpression: function (pfx) {
+    return gen(pfx.operand) + makeOp(pfx.operator.lexeme);
+  },
+
   // ReadStatement: function(s) {
   //   var i, len, ref, results, v;
   //   ref = s.varrefs;
