@@ -45,6 +45,12 @@ var gen = function (e) {
   // and pass in the entity into its matching function
 };
 
+// consult entities for instance variables within
+// the objects (example: program.block is an instance variable in the class Program)
+
+// need to determine whether to use gen() or not
+// sometimes will only need to return strings in the cases below
+// can have a mix of calling entitiy toStrings() and calling gen() to keep traversing
 var generator = {
 
   Program: function (program) {
@@ -87,12 +93,17 @@ var generator = {
   },
 
   Array: function (a) {
-    var string = '[ ';
-    string += gen(a[0]);
-    for (var i = 1; i < a.length; i++) {
-      string += ', ' + gen(a[i]);
+    var string = "";
+    if (a.length > 1) {
+      string += '[ ';
+      string += gen(a[0]);
+      for (var i = 1; i < a.length; i++) {
+        string += ', ' + gen(a[i]);
+      }
+      string += ' ]';
+    } else {
+      string += gen(a[0]);
     }
-    string += ' ]';
     return string;
   },
 
@@ -131,6 +142,10 @@ var generator = {
     return "console.log(" + gen(p.expression) + ")";
   },
 
+  FunctionCall: function (c) {
+    console.log("inside FunctionCall: " + c.id.lexeme);
+    return emit(c.id.lexeme + "(" + gen(c.params) + ")");
+  },
   // ReadStatement: function(s) {
   //   var i, len, ref, results, v;
   //   ref = s.varrefs;
