@@ -108,16 +108,6 @@ var generator = {
     for (i = 0, len = ref.length; i < len; i++) {
       statement = ref[i];
       console.log("inside Block for loop: " + statement);
-      // ** edge case: BinaryExpression outside of a function or loop can't emit itself
-      // ** edge case: VariableDeclaration outside of function or loop
-      // if (statement instanceof BinaryExpression) {
-      //   emit(gen(statement));
-      // } else if (statement instanceof VariableDeclaration) {
-      //   emit(gen(statement));
-      // } else {
-      // console.log("alksdjf;aljsdf  ---   " + statement.constructor.name);
-      // string = gen(statement); // this code currently emits from the inside to utilize indents and newlines
-      // However, may be able to emit from the outside and simply make inside collecting strings
       pad = indentPadding * indentLevel;
       string += "\n" + Array(pad + 1).join(' ') + gen(statement);
       // }
@@ -197,7 +187,7 @@ var generator = {
 
   FunctionCall: function (c) {
     console.log("inside FunctionCall: " + c.id.lexeme);
-    return c.id.lexeme + "(" + gen(c.params) + ")";
+    return makeVariable(c.id.lexeme) + "(" + gen(c.params) + ")";
   },
 
   WhileLoop: function (w) {
