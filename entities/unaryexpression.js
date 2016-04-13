@@ -8,6 +8,9 @@ var UnaryExpression = (function () {
         return `${this.operator.lexeme} ${this.operand}`;
     };
     
+    UnaryExpression.prototype.analyze = function(context) {
+        
+    };
     return UnaryExpression;
 })();
 

@@ -4,3 +4,5 @@ true and true both true;
 true and true both false;
 true and false both false;
 false and false both false;
+true and true both not true;
+true and false both not false;

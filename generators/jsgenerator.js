@@ -226,6 +226,19 @@ var generator = {
     return gen(pfx.operand) + makeOp(pfx.operator.lexeme);
   },
 
+  BothExpression: function (both) {
+    // has a left and right, left is binaryExpression, right is an Expression
+    // binaryExpressions have operators
+    var right = both.right;
+    if (right instanceof UnaryExpression) {
+      right = gen(both.right);
+      return "( " + gen(both.left.left) + " !== " + right.replace('!', '') + ' ' + makeOp(both.left.operator.lexeme) + ' ' + gen(both.left.right) + " !== " + right.replace('!', '') + " )";
+    } else {
+      right = gen(both.right);
+      return "( " + gen(both.left.left) + " === " + right + ' ' + makeOp(both.left.operator.lexeme) + ' ' + gen(both.left.right) + " === " + right + " )";
+    }
+  },
+
   // ReadStatement: function(s) {
   //   var i, len, ref, results, v;
   //   ref = s.varrefs;
@@ -272,9 +285,11 @@ var generator = {
     console.log("inside VariableReference: " + v.token.lexeme);
     return makeVariable(v.token.lexeme); // later pass in v.referent once analyzer is working
   },
-  // UnaryExpression: function(e) {
-  //   return "(" + (makeOp(e.op.lexeme)) + " " + (gen(e.operand)) + ")";
-  // },
+
+  UnaryExpression: function(e) {
+    return "(" + (makeOp(e.operator.lexeme)) + (gen(e.operand)) + ")";
+  },
+
   BinaryExpression: function(e) {
     console.log("inside BinaryExpression: " + e.operator.lexeme);
     return "(" + (gen(e.left)) + " " + (makeOp(e.operator.lexeme)) + " " + (gen(e.right)) + ")";

@@ -245,16 +245,21 @@ eat hellowWorld
 `=> [2,3,4,5,6,7,8,9,10,11]`<br>
 
 #####Conditionals:
-`1 == 1`<br>
-`1 >= 2`<br>
-`1 <= 2`<br>
-`1 != 2 // not equal`<br>
-`true and false => false`<br>
-`true or false => true`<br>
-`true and true both true => true`<br>
-`true and true both false => false`<br>
-`true and false both false => false`<br>
-`false and false both false => true`<br>
+```
+1 == 1
+1 >= 2
+1 <= 2
+1 != 2 // not equal
+true and false => false
+true or false => true
+
+true and true both true => true
+true and true both false => false
+true and false both false => false
+false and false both false => true
+x and y both 0 // instaead of (x == 0 && y == 0)
+x and y both not 0 // intead of (x != 0 && y != 0)
+```
 
 #####Loops: 
 `while (x and y both less than 10): ava "Hello World";` <br>
