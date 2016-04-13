@@ -266,11 +266,14 @@ x and y both not 0 // intead of (x != 0 && y != 0)
 `for x times: ava "Hello World";` <br> 
 
 #####String Operations:
-`"h" + "e" => "he" `<br> 
-`"e" - "e" => ""`<br>
-`"he" - "e" => "h" `<br> 
-`"heh" - "h" => "he" `<br>
-`"hehe" - "h" => "hee"`<br>
+```
+"t" + "e" => "te" 
+"e" - "e" => ""
+"te" - "e" => "t"
+"heeh" - "h" => "eeh"
+"hehe" - "h" => "ehe"
+"t" * 3 => "ttt"
+```
 
 #####Arrays:
 `x = []`<br>

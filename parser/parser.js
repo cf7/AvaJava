@@ -24,7 +24,7 @@ var WhileLoop = require('../entities/whileloop.js');
 
 var tokens = [];
 
-var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 'for', 'if', 'ava', 'id'];
+var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 'floatlit', 'boolit'];
 
 module.exports = function(scannerOutput) {
   console.log("********************PARSER******************");

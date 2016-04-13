@@ -295,6 +295,20 @@ var generator = {
     console.log("inside BinaryExpression: " + e.operator.lexeme);
     if (e.operator.lexeme === '^^') {
       return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
+    } else if (e.left instanceof StringLiteral && e.right instanceof StringLiteral) {
+      if (e.operator.lexeme === '-') {
+        return "( " + gen(e.left) + ".replace(" + gen(e.right) + ", '') )";
+      } else {
+        return "( " + gen(e.left) + " " + makeOp(e.operator.lexeme) + " " + gen(e.right) + " )";
+      }
+    } else if (e.left instanceof StringLiteral && e.right instanceof IntegerLiteral) {
+      if (e.operator.lexeme === '*') {
+        return "( " + gen(e.left) + ".repeat(" + gen(e.right) + ") )";
+      }
+    } else if (e.left instanceof IntegerLiteral && e.right instanceof StringLiteral) {
+      if (e.operator.lexeme === '*') {
+        return "( " + gen(e.right) + ".repeat(" + gen(e.left) + ") )";
+      }
     } else {
       return "(" + (gen(e.left)) + " " + (makeOp(e.operator.lexeme)) + " " + (gen(e.right)) + ")";
     }
