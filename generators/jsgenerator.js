@@ -23,6 +23,8 @@ var WhileLoop = require('../entities/whileloop.js');
 
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
+var code = "";
+
 // var map;
 // var lastId;
 
@@ -31,16 +33,22 @@ module.exports = function (program) {
   console.log(program);
   map = new HashMap();
   lastId = 0;
-  return gen(program);
+  return generate(program);
 };
+
+var generate = function (program) {
+  gen(program);
+  return console.log(code);
+}
 
 var indentPadding = 4;
 var indentLevel = 0;
 
 var emit = function (line) {
   var pad = indentPadding * indentLevel;
-  return console.log(Array(pad + 1).join(' ') + line); // emits as soon as called, can't use recursion
+  code += "\n" + Array(pad + 1).join(' ') + line;
 };
+
 
 var makeOp = function (op) { 
   return {    // only add to this list if Avajava operator looks different in javascript
@@ -82,17 +90,18 @@ var gen = function (e) {
 // need to determine whether to use gen() or not
 // sometimes will only need to return strings in the cases below
 // can have a mix of calling entitiy toStrings() and calling gen() to keep traversing
+
 var generator = {
 
   Program: function (program) {
     indentLevel = 0;
     emit('(() -> ');
-    gen(program.block);
+    emit(gen(program.block));
     return emit(');');
   },
 
   Block: function (block) {
-    var i, len, ref, statement;
+    var i, len, ref, statement, pad;
     var string = "";
     indentLevel++;
     ref = block.statements;
@@ -101,15 +110,17 @@ var generator = {
       console.log("inside Block for loop: " + statement);
       // ** edge case: BinaryExpression outside of a function or loop can't emit itself
       // ** edge case: VariableDeclaration outside of function or loop
-      if (statement instanceof BinaryExpression) {
-        emit(gen(statement));
-      } else if (statement instanceof VariableDeclaration) {
-        emit(gen(statement));
-      } else {
+      // if (statement instanceof BinaryExpression) {
+      //   emit(gen(statement));
+      // } else if (statement instanceof VariableDeclaration) {
+      //   emit(gen(statement));
+      // } else {
       // console.log("alksdjf;aljsdf  ---   " + statement.constructor.name);
-        string = gen(statement); // this code currently emits from the inside to utilize indents and newlines
+      // string = gen(statement); // this code currently emits from the inside to utilize indents and newlines
       // However, may be able to emit from the outside and simply make inside collecting strings
-      }
+      pad = indentPadding * indentLevel;
+      string += "\n" + Array(pad + 1).join(' ') + gen(statement);
+      // }
     }
     indentLevel--;
     return string;
@@ -129,11 +140,11 @@ var generator = {
   },
 
   AssignmentStatement: function (s) {
-    return emit((gen(s.target)) + " = " + (gen(s.source)) + ";");
+    return (gen(s.target)) + " = " + (gen(s.source)) + ";";
   },
 
   Function: function (f) {
-    return emit("function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }");
+    return "function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }";
   },
 
   Array: function (a) {
@@ -161,24 +172,22 @@ var generator = {
     if (ifelse.elseifs) {
       // console.log("inside elseifs ......" + ifelse.elseifs);
       // console.log("alsdkjas;lj ===== " + "console.log(" + gen(ifelse.body) + ")");
-      emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } else ');
-      emit(gen(ifelse.elseifs));
+      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } else ' + gen(ifelse.elseifs);
 
     } else if (ifelse.elseBody) {
       // console.log("inside else ........" + ifelse.elseBody.statements.constructor.name);
-      emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }');
+      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }';
 
     } else {
 
       // console.log("inside no else");
-      emit('if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }');
+      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }';
 
     }
-    return;
   },
 
   ReturnStatement: function (r) {
-    return emit('return ' + gen(r.value) + ';');
+    return 'return ' + gen(r.value) + ';';
   },
 
   Print: function (p) {
@@ -188,11 +197,11 @@ var generator = {
 
   FunctionCall: function (c) {
     console.log("inside FunctionCall: " + c.id.lexeme);
-    return emit(c.id.lexeme + "(" + gen(c.params) + ")");
+    return c.id.lexeme + "(" + gen(c.params) + ")";
   },
 
   WhileLoop: function (w) {
-    return emit('while (' + gen(w.condition) + ') { ' + gen(w.body) + ' }');
+    return 'while (' + gen(w.condition) + ') { ' + gen(w.body) + ' }';
   },
 
   ForLoop: function (f) {
@@ -208,13 +217,13 @@ var generator = {
     if (!f.id) {
         console.log("inside ForLoop: " + f);
         // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
-        return emit('for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
+        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
           + ' ' + gen(new BinaryExpression(op, left, right)) + '; '
           +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
-          + gen(f.body) + ' }');
+          + gen(f.body) + ' }';
     } else {
         console.log("inside ForLoop: " + f.id);
-        return emit( 'for (' + gen(f.id).replace(';','') + ' of ' + gen(f.exp) + ') { ' + gen(f.body) + ' }');
+        return 'for (' + gen(f.id).replace(';','') + ' of ' + gen(f.exp) + ') { ' + gen(f.body) + ' }';
     }
   },
 
