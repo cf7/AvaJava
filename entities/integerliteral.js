@@ -4,7 +4,7 @@ var IntegerLiteral = (function () {
     }
 
     IntegerLiteral.prototype.toString = function() {
-        return '( ' + this.value.lexeme + ' )';
+        return '( ' + this.value + ' )';
     };
     
     IntegerLiteral.prototype.analyze = function(context) {

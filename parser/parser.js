@@ -23,7 +23,7 @@ var WhileLoop = require('../entities/whileloop.js');
 
 var tokens = [];
 
-var blockStatementKeywords = ['var', 'id', 'while', 'ava', 'return', 'for', 'if'];
+var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 'for', 'if', 'ava', 'id'];
 
 module.exports = function(scannerOutput) {
   console.log("********************PARSER******************");
@@ -495,7 +495,7 @@ var parseExp11 = function () {
     return varref; //parseVariableReference();
     // How do we distinguish between an id and a function Call?
   } else if (at(['true', 'false'])) {
-    return new BooleanLiteral(match());
+    return parseBooleanLiteral();
   // } else {
   //   error('inside parseExp9 error', tokens[0]);
   }
@@ -512,19 +512,23 @@ var parseList = function () {
 
 var parseIntegerLiteral = function () {
   console.log("inside parseIntegerLiteral");
-  return new IntegerLiteral(match());
+  return new IntegerLiteral(match().lexeme);
 }
 
 var parseFloatLiteral = function () {
   console.log("inside parseFloatLiteral");
-  match('floatlit');
+  match('floatlit'); // need to implement floatlits
 }
 
 var parseStringLiteral = function () {
   console.log("inside parseStringLiteral");
-  return new StringLiteral(match());
+  return new StringLiteral(match().lexeme);
 }
 
+var parseBooleanLiteral = function () {
+  console.log("inside parseBooleanLiteral");
+  return new BooleanLiteral(match().lexeme);
+}
 var parseReturnStatement = function () {
   console.log("inside parseReturnStatement");
   match('return');

@@ -252,6 +252,10 @@ var generator = {
   //   return emit('}');
   // },
 
+  BooleanLiteral: function (literal) {
+    return literal.toString();
+  },
+
   IntegerLiteral: function (literal) {
     return literal.toString(); // sometimes may not want to emit, just return a string
   },
