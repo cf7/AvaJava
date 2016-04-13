@@ -13,6 +13,9 @@ var BinaryExpression = (function () {
     
     BinaryExpression.prototype.analyze = function(context) {
         // typechecking
+        // string manipulation semantics
+        // make sure only [\+\-\*] allowed, unless adding more features
+        // integers and strings only allowed if using '*'
         
     };
     

@@ -15,7 +15,7 @@ Function = (function () {
         var localContext = context.createChildContext();
         var results = [];
         localContext.setInsideFunction(true);
-
+        
         // need to analyze variables too
         for (var i = 0; i < this.args.length; i++) {
             localContext.addVariable(this.args[i]);

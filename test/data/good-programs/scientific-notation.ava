@@ -1,0 +1,6 @@
+var x = 100e23;
+var y = 1E-23;
+var z = 2E+23;
+var w = 3E12;
+var v = 3e-12
+var u = 4e+12;

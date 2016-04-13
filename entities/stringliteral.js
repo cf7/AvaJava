@@ -5,7 +5,7 @@ var StringLiteral = (function () {
     }
 
     StringLiteral.prototype.toString = function() {
-        return '( ' + this.string.lexeme + ' )';
+        return '( ' + this.string + ' )';
     };
 
     StringLiteral.prototype.analyze = function(context) {
