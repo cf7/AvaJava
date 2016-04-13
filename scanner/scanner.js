@@ -10,7 +10,7 @@ var DIGIT = /[0-9]/;
 // var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
 var WORD_CHAR = /[A-Za-z_]/;
 var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|ava|end|times)$/;
-var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.\!]/;
+var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.\!\#]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /\.\.\.|\*\*\*/;
 var intlit = /^\d+$/;
@@ -56,6 +56,71 @@ module.exports = function(filename, callback) {
   });
 };
 
+var containsInterpolation = function (string) {
+  // later may want to consider string interpolation with backticks
+  // (javascript's string interpolation)
+  var start = 0;
+  var pos = 0;
+  var containsInterp = false;
+  var interpString = "";
+  console.log("inside containsInterpolation: " + string);
+  while (pos < string.length) {
+    if (string[pos] === "#" && string[pos + 1] === "{") {
+      start = pos;
+      while (pos < string.length && string[pos] !== "}") {
+        pos++;
+      }
+      if (pos + 1 >= string.length && string[pos] !== "}") {
+        break;
+      } else {
+        pos++;
+        interpString = string.substring(start, pos);
+        console.log("......." + interpString);
+        containsInterp = true;
+      }
+    } else {
+      pos++;
+    }
+  }
+  return containsInterp;
+}
+
+var processStringInterpolation = function (string, linenumber, strStart, tokens) {
+  // later may want to consider string interpolation with backticks
+  // (javascript's string interpolation)
+  var start = 0;
+  var pos = 0;
+  var front = "";
+  var rest = "";
+  var interpString = "";
+  console.log("inside processString: " + string);
+  while (pos < string.length) {
+    if (string[pos] === "#" && string[pos + 1] === "{") {
+      start = pos;
+      while (pos < string.length && string[pos] !== "}") {
+        pos++;
+      }
+      pos++;
+      front = string.substring(0, start);
+      rest = string.substring(pos, string.length);
+      interpString = string.substring(start, pos);
+      console.log("......." + interpString);
+    } else {
+      pos++;
+    }
+  }
+  interpString = interpString.replace("#{", "");
+  interpString = interpString.replace("}", "");
+  // need to check if integer as well
+  console.log("after finding interpolation: " + interpString);
+  var spaces = strStart + front.length + 2;
+  tokens.push({ kind: 'stringlit', lexeme: front + "\"", line: linenumber, col: strStart });
+  tokens.push({ kind: '+', lexeme: '+', line: linenumber, col: spaces }); // add a space between chars
+  tokens.push({ kind: 'id', lexeme: interpString, line: linenumber, col: spaces + 2 });
+  tokens.push({ kind: '+', lexeme: '+', line: linenumber, col: spaces + 2 + interpString.length + 1 });
+  tokens.push({ kind: 'stringlit', lexeme: "\"" + rest, line: linenumber, col: spaces + 2 + interpString.length + 3 });
+  // return string;
+}
 var processMultiLineComments = function (tokens) {
   // processing multi-line comments
     var index = 0;
@@ -141,7 +206,12 @@ var scan = function (line, lineNumber, tokens) {
           }
           pos++;
           string = line.substring(start, pos); // substring excludes the char at the end
-          emit("stringlit", string);
+          // returns everything behind the current pos
+          if (containsInterpolation(string)) {
+            processStringInterpolation(string, lineNumber, start, tokens);
+          } else {
+            emit("stringlit", string);
+          }
         }
         if (oneCharacterTokens.test(line[pos])) {
           emit(line[pos]);
