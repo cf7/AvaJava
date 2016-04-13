@@ -173,9 +173,9 @@ var parseFunctionExp = function () {
 
 var parseArgs = function () {
   console.log("inside parseArgs");
-    var exps = parseExpList();
-    console.log("parseArgs exps: " + exps);
-        console.log("leaving parseArgs");
+  var exps = parseExpList();
+  console.log("parseArgs exps: " + exps);
+  console.log("leaving parseArgs");
   return exps;
   // return
 }

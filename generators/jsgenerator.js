@@ -134,7 +134,12 @@ var generator = {
   },
 
   Function: function (f) {
-    return "function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }";
+    console.log(f.args.length);
+    if (f.args.indexOf(undefined) === -1) {
+      return "function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }";
+    } else {
+      return "function " + "() { " + gen(f.body) + " }";
+    }
   },
 
   Array: function (a) {
