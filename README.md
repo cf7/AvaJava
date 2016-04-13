@@ -139,10 +139,12 @@ guac hellowWorld.ava
 eat hellowWorld
 ```
 #####Identifiers and Reserved Words:
-`var - variable declaration`<br>
-`reserved words - 'var' | 'while' | 'and' | 'or' | 'not' 
+```
+var - variable declaration
+reserved words - 'var' | 'while' | 'and' | 'or' | 'not' 
 		| 'true' | 'false' | 'return' | 'for' | 'each' 
-		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'`<br>
+		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+```
 		
 #####Commments:
 `Single Line Comments => // This is commented`
