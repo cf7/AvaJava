@@ -8,6 +8,7 @@ var Print = require('../entities/print.js');
 var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntegerLiteral = require('../entities/integerliteral.js');
+var FloatLiteral = require('../entities/floatliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
