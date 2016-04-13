@@ -413,7 +413,9 @@ var parseExp6 = function () {
   while (at(['+', '-'])) {
     op = match();
     right = parseExp7();
+    console.log("=========================");
     left = new BinaryExpression(op, left, right);
+    console.log("========================");
   }
   return left;
   // return statement
