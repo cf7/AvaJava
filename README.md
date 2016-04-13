@@ -1,8 +1,8 @@
 ![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
 
 <b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, and OCaml that compiles into Python.</b> 
-It combines the most interesting parts of these languages, and also provides a new selection of operators (<i>to come</i>).<br>
-This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.<br>
+It combines the most interesting parts of these languages, and also provides a new selection of operators (<i>to come</i>).
+This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.
 
 ####<i>Features/Planned Implementation (Subject to Change)</i>
 <ul>
@@ -138,6 +138,7 @@ var helloWorld = () -> ava "Hello World" end;           var helloWorld = functio
 guac hellowWorld.ava
 eat hellowWorld
 ```
+
 #####Identifiers and Reserved Words:
 ```
 var - variable declaration
@@ -147,85 +148,106 @@ reserved words - 'var' | 'while' | 'and' | 'or' | 'not'
 ```
 		
 #####Commments:
-`Single Line Comments => // This is commented`
-<br>
-`Multi-Line Comments => ***Cada ...`<br> 
-                        `... Cada***`<br>                        
+```
+Single Line Comments => // This is commented
+
+Multi-Line Comments => ***Cada ... 
+                        ... Cada***
+```                        
 ######Literals:
-`1 - integer`<br>
-`1.00 - float`<br>
-`1.00e24 - exponentiation`<br>
-`1.00E24 - exponentiation`<br>
-`"h" - character`<br>
-`"hi" - string`<br>
-`true - boolean`<br>
-`false - boolean`<br>
-`[1,2,3] - list`<br>
-`{x:1,y:2} - object`<br>
+```
+1 - integer
+1.00 - float
+1.00e24 - exponentiation
+1.00E24 - exponentiation
+"h" - character
+"hi" - string
+true - boolean
+false - boolean
+[1,2,3] - list
+{x:1,y:2} - object
+```
  
 #####To Print:
-`ava("Hello World!");` <br>
+```
+ava("Hello World!");
+```
 
 #####Assignment:
-`var x = 1; // plain javascript`<br>
-`x - 1`<br>
-`x,y = "hi";`<br>
-`x - "hi"`<br>
-`y - "hi"`<br>
-`x,y = 5;`<br>
-`x - 5`<br>
-`y - 5`<br>
-`x = y = 5;`<br>
-`x - 5`<br>
-`y - 5`<br>
-`w = {y: 21, x, z: 22};`<br>
-`w - {y: 21, x: 100, z: 22}`<br>
+```
+var x = 1; // plain javascript
+x - 1
+x,y = "hi";
+x - "hi"
+y - "hi"
+x,y = 5;
+x - 5
+y - 5
+x = y = 5;
+x - 5
+y - 5
+w = {y: 21, x, z: 22};
+w - {y: 21, x: 100, z: 22}
+```
 
 #####Operators:
-`x++;`<br>
-`x--;`<br>
-`x^^2; //square x`<br>
-`x^^3; //cube x`<br>
-`x += 10;` <br>
-`x -= 10;` <br>
-`x *= 10;` <br>
-`x /= 10;` <br>
-`x % 2;` <br>
-`'' = "";`<br>
-`'' => '';` <br>
-`"" => "";`<br>
-`'' => "";`<br>
-`"" => '';`<br>
-`x and y => boolean literal`<br>
-`x or y => boolean literal`<br>
+```
+x++;
+x--;
+x^^2; //square x
+x^^3; //cube x
+x += 10; 
+x -= 10; 
+x *= 10; 
+x /= 10; 
+x % 2;
+'' = "";
+'' => ''; 
+"" => "";
+'' => "";
+"" => '';
+x and y => boolean literal
+x or y => boolean literal
+```
 
 #####Pattern Matching/Destructuring (basically CoffeeScript):
-`[x, y] = [1, 2, 3];`<br>
-`x - 1`<br>
-`y - 2`<br>
-`[x, y] = "hi";`<br>
-`x - "h"`<br>
-`y - "i"` <br>
-`[x, y, z] = " hi";`<br>
-`x - " ";`<br>
-`y - "h";`<br>
-`z - "i";`<br>
+```
+[x, y] = [1, 2, 3];
+x - 1
+y - 2
+[x, y] = "hi";
+x - "h"
+y - "i" 
+[x, y, z] = " hi";
+x - " ";
+y - "h";
+z - "i";
+```
 
 #####Lists (basically CoffeeScript):
-`[1..10] => [1,2,3,4,5,6,7,8,9]`<br>
-`[1...10] => [1,2,3,4,5,6,7,8,9,10]`<br>
+```
+[1..10] => [1,2,3,4,5,6,7,8,9]
+[1...10] => [1,2,3,4,5,6,7,8,9,10]
+```
 
 #####List Operations (basically OCaml and some extra):
-`[1,2,3] @ [4,5,6,7] = [1,2,3,4,5,6,7] = [1...7]`<br>
-`[1,2,3]::[4,5,6,7] = [[1,2,3], [4,5,6,7]]`<br>
-`[1,2,3]++ => [2,3,4]`<br>
-`[1,2,3]^^2 => [1,4,9]`<br>
+```
+[1,2,3] @ [4,5,6,7] = [1,2,3,4,5,6,7] = [1...7]
+[1,2,3]::[4,5,6,7] = [[1,2,3], [4,5,6,7]]
+[1,2,3]++ => [2,3,4]
+[1,2,3]^^2 => [1,4,9]
+```
 
 #####Objects:
-`{ x:2, y:3, z: { inside: 3 } }`<br>
+```
+{ x:2, y:3, z: { inside: 3 } }
+```
 
 #####Sets:
-`{ 2, 3, 4}`<br>
+``` 
+{ 2, 3, 4 } 
+
+```
 
 #####Tuples:
 
@@ -235,67 +257,85 @@ reserved words - 'var' | 'while' | 'and' | 'or' | 'not'
 ```
 
 #####Functions:
-`var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> 
-`addOdds 3 3;`<br>
-`addOdds(3,3);`<br>
-`addOdds(x=3, y=3);`<br>
-`addOdds 3; // x=3 and y=0  default parameters`<br>
+```
+var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y; 
+addOdds 3 3;
+addOdds(3,3);
+addOdds(x=3, y=3);
+addOdds 3; // x=3 and y=0  default parameters
+```
 
 #####Higher Order Functions:
-`var map = (g, list) -> for each item in list: g item`<br>
-`map ((x) -> x + 1) [1...10]`<br>
-`=> [2,3,4,5,6,7,8,9,10,11]`<br>
+```
+var map = (g, list) -> for each item in list: g item
+map ((x) -> x + 1) [1...10]
+=> [2,3,4,5,6,7,8,9,10,11]
+```
 
 #####Conditionals:
-`1 == 1`<br>
-`1 >= 2`<br>
-`1 <= 2`<br>
-`1 != 2 // not equal`<br>
-`true and false => false`<br>
-`true or false => true`<br>
-`true and true both true => true`<br>
-`true and true both false => false`<br>
-`true and false both false => false`<br>
-`false and false both false => true`<br>
+```
+1 == 1
+1 >= 2
+1 <= 2
+1 != 2 // not equal
+true and false => false
+true or false => true
+true and true both true => true
+true and true both false => false
+true and false both false => false
+false and false both false => true
+```
 
-#####Loops: 
-`while (x and y both less than 10): ava "Hello World";` <br>
-`for x times: ava "Hello World";` <br> 
+#####Loops:
+``` 
+while (x and y both less than 10): ava "Hello World"; 
+for x times: ava "Hello World";  
+```
 
 #####String Operations:
-`"h" + "e" => "he" `<br> 
-`"e" - "e" => ""`<br>
-`"he" - "e" => "h" `<br> 
-`"heh" - "h" => "he" `<br>
-`"hehe" - "h" => "hee"`<br>
+```
+"h" + "e" => "he"  
+"e" - "e" => ""
+"he" - "e" => "h"  
+"heh" - "h" => "he" 
+"hehe" - "h" => "hee"
+```
 
 #####Arrays:
-`x = []`<br>
-`x[0] => 1 `<br>
+```
+x = []
+x[0] => 1 
+```
 
 #####Errors and Exceptions:
-`1 + true`<br>
-`=> Error "Invalid Addition of Types" 1 + true` <br>
-`-------------------------------------^^^^^^^^`<br>
-`var addOdds = (x,y) -> if x % 2 + y % 2 both not 0 then x + y;`<br> 
-`=> Error "Expected conditional" ...if x % 2 + y % 2 both...`<br>
-`--------------------------------------^^^^^^^^^^^^^`<br>
+```
+1 + true
+=> Error "Invalid Addition of Types" 1 + true 
+-------------------------------------^^^^^^^^
+var addOdds = (x,y) -> if x % 2 + y % 2 both not 0 then x + y; 
+=> Error "Expected conditional" ...if x % 2 + y % 2 both...
+--------------------------------------^^^^^^^^^^^^^
+```
 
 #####Modules (just use "export"):
-`export: { } // exports objects`<br>
-`export: { "add": ((x,y) -> x + y) }`<br>
+```
+export: { } // exports objects
+export: { "add": ((x,y) -> x + y) }
+```
 
 #####Scoping:
-`avajava will utilize static scoping.`<br>
-`For example . . .`<br>
 ```
+avajava will utilize static scoping.
+For example . . .
+
 var x = 3;
 var printNumber = () -> ava(x);
 var printAgain = () -> var x = 10; printNumber;
 printAgain();
+
+will print out 3 because printNumber was instantiated with var x = 3
+The var x = 10 instantiated within the printAgain will not affect the scope
+of the printNumber call within printAgain. (That would by dynamic scoping.)
 ```
-`will print out 3 because printNumber was instantiated with var x = 3`<br>
-`The var x = 10 instantiated within the printAgain will not affect the scope`<br>
-`of the printNumber call within printAgain. (That would by dynamic scoping.)`<br>
 
 
