@@ -293,6 +293,10 @@ var generator = {
 
   BinaryExpression: function(e) {
     console.log("inside BinaryExpression: " + e.operator.lexeme);
-    return "(" + (gen(e.left)) + " " + (makeOp(e.operator.lexeme)) + " " + (gen(e.right)) + ")";
+    if (e.operator.lexeme === '^^') {
+      return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
+    } else {
+      return "(" + (gen(e.left)) + " " + (makeOp(e.operator.lexeme)) + " " + (gen(e.right)) + ")";
+    }
   }
 };
