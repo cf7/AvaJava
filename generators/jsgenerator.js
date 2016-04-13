@@ -291,7 +291,7 @@ var generator = {
     return "(" + (makeOp(e.operator.lexeme)) + (gen(e.operand)) + ")";
   },
 
-  BinaryExpression: function(e) {
+  BinaryExpression: function(e) { // turn string manipulation stuff into function later
     console.log("inside BinaryExpression: " + e.operator.lexeme);
     if (e.operator.lexeme === '^^') {
       return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
