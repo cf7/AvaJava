@@ -12,24 +12,18 @@ parse = require('../parser/parser.js');
 
 error = require('../error.js');
 
-error.quiet = true;
+TEST_DIR = 'test/data/good-programs';
 
-TEST_DIR = 'test/data/semantic-errors';
-
-describe('The analyzer detects an error for', function() {
+describe('The compiler', function() {
   return fs.readdirSync(TEST_DIR).forEach(function(name) {
     error.count = 0;
     if (name !== ".DS_Store") {
-      var check;
-      check = name.replace(/-/g, ' ').replace(/\.ava$/, '');
-      return it(check, function(done) {
+      return it("should compile " + name + " without errors", function(done) {
         return scan(path.join(TEST_DIR, name), function(tokens) {
-          var priorErrorCount, program;
+          var priorErrorCount;
           priorErrorCount = error.count;
-          program = parse(tokens);
-          error.count.should.equal(priorErrorCount);
-          program.analyze();
-          error.count.should.be.above(priorErrorCount);
+          parse(tokens).analyze();
+          error.count.should.eql(priorErrorCount);
           return done();
         });
       });

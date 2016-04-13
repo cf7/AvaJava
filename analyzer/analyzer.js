@@ -7,6 +7,7 @@ var AnalysisContext = (function() {
   function AnalysisContext(parent) {
     this.parent = parent;
     this.symbolTable = {};
+    this.insideFunction = false;
   }
 
   AnalysisContext.initialContext = function() {
@@ -27,7 +28,16 @@ var AnalysisContext = (function() {
     return this.symbolTable[name] = entity;
   };
 
+  AnalysisContext.prototype.setInsideFunction = function(bool) {
+    this.insideFunction = bool;
+  };
+
+  AnalysisContext.prototype.getInsideFunction = function() {
+    return this.insideFunction;
+  };
+  
   AnalysisContext.prototype.lookupVariable = function(token) {
+    console.log("Analyze lookupVariable: " + token.lexeme);
     var variable;
     variable = this.symbolTable[token.lexeme];
     if (variable) {

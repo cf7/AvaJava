@@ -9,7 +9,7 @@ var LETTER = /[A-Za-z]/;
 var DIGIT = /[0-9]/;
 // var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
 var WORD_CHAR = /[A-Za-z_]/;
-var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|ava)$/;
+var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|ava|end|times)$/;
 var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.\!]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /\.\.\.|\*\*\*/;
@@ -33,7 +33,7 @@ module.exports = function(filename, callback) {
   var stream = byline(baseStream, { keepEmptyLines: true });
   var tokens = [];
   var linenumber = 1;
-  
+  console.log("*******************SCANNER*****************");
   // the 'readable' event is received when data can be read 
   // from the stream, the stream passes data to the callback function
   stream.on('readable', function() {
@@ -154,11 +154,42 @@ var scan = function (line, lineNumber, tokens) {
         word = line.substring(start, pos);
         emit((KEYWORDS.test(word) ? word : 'id'), word);
       } else if (DIGIT.test(line[pos])) {
+
+
         start = pos;
         pos++;
+
+        // start collecting first set of digits
         while (!oneCharacterTokens.test(line[pos]) && !/\s/.test(line[pos]) && pos < line.length) {
           pos++;
         }
+
+        // ***
+        // Hard coding scientific notation and floating point for now
+        // ***
+
+        // if scientific notation, should be an E or e in the position before the
+        // current position at this point
+        // Lookbehind and Lookahead
+        var scientificNotation = false;
+        if (/[+\-]/.test(line[pos])) {
+          // if valid sci notation, do same loop as before
+          if (/[Ee]/.test(line[pos - 1]) && DIGIT.test(line[pos + 1])) {
+            pos++;
+            while (!oneCharacterTokens.test(line[pos]) && !/\s/.test(line[pos]) && pos < line.length) {
+              pos++;
+            }
+          }
+        }
+        // floating point numbers
+        if (/[.]/.test(line[pos]) && DIGIT.test(line[pos + 1])) {
+          pos++;
+          while (!oneCharacterTokens.test(line[pos]) && !/\s/.test(line[pos]) && pos < line.length) {
+              pos++;
+          }
+        }
+
+        // see what we have
         var substring = line.substring(start, pos);
         if (intlit.test(substring)) {
           emit('intlit', substring);

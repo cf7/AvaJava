@@ -10,6 +10,7 @@ class Print {
     }
 
     analyze(context) {
+        console.log("=====inside print analyze=====");
         return this.expression.analyze(context);
     }
 

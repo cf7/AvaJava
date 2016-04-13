@@ -1,0 +1,6 @@
+var addOdds = (x, y) -> if x%2 and y%2 both not 0 then return x+y else return 0 end;
+
+var factorial = (n) -> if n <= 1 then 1 else n * factorial(n - 1) end;
+
+factorial(addOdds(3, 3)); // holding off on currying for now
+

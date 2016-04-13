@@ -1,11 +1,22 @@
-PostfixExpression = (function () {
+"use strict";
 
-    function PostfixExpression (op, operand) {
+class PostfixExpression {
+
+    constructor(op, operand) {
+        console.log("--------------postfixexpr---------: " + op.lexeme);
         this.operator = op;
-        this. operand = operand;
+        this.operand = operand;
     }
     
-    return PostfixExpression;
-})();
+    toString() {
+        return '( ' + this.operand + ' ' + this.operator.lexeme + ' )';
+    }
+
+    analyze(context) {
+        // typechecking
+        return this.operand.analyze(context);
+    }
+
+}
 
 module.exports = PostfixExpression;

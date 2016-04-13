@@ -22,82 +22,87 @@ This language will be designed in a way to facilitate faster typing and more con
 ###Microsyntax
 
 ```
-characterLiteral ->  \"(letter | digit | \s) \" | \' (letter | digit | \s) \'
-stringLiteral -> '\"' characterLiteral* interpolatedStringLiteral* characterLiteral* '\"' | '\'' characterLiteral* interpolatedStringLiteral* characterLiteral* '\''
-interpolatedStringLiteral -> '#' '{' id '}'
+characterLiteral ::=  letter | digit | [\s]
+stringLiteral    ::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 
-letter -> [a-zA-Z]
-digit -> \d
-id -> letter (letter | digit | '_')* - keyword
-keyword -> 'var' | 'while' | 'and' | 'or' | 'not' 
-		| 'true' | 'false' | 'return' | 'for' | 'each' 
-		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+letter    ::=  [a-zA-Z]
+digit     ::=  [\d]
+keyword   ::=  'var' | 'while' | 'and' | 'or' | 'not' 
+           	| 'true' | 'false' | 'return' | 'for' | 'each' 
+	   		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+id        ::=  letter (letter | digit | '_')*
 		
-assignop -> '+=' | '-=' | '*=' | '/='
-relop -> '<=' | '==' | '>=' | '!='
-addop -> '+' | '-'
-mulop -> '*' | '/' | '%' 
-prefixop -> '-' | 'not'
-postfixop -> '!' | '++' | '--' | '^^' | '::' | '@'
-intlit -> \d+
-floatlit -> ^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$
-boollit -> 'true' | 'false'
-comment -> '//' | '***' ( [.] | [\n] )* '***'
+assignop  ::=  '=' | '+=' | '-=' | '*=' | '/='
+relop     ::=  '<' | '>' | '<=' | '==' | '>=' | '!='
+appendop  ::=  '@'
+consop    ::=  '::'
+addop     ::=  '+' | '-'
+mulop     ::=  '*' | '/' | '%' 
+prefixop  ::=  '-' | 'not'
+postfixop ::=  '!' | '++' | '--'
+intlit    ::=  [\d]+
+floatlit  ::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
+boollit   ::=  'true' | 'false'
+comment   ::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
 ```
 
 ###Macrosyntax
 ```
-Program -> Block
-Block -> (Stmt ';')+
-Stmt -> Decl
-	| Assign
-	| 'while' '(' Exp ')' '{' Block '}'
-    | 'return' Exp
-    | ConditionalExp
-    | Print
-    | Exp
+Program 	::= Block
+Block 		::= (Stmt ';')+
+Stmt 		::= Decl
+    			| 'return' Exp
+    			| ConditionalExp
+    			| Print    
+    			| Loop
+    			| Exp
     
-Print -> 'ava' Exp ';'
-Exp -> Exp1 
-    | '[' StringList ']'
-    | FunctionExp
-    
-Decl -> 'var' id ('=' Exp)? ';'
-    | 'function' id '(' idList? ')' '=' Exp ';'
-Assign -> id '=' Exp ';'
-    | '[' idList ']' '=' Exp ';'
-ConditionalExp -> 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
-FunctionExp -> '(' Args ')' '->' Block ';'
+Print 		::= 'ava' Exp ';'
+Exp 		::= Exp1 
+    			| '[' StringList ']'
+    			| FunctionExp
+Loop 		::= ForLoop
+				| 'while' '(' Exp ')' '{' Block '}'
+ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' | 'for' 
+Decl 		::=	'var' id ('=' Exp)? ';'
+    			| 'function' id '(' idList? ')' '=' Exp ';'
+FunctionExp	::= '(' Args ')' '->' Block ;'
+Call 		::=	id ( id+ | '(' ExpList? ')' ) ';'
+Assign 		::= id '=' Exp ';'
+    			| '[' idList ']' '=' Exp ';'
+VarRef 		::= Call | Assign | id
+ConditionalExp ::= 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
 
-Args -> ExpList
-Exp1 -> Exp2 ('or' Exp2)*
-Exp2 -> Exp3 ('and' Exp3)*
-Exp3 -> Exp4 (relop Exp4)?
-Exp4 -> Exp5 (addop Exp5)*
-Exp5 -> Exp6 (mulop Exp6)*
-Exp6 -> prefixop? Exp7
-Exp7 -> Exp8 postfixop?
-Exp8 -> Exp9 ('^^' Exp9)?
-Exp9 -> '(' Exp ')' | id | Call | intlit | floatlit | stringLiteral | boolit | characterLiteral
 
-Call -> id ( id+ | '(' ExpList? ')' ) ';'
+Args 		::= ExpList
+Exp1 		::= Exp2 ('or' Exp2)*
+Exp2 		::= Exp3 ('and' Exp3)* ('both' Exp)?
+Exp3 		::= Exp4 (relop Exp4)?
+Exp4 		::= Exp5 (appendop Exp5)*
+Exp5 		::= Exp6 (consop Exp6)*
+Exp6 		::= Exp7 (addop Exp7)*
+Exp7 		::= Exp8 (mulop Exp8)*
+Exp8 		::= prefixop? Exp9
+Exp9 		::= Exp10 postfixop?
+Exp10 		::= Exp11 ('^^' Exp11)?
+Exp11 		::= '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit | List
 
-ExpList -> Exp ( ',' Exp )*
-idList -> id (',' id)*
-LiteralList -> Literal (',' Literal)*
-StringList -> stringLiteral (',' stringLiteral)*
+ExpList 	::= Exp ( ',' Exp )*
+idList 		::= id (',' id)*
+LiteralList	::= Literal (',' Literal)*
+StringList 	::= stringLiteral (',' stringLiteral)*
 
-Literal -> NumericLiteral | characterLiteral | stringLiteral | boolit
-NumericLiteral -> intlit | floatlit
-SetLiteral -> '{' LiteralList '}'
-List -> '[' ExpList? ']'
-String -> stringLiteral | interpolatedStringLiteral
+Literal 	::= NumericLiteral | characterLiteral | stringLiteral | boolit
+NumericLiteral	::= intlit | floatlit
+SetLiteral 	::= '{' LiteralList '}'
+List 		::= '[' ExpList? ']'
+String 		::= stringLiteral
 ```
 
 ####Example Programs:
 ```
 var addOdds = (x,y) ->                                  var addOdds = function (x,y) {
-    if x%2 and y%2 both not 0 then x+y else Math.PI;        if (x%2 !== 0 && y%2 !== 0) {
+    if x%2 and y%2 both not 0 then x+y else Math.PI end;    if (x%2 !== 0 && y%2 !== 0) {
                                                                 return x + y;
 addOdds 3 3;                                                } else {
                                                                 return Math.PI;
@@ -109,7 +114,7 @@ addOdds 3 3;                                                } else {
 
 
 var factorial = (n) ->                                  var factorial = function (n) {
-    if n <= 1 then 1 else n * factorial(n - 1);             if (n <= 1) {
+    if n <= 1 then 1 else n * factorial(n - 1) end;         if (n <= 1) {
                                                                 return 1;
 factorial addOdds 3 3;                                      } else {
                                                                 return n * factorial(n - 1);
@@ -119,7 +124,7 @@ factorial addOdds 3 3;                                      } else {
                                                         factorial(addOdds(3,3));
 
 
-var helloWorld = () -> ava "Hello World";               var helloWorld = function () {
+var helloWorld = () -> ava "Hello World" end;           var helloWorld = function () {
                                                             console.log("Hello World");
                                                         }                                             
 ```
@@ -221,8 +226,11 @@ eat hellowWorld
 `{ 2, 3, 4}`<br>
 
 #####Tuples:
-`(x,y,z)`<br>
-`((1,2), (2,3), (3,4))`<br>
+
+```
+(x,y,z)
+((1,2), (2,3), (3,4))
+```
 
 #####Functions:
 `var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y;`<br> 
