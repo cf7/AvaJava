@@ -42,7 +42,15 @@ var BinaryExpression = (function () {
             return this.type = Type.BOOL;
           case '*':
             var type = this.canHaveDifferentOperands();
-            return this.type = type; 
+            return this.type = type;
+          case '+':
+          case '-':
+            this.mustHaveCompatibleOperands(); // want to be able to support
+            // ints and strings
+            return this.type = this.left.type; // or right, either one works
+          case '/':
+            this.mustHaveIntegerOperands(); // ints only until implementing floats
+            return this.type = Type.INT;
           default: // change defaults
             // this.mustHaveIntegerOperands();
             // return this.type = Type.INT;
