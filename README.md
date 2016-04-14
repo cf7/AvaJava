@@ -68,7 +68,7 @@ Decl 		::=	'var' id ('=' Exp)? ';'
     			| 'function' id '(' idList? ')' '=' Exp ';'
 FunctionExp	::= '(' Args ')' '->' Block ;'
 Call 		::=	id ( id+ | '(' ExpList? ')' ) ';'
-Assign 		::= id '=' Exp ';'
+Assign 		::= id assignop Exp ';'
     			| '[' idList ']' '=' Exp ';'
 VarRef 		::= Call | Assign | id
 ConditionalExp ::= 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'

@@ -131,7 +131,7 @@ var generator = {
   },
 
   AssignmentStatement: function (s) {
-    return (gen(s.target)) + " = " + (gen(s.source)) + ";";
+    return (gen(s.target)) + " " + makeOp(s.operator.lexeme) + " " + (gen(s.source)) + ";";
   },
 
   Function: function (f) {
@@ -272,6 +272,10 @@ var generator = {
 
   IntegerLiteral: function (literal) {
     return literal.toString(); // sometimes may not want to emit, just return a string
+  },
+
+  FloatLiteral: function (literal) {
+    return literal.toString();
   },
 
   StringLiteral: function (literal) {

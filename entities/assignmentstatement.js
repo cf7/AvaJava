@@ -3,13 +3,14 @@
 var VariableReference = require('./variablereference');
 
 var AssignmentStatement = (function() {
-  function AssignmentStatement(target, source) {
+  function AssignmentStatement(op, target, source) {
+    this.operator = op;
     this.target = target;
     this.source = source;
   }
 
   AssignmentStatement.prototype.toString = function() {
-    return "(= " + this.target + " " + this.source + ")";
+    return "( " + this.operator.lexeme + " " + this.target + this.source + " )";
   };
 
   AssignmentStatement.prototype.analyze = function(context) {
