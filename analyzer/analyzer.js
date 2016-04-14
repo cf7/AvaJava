@@ -39,6 +39,7 @@ var AnalysisContext = (function() {
   AnalysisContext.prototype.lookupVariable = function(token) {
     console.log("Analyze lookupVariable: " + token.lexeme);
     var variable = this.symbolTable[token.lexeme];
+    console.log("Variable after lookup: " + variable);
     if (variable) {
       return variable;
     } else if (!this.parent) {

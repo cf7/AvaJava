@@ -18,7 +18,10 @@ var BinaryExpression = (function () {
     };
     
     BinaryExpression.prototype.analyze = function(context) {
+        console.log("LEFT: " + this.left.constructor);
         this.left.analyze(context);
+        console.log("LEFT: " + this.left.constructor);
+
         console.log("After analyze###########: " + this.left.type);
         this.right.analyze(context);
         var operator = this.operator.lexeme;

@@ -7,7 +7,9 @@ var VariableDeclaration = (function() {
     console.log("alskdjfl;kasjdflkajs  : " + id.lexeme);
     this.id = id;
     this.exp = exp;
-    this.type = this.exp.type || Type.ARBITRARY; // this needs to receive a type from parser
+    this.type = this.exp ? this.exp.type : Type.ARBITRARY;
+   
+    // this needs to receive a type from parser
     // implement type inference, literals parsed with types,
     // function's type-signatures determined by their args and return types
   }
@@ -37,9 +39,14 @@ var VariableDeclaration = (function() {
     console.log("--------inside varDecl analyze-------");
     console.log("current variable: " + this.exp);
     if (this.exp) {
-        for (var i = 0; i < this.exp.length; i++) {
-          results.push(this.exp[i].analyze(context));
-        }
+      if (this.exp instanceof Array) {
+          console.log("........INSIDE THIS.EXP...... " + this.exp.length);
+          for (var i = 0; i < this.exp.length; i++) {
+            results.push(this.exp[i].analyze(context));
+          }
+      } else {
+        results.push(this.exp.analyze(context));
+      }
     }
     return results;
   };
