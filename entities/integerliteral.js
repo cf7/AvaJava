@@ -1,3 +1,5 @@
+var Type = require('./type.js');
+
 var IntegerLiteral = (function () {
     function IntegerLiteral (value) {
         this.value = value;
@@ -10,6 +12,7 @@ var IntegerLiteral = (function () {
     IntegerLiteral.prototype.analyze = function(context) {
         console.log("--=--made it down to integers--=--");
         // add typechecking
+        return this.type = Type.INT;
     };
 
     return IntegerLiteral;

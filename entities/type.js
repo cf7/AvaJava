@@ -1,12 +1,9 @@
 "use strict";
 
-var Type, cache, error;
+var error = require('../error');
+var cache = {};
 
-error = require('../error');
-
-cache = {};
-
-Type = (function() {
+var Type = (function() {
   function Type(name1) {
     this.name = name1;
     cache[this.name] = this;
@@ -15,6 +12,10 @@ Type = (function() {
   Type.BOOL = new Type('bool');
 
   Type.INT = new Type('int');
+
+  Type.STRING = new Type('string');
+
+  Type.FLOAT = new Type('float');
 
   Type.ARBITRARY = new Type('<arbitrary_type>');
 
@@ -53,6 +54,8 @@ Type = (function() {
 module.exports = {
   BOOL: Type.BOOL,
   INT: Type.INT,
+  STRING: Type.STRING,
+  FLOAT: Type.FLOAT,
   ARBITRARY: Type.ARBITRARY,
   forName: function(name) {
     return cache[name];

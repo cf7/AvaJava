@@ -15,7 +15,7 @@ class Print {
     }
 
     optimize() {
-        return "2";
+        // return "2";
     }
 }
 

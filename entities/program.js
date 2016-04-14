@@ -15,7 +15,8 @@ var Program = (function() {
 
   Program.prototype.analyze = function() {
     console.log("*********************ANALYZER*********************");
-    return this.block.analyze(initialContext());
+    return this.block.analyze(initialContext()); 
+    // returning analze results is for semantic graph
   };
 
   Program.prototype.optimize = function() {

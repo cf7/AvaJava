@@ -180,22 +180,27 @@ eat hellowWorld
 `w - {y: 21, x: 100, z: 22}`<br>
 
 #####Operators:
-`x++;`<br>
-`x--;`<br>
-`x^^2; //square x`<br>
-`x^^3; //cube x`<br>
-`x += 10;` <br>
-`x -= 10;` <br>
-`x *= 10;` <br>
-`x /= 10;` <br>
-`x % 2;` <br>
-`'' = "";`<br>
-`'' => '';` <br>
-`"" => "";`<br>
-`'' => "";`<br>
-`"" => '';`<br>
-`x and y => boolean literal`<br>
-`x or y => boolean literal`<br>
+```
+x++;
+x--;
+x^^2; //square x
+x^^3; //cube x
+x += 10;
+x -= 10;
+x *= 10;
+x /= 10;
+x % 2;
+'' = "";
+'' => '';
+"" => "";
+'' => "";
+"" => '';
+x and y => boolean literal
+x or y => boolean literal
+
+not 4 // equivalent to !== 4
+not true // false
+```
 
 #####Pattern Matching/Destructuring (basically CoffeeScript):
 `[x, y] = [1, 2, 3];`<br>
