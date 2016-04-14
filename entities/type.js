@@ -1,20 +1,22 @@
 "use strict";
 
-var Type, cache, error;
+var error = require('../error');
+var cache = {};
 
-error = require('../error');
-
-cache = {};
-
-Type = (function() {
+var Type = (function() {
   function Type(name1) {
     this.name = name1;
     cache[this.name] = this;
+    this.mixTypeCache = {};
   }
 
   Type.BOOL = new Type('bool');
 
   Type.INT = new Type('int');
+
+  Type.STRING = new Type('string');
+
+  Type.FLOAT = new Type('float');
 
   Type.ARBITRARY = new Type('<arbitrary_type>');
 
@@ -46,6 +48,25 @@ Type = (function() {
     return this === otherType || this === Type.ARBITRARY || otherType === Type.ARBITRARY;
   };
 
+  Type.prototype.canBeCompatibleWith = function(otherType, operator) {
+    // can be compatiblewith otherType given current operator
+    this.mixTypeCache[this.name + otherType.name] = { operator: operator, type1: this, type2: otherType };
+  };
+
+  Type.prototype.isMixedCompatibleWith = function(otherType, operator, message, location) {
+      var result = this.mixTypeCache[this.name + otherType.name].operator === operator;
+      // hardcoding result of string * int for now
+      if (result) {
+        if (this.name === 'int' && otherType.name === 'int') {
+          return Type.INT;
+        } else {
+          return Type.STRING;
+        }
+      } else {
+        return error(message, location);
+      }
+  };
+
   return Type;
 
 })();
@@ -53,6 +74,8 @@ Type = (function() {
 module.exports = {
   BOOL: Type.BOOL,
   INT: Type.INT,
+  STRING: Type.STRING,
+  FLOAT: Type.FLOAT,
   ARBITRARY: Type.ARBITRARY,
   forName: function(name) {
     return cache[name];

@@ -14,7 +14,7 @@ var WhileLoop = (function() {
 
   WhileLoop.prototype.analyze = function(context) {
     this.condition.analyze(context);
-    // this.condition.type.mustBeBoolean('Condition in "while" statement must be boolean');
+    this.condition.type.mustBeBoolean('Condition in "while" statement must be boolean');
     return this.body.analyze(context);
   };
 

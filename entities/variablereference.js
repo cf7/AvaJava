@@ -15,7 +15,10 @@ var VariableReference = (function() {
 
   VariableReference.prototype.analyze = function(context) {
     this.referent = context.lookupVariable(this.token);
-    return this.type = this.referent.type;
+    // if the referent (likely a VarDecl) has an exp,
+    // then analyze its exp
+    console.log("REFERENT: " + this.referent.exp.type);
+    return this.type = this.referent.exp.type;
   };
 
   // VariableReference.prototype.optimize = function() {

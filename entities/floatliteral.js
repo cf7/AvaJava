@@ -13,6 +13,7 @@ var FloatLiteral = (function () {
         // will definitely need typechecking to support
         // operations between integers and doubles (floats)
         // don't need to execute, just need to translate
+        return this.type = Type.FLOAT;
     };
 
     return FloatLiteral;

@@ -201,13 +201,15 @@ x -= 10;
 x *= 10; 
 x /= 10; 
 x % 2;
-'' = "";
-'' => ''; 
-"" => "";
 '' => "";
+'' => '';
+"" => "";
 "" => '';
 x and y => boolean literal
 x or y => boolean literal
+
+not 4 // equivalent to !== 4
+not true // false
 ```
 
 #####Pattern Matching/Destructuring (basically CoffeeScript):

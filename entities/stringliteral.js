@@ -1,3 +1,5 @@
+var Type = require('./type.js');
+
 var StringLiteral = (function () {
 
     function StringLiteral (string) {
@@ -12,6 +14,7 @@ var StringLiteral = (function () {
         // do something with the string and context
         console.log("---=---made it down to strings---=---");
         // add typechecking
+        return this.type = Type.STRING;
     };
 
     return StringLiteral;
