@@ -1,3 +1,5 @@
+var Type = require('./type.js');
+
 var FloatLiteral = (function () {
     function FloatLiteral (value) {
         this.value = value;

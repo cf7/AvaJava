@@ -274,6 +274,10 @@ var generator = {
     return literal.toString(); // sometimes may not want to emit, just return a string
   },
 
+  FloatLiteral: function (literal) {
+    return literal.toString();
+  },
+
   StringLiteral: function (literal) {
     // console.log("inside StringLiteral: " + literal.toString());
     return literal.toString();

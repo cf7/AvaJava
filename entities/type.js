@@ -54,7 +54,12 @@ var Type = (function() {
   };
 
   Type.prototype.isMixedCompatibleWith = function(otherType, operator, message, location) {
-      var result = this.mixTypeCache[this.name + otherType.name].operator === operator;
+      var result = false;
+
+      if (this.mixTypeCache[this.name + otherType.name]) {
+        result = this.mixTypeCache[this.name + otherType.name].operator === operator;
+      }
+
       // hardcoding result of string * int for now
       if (result) {
         if (this.name === 'int' && otherType.name === 'int') {
@@ -65,6 +70,7 @@ var Type = (function() {
       } else {
         return error(message, location);
       }
+
   };
 
   return Type;
