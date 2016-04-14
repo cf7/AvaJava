@@ -15,6 +15,7 @@ var VariableReference = (function() {
 
   VariableReference.prototype.analyze = function(context) {
     this.referent = context.lookupVariable(this.token);
+    console.log("REFERENT: " + this.referent.constructor);
     return this.type = this.referent.type;
   };
 

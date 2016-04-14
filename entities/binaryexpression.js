@@ -9,6 +9,7 @@ var BinaryExpression = (function () {
         console.log(op.lexeme);
         this.operator = op;
         this.left = left;
+        console.log("CONSTRUCTOR: " + this.left);
         this.right = right;
     }
     
@@ -17,10 +18,10 @@ var BinaryExpression = (function () {
     };
     
     BinaryExpression.prototype.analyze = function(context) {
-        var operator;
         this.left.analyze(context);
+        console.log("After analyze###########: " + this.left.type);
         this.right.analyze(context);
-        operator = this.operator.lexeme;
+        var operator = this.operator.lexeme;
         switch (operator) {
           case '<':
           case '<=':
@@ -44,8 +45,8 @@ var BinaryExpression = (function () {
     
     BinaryExpression.prototype.mustHaveIntegerOperands = function() {
         var error = this.operator.lexeme + " must have integer operands";
-        console.log("inside mustHaveIntegerOperands: " + this.left.constructor);
-        //this.left.type.mustBeCompatibleWith(Type.INT, error, this.operator);
+        console.log("inside mustHaveIntegerOperands: " + this.left.type);
+        this.left.type.mustBeCompatibleWith(Type.INT, error, this.operator);
         return this.right.type.mustBeCompatibleWith(Type.INT, error, this.operator);
     }
 
