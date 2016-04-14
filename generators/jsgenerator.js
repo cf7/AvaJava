@@ -131,7 +131,7 @@ var generator = {
   },
 
   AssignmentStatement: function (s) {
-    return (gen(s.target)) + " = " + (gen(s.source)) + ";";
+    return (gen(s.target)) + " " + makeOp(s.operator.lexeme) + " " + (gen(s.source)) + ";";
   },
 
   Function: function (f) {

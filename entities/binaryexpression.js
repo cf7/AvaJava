@@ -49,6 +49,7 @@ var BinaryExpression = (function () {
             // ints and strings
             return this.type = this.left.type; // or right, either one works
           case '/':
+          case '^^':
             this.mustHaveIntegerOperands(); // ints only until implementing floats
             return this.type = Type.INT;
           default: // change defaults

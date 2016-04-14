@@ -25,6 +25,7 @@ var WhileLoop = require('../entities/whileloop.js');
 var tokens = [];
 
 var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 'floatlit', 'boolit'];
+var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
   console.log("********************PARSER******************");
@@ -113,12 +114,13 @@ var parseVariableReference = function () {
   console.log("inside parseVariableReference");
   var id = match('id');
   console.log("matched " + id.lexeme);
-
+  var op;
   if (at('(')) { //, 'id'])) { // currying
     console.log("going inside");
     return parseFunctionCall(id); // pass in id?
-  } else if (at('=')) {
-    return parseAssignmentStatement(id);
+  } else if (at(assignmentOperators)) {
+    op = match();
+    return parseAssignmentStatement(op, id);
   } else {
     console.log("inside - id is " + id.lexeme);
     return new VariableReference(id);
@@ -242,11 +244,10 @@ var parseFunctionCall = function (id) {
 }
 
 
-var parseAssignmentStatement = function(id) {
+var parseAssignmentStatement = function(op, id) {
   var target = new VariableReference(id);
-  match('=');
   var source = parseExpression();
-  return new AssignmentStatement(target, source);
+  return new AssignmentStatement(op, target, source);
 };
 
 // one of the parser tests isn't passing because for some
@@ -310,7 +311,16 @@ var parseConditionalExp = function () {
   var parentheses = false;
   console.log("inside parseConditionalExp");
   match('if');
+  if (at('(')) {
+    match('(');
+    parentheses = true;
+  }
   var conditional = parseExpression();
+  if (at(')') && !parentheses) {
+    return error("Unbalanced parentheses", tokens[0]);
+  } else if (at(')') && parentheses) {
+    match(')');
+  }
   match('then');
   body = parseIfBlock();
   if (at('else')) {
