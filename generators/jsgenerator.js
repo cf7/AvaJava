@@ -8,6 +8,7 @@ var Print = require('../entities/print.js');
 var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntegerLiteral = require('../entities/integerliteral.js');
+var FloatLiteral = require('../entities/floatliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -108,16 +109,6 @@ var generator = {
     for (i = 0, len = ref.length; i < len; i++) {
       statement = ref[i];
       console.log("inside Block for loop: " + statement);
-      // ** edge case: BinaryExpression outside of a function or loop can't emit itself
-      // ** edge case: VariableDeclaration outside of function or loop
-      // if (statement instanceof BinaryExpression) {
-      //   emit(gen(statement));
-      // } else if (statement instanceof VariableDeclaration) {
-      //   emit(gen(statement));
-      // } else {
-      // console.log("alksdjf;aljsdf  ---   " + statement.constructor.name);
-      // string = gen(statement); // this code currently emits from the inside to utilize indents and newlines
-      // However, may be able to emit from the outside and simply make inside collecting strings
       pad = indentPadding * indentLevel;
       string += "\n" + Array(pad + 1).join(' ') + gen(statement);
       // }
@@ -144,7 +135,12 @@ var generator = {
   },
 
   Function: function (f) {
-    return "function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }";
+    console.log(f.args.length);
+    if (f.args.indexOf(undefined) === -1) {
+      return "function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }";
+    } else {
+      return "function " + "() { " + gen(f.body) + " }";
+    }
   },
 
   Array: function (a) {
@@ -197,7 +193,7 @@ var generator = {
 
   FunctionCall: function (c) {
     console.log("inside FunctionCall: " + c.id.lexeme);
-    return c.id.lexeme + "(" + gen(c.params) + ")";
+    return makeVariable(c.id.lexeme) + "(" + gen(c.params) + ")";
   },
 
   WhileLoop: function (w) {
@@ -231,6 +227,19 @@ var generator = {
     return gen(pfx.operand) + makeOp(pfx.operator.lexeme);
   },
 
+  BothExpression: function (both) {
+    // has a left and right, left is binaryExpression, right is an Expression
+    // binaryExpressions have operators
+    var right = both.right;
+    if (right instanceof UnaryExpression) {
+      right = gen(both.right);
+      return "( " + gen(both.left.left) + " !== " + right.replace('!', '') + ' ' + makeOp(both.left.operator.lexeme) + ' ' + gen(both.left.right) + " !== " + right.replace('!', '') + " )";
+    } else {
+      right = gen(both.right);
+      return "( " + gen(both.left.left) + " === " + right + ' ' + makeOp(both.left.operator.lexeme) + ' ' + gen(both.left.right) + " === " + right + " )";
+    }
+  },
+
   // ReadStatement: function(s) {
   //   var i, len, ref, results, v;
   //   ref = s.varrefs;
@@ -257,6 +266,10 @@ var generator = {
   //   return emit('}');
   // },
 
+  BooleanLiteral: function (literal) {
+    return literal.toString();
+  },
+
   IntegerLiteral: function (literal) {
     return literal.toString(); // sometimes may not want to emit, just return a string
   },
@@ -273,11 +286,31 @@ var generator = {
     console.log("inside VariableReference: " + v.token.lexeme);
     return makeVariable(v.token.lexeme); // later pass in v.referent once analyzer is working
   },
-  // UnaryExpression: function(e) {
-  //   return "(" + (makeOp(e.op.lexeme)) + " " + (gen(e.operand)) + ")";
-  // },
-  BinaryExpression: function(e) {
+
+  UnaryExpression: function(e) {
+    return "(" + (makeOp(e.operator.lexeme)) + (gen(e.operand)) + ")";
+  },
+
+  BinaryExpression: function(e) { // turn string manipulation stuff into function later
     console.log("inside BinaryExpression: " + e.operator.lexeme);
-    return "(" + (gen(e.left)) + " " + (makeOp(e.operator.lexeme)) + " " + (gen(e.right)) + ")";
+    if (e.operator.lexeme === '^^') {
+      return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
+    } else if (e.left instanceof StringLiteral && e.right instanceof StringLiteral) {
+      if (e.operator.lexeme === '-') {
+        return "( " + gen(e.left) + ".replace(" + gen(e.right) + ", '') )";
+      } else {
+        return "( " + gen(e.left) + " " + makeOp(e.operator.lexeme) + " " + gen(e.right) + " )";
+      }
+    } else if (e.left instanceof StringLiteral && e.right instanceof IntegerLiteral) {
+      if (e.operator.lexeme === '*') {
+        return "( " + gen(e.left) + ".repeat(" + gen(e.right) + ") )";
+      }
+    } else if (e.left instanceof IntegerLiteral && e.right instanceof StringLiteral) {
+      if (e.operator.lexeme === '*') {
+        return "( " + gen(e.right) + ".repeat(" + gen(e.left) + ") )";
+      }
+    } else {
+      return "(" + (gen(e.left)) + " " + (makeOp(e.operator.lexeme)) + " " + (gen(e.right)) + ")";
+    }
   }
 };

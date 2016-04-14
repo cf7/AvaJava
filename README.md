@@ -280,6 +280,7 @@ map ((x) -> x + 1) [1...10]
 1 != 2 // not equal
 true and false => false
 true or false => true
+
 true and true both true => true
 true and true both false => false
 true and false both false => false
@@ -299,6 +300,18 @@ for x times: ava "Hello World";
 "he" - "e" => "h"  
 "heh" - "h" => "he" 
 "hehe" - "h" => "hee"
+x and y both 0 // instaead of (x == 0 && y == 0)
+x and y both not 0 // intead of (x != 0 && y != 0)
+```
+
+#####String Operations:
+```
+"t" + "e" => "te" 
+"e" - "e" => ""
+"te" - "e" => "t"
+"heeh" - "h" => "eeh"
+"hehe" - "h" => "ehe"
+"t" * 3 => "ttt"
 ```
 
 #####Arrays:

@@ -13,7 +13,11 @@ var BinaryExpression = (function () {
     
     BinaryExpression.prototype.analyze = function(context) {
         // typechecking
-        
+        // string manipulation semantics
+        // make sure only [\+\-\*] allowed, unless adding more features
+        // integers and strings only allowed if using '*'
+        this.left.analyze(context);
+        this.right.analyze(context);
     };
     
     return BinaryExpression;

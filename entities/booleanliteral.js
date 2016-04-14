@@ -16,7 +16,7 @@ BooleanLiteral = (function() {
   };
 
   BooleanLiteral.prototype.analyze = function(context) {
-    return this.type = Type.BOOL;
+    // return this.type = Type.BOOL;
   };
 
   BooleanLiteral.prototype.optimize = function() {

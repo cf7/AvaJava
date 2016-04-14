@@ -8,7 +8,11 @@ var BothExpression = (function () {
     }
     
     BothExpression.prototype.toString = function() {
-        return `${this.left} both ${this.right}`;
+        return `( ${this.left} both ${this.right} )`;
+    };
+
+    BothExpression.prototype.analyze = function(context) {
+        
     };
 
     return BothExpression;
