@@ -18,14 +18,14 @@ var BinaryExpression = (function () {
     };
     
     BinaryExpression.prototype.analyze = function(context) {
-        console.log("LEFT: " + this.left.constructor);
+        // console.log("LEFT: " + this.left.constructor);
         this.left.analyze(context);
         console.log("LEFT: " + this.left.constructor);
 
         console.log("After analyze###########: " + this.left.type);
         this.right.analyze(context);
         var operator = this.operator.lexeme;
-        switch (operator) {
+        switch (operator) { // add operators to these cases
           case '<':
           case '<=':
           case '>=':
@@ -40,9 +40,12 @@ var BinaryExpression = (function () {
           case 'or':
             this.mustHaveBooleanOperands();
             return this.type = Type.BOOL;
-          default:
-            this.mustHaveIntegerOperands();
-            return this.type = Type.INT;
+          case '*':
+            var type = this.canHaveDifferentOperands();
+            return this.type = type; 
+          default: // change defaults
+            // this.mustHaveIntegerOperands();
+            // return this.type = Type.INT;
         }
     };
     
@@ -63,6 +66,15 @@ var BinaryExpression = (function () {
         var error = this.operator.lexeme + " must have mutually compatible operands";
         return this.left.type.mustBeMutuallyCompatibleWith(this.right.type, error, this.operator);
     }
+
+    BinaryExpression.prototype.canHaveDifferentOperands = function() {
+        console.log("^^^^^^^^ canHaveDifferentOperands ^^^^^^^^^");
+        var error = this.operator.lexeme + " must have either both integers or an integer and a string";
+        Type.INT.canBeCompatibleWith(Type.INT, '*');
+        Type.INT.canBeCompatibleWith(Type.STRING, '*');
+        Type.STRING.canBeCompatibleWith(Type.INT, '*');
+        return this.left.type.isMixedCompatibleWith(this.right.type, this.operator.lexeme, error, this.operator);
+    };
 
     return BinaryExpression;
 })();
