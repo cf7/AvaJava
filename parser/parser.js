@@ -9,6 +9,8 @@ var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntegerLiteral = require('../entities/integerliteral.js');
 var FloatLiteral = require('../entities/floatliteral.js');
+var SetLiteral = require('../entities/setliteral.js');
+var ListLiteral = require('../entities/listliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -335,6 +337,7 @@ var parseConditionalExp = function () {
 }
 
 var parseExpression = function () {
+  console.log("inside parseExpression");
   if (at('var')) {
     return parseVariableDeclaration();
   // } else if (at('if')) {
@@ -496,6 +499,9 @@ var parseExp11 = function () {
     match(')');
   } else if (at('[')) {
     return parseList();
+  } else if (at(['{'])) {
+    console.log("in here");
+    return parseSet();
   } else if (at('intlit')) {
     return parseIntegerLiteral();
   } else if (at('floatlit')) {
@@ -520,7 +526,16 @@ var parseList = function () {
   var exps = parseExpList();
   match(']');
   console.log("leaving parseList");
-  return exps;
+  return new ListLiteral(exps);
+}
+
+var parseSet = function () {
+  console.log("inside parseSet");
+  match('{');
+  var exps = parseExpList();
+  match('}');
+  console.log("leaving parseSet");
+  return new SetLiteral(exps);
 }
 
 var parseIntegerLiteral = function () {

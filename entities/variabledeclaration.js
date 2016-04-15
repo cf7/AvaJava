@@ -4,7 +4,7 @@ var Type = require('./type.js');
 
 var VariableDeclaration = (function() {
   function VariableDeclaration(id, exp) { // , type) {
-    console.log("alskdjfl;kasjdflkajs  : " + id.lexeme);
+    console.log("VariableDeclaration constructor: " + id.lexeme);
     this.id = id;
     this.exp = exp;
     this.type = this.exp ? this.exp.type : Type.ARBITRARY;
