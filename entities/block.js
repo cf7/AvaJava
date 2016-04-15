@@ -11,15 +11,23 @@ var Block = (function() {
   };
 
   Block.prototype.analyze = function(context) {
+    console.log("inside Block analyze");
     var i, len, localContext, ref, results, statement;
-    localContext = context.createChildContext(); // create new local context for this block
+    localContext = context.getInsideFunction() ? context : context.createChildContext(); // create new local context for this block
+    // only if it not inside a function
+    console.log("parentContext: ");
+    console.log(localContext.parent.symbolTable);
+    console.log("localContext: ");
+    console.log(localContext.symbolTable);
+    
     ref = this.statements;
     results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       statement = ref[i];
-      console.log("CURRENT STATEMENT: " + statement);
+      console.log("Block CURRENT STATEMENT: " + statement);
       results.push(statement.analyze(localContext));
     }
+    console.log("Block: results . . . " + results);
     return results;
   };
 

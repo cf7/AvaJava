@@ -16,7 +16,8 @@ var AssignmentStatement = (function() {
   AssignmentStatement.prototype.analyze = function(context) {
     this.target.analyze(context);
     this.source.analyze(context);
-    return this.source.type.mustBeCompatibleWith(this.target.type, 'Type mismatch in assignment');
+    // want type to be chaneable later on
+    // return this.source.type.mustBeCompatibleWith(this.target.type, 'Type mismatch in assignment');
   };
 
   AssignmentStatement.prototype.optimize = function() {

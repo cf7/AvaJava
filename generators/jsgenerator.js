@@ -83,6 +83,7 @@ var makeVariable = (function(lastId, map) {
 
 var gen = function (e) {
   console.log("inside gen: " + e.constructor.name);
+  console.log(e);
   return generator[e.constructor.name](e); // find corresponding entity name in generator object
   // and pass in the entity into its matching function
 };
@@ -132,33 +133,37 @@ var generator = {
     }
   },
 
+  TypedVariableDeclaration: function (t) {
+    return makeVariable(t.id.lexeme);
+  },
+
   AssignmentStatement: function (s) {
     return (gen(s.target)) + " " + makeOp(s.operator.lexeme) + " " + (gen(s.source)) + ";";
   },
 
   Function: function (f) {
-    console.log(f.args.length);
-    if (f.args.indexOf(undefined) === -1) {
-      return "function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }";
+    console.log(f.params.length);
+    if (f.params.indexOf(undefined) === -1) {
+      return "function " + "( " + gen(f.params) + " )" + "{ " + gen(f.body) + " }";
     } else {
       return "function " + "() { " + gen(f.body) + " }";
     }
   },
 
-  // Array: function (a) {
-  //   var string = "";
-  //   if (a.length > 1) {
-  //     string += '[ ';
-  //     string += gen(a[0]);
-  //     for (var i = 1; i < a.length; i++) {
-  //       string += ', ' + gen(a[i]);
-  //     }
-  //     string += ' ]';
-  //   } else {
-  //     string += gen(a[0]);
-  //   }
-  //   return string;
-  // },
+  Array: function (a) {
+    var string = "";
+    if (a.length > 1) {
+      // string += '[ ';
+      string += gen(a[0]);
+      for (var i = 1; i < a.length; i++) {
+        string += ', ' + gen(a[i]);
+      }
+      // string += ' ]';
+    } else {
+      string += gen(a[0]);
+    }
+    return string;
+  },
 
   // if getting numbers from gen() while generating a block, might
   // be because block returns indentlevel
@@ -195,7 +200,7 @@ var generator = {
 
   FunctionCall: function (c) {
     console.log("inside FunctionCall: " + c.id.lexeme);
-    return makeVariable(c.id.lexeme) + "(" + gen(c.params) + ")";
+    return makeVariable(c.id.lexeme) + "(" + gen(c.args) + ")";
   },
 
   WhileLoop: function (w) {

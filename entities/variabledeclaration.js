@@ -6,8 +6,8 @@ var VariableDeclaration = (function() {
   function VariableDeclaration(id, exp) { // , type) {
     console.log("VariableDeclaration constructor: " + id.lexeme);
     this.id = id;
-    this.exp = exp;
-    this.type = this.exp ? this.exp.type : Type.ARBITRARY;
+    this.exp = exp; // keeping type contained within exp to facilitate type inference
+    this.type = this.exp.type ? this.exp.type : Type.ARBITRARY;
    
     // this needs to receive a type from parser
     // implement type inference, literals parsed with types,
@@ -27,6 +27,7 @@ var VariableDeclaration = (function() {
   };
 
   VariableDeclaration.prototype.analyze = function(context) {
+    console.log("--------inside varDecl analyze-------");
     // need to account for if variable is a single number
     // a list of expressions
     // or a function
@@ -34,10 +35,6 @@ var VariableDeclaration = (function() {
     // Type inference in here!!!
     // Swift: once type is inferred, type cannot change
     var results = [];
-    context.variableMustNotBeAlreadyDeclared(this.id);
-    results.push(context.addVariable(this.id.lexeme, this)); // adds var to symbol table and returns symbol table
-    console.log("--------inside varDecl analyze-------");
-    console.log("current variable: " + this.exp);
     if (this.exp) {
       if (this.exp instanceof Array) {
           console.log("........INSIDE THIS.EXP...... " + this.exp.length);
@@ -48,6 +45,11 @@ var VariableDeclaration = (function() {
         results.push(this.exp.analyze(context));
       }
     }
+    // need to analyze exps before adding variable to context
+    // so that types have been inferred before they are stored
+    context.variableMustNotBeAlreadyDeclared(this.id);
+    context.addVariable(this.id.lexeme, this); // adds var to symbol table and returns symbol table
+    
     return results;
   };
 

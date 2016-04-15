@@ -4,6 +4,7 @@ var Program = require('../entities/program.js');
 var Block = require('../entities/block.js');
 var Type = require('../entities/type.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
+var TypedVariableDeclaration = require('../entities/typedvariabledeclaration.js');
 var Print = require('../entities/print.js');
 var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
@@ -166,7 +167,7 @@ var parseIfBlock = function () {
 var parseFunctionExp = function () {
   console.log("inside parseFunctionExp");
   match('(');
-  var params = parseArgs();
+  var params = parseParams();
   console.log("params " + params);
   match(')');
   match('->');
@@ -176,13 +177,35 @@ var parseFunctionExp = function () {
   return new Function(params, body); // ast return cuts off here
 }
 
-var parseArgs = function () {
-  console.log("inside parseArgs");
-  var exps = parseExpList();
-  console.log("parseArgs exps: " + exps);
-  console.log("leaving parseArgs");
+var parseParams = function () {
+  console.log("inside parseParams");
+  // var exps = parseExpList();
+  var exps = parseTypedExpressionList();
+  console.log("parseParams exps: " + exps);
+  console.log("leaving parseParams");
   return exps;
   // return
+}
+
+var parseTypedExpressionList = function () {
+  console.log("inside parseTypedExpressionList");
+  var exps = [];
+  exps.push(parseTypedExp());
+  while (at(',')) {
+    match(',');
+    exps.push(parseTypedExp());
+  }
+  console.log("leaving parseTypedExpressionList");
+  return exps;
+}
+
+var parseTypedExp = function () {
+  console.log("inside parseTypedExp");
+  var id = match('id');
+  match(':');
+  var type = parseType();
+  console.log("leaving parseTypedExp");
+  return new TypedVariableDeclaration(id, type);
 }
 
 var parseExpList = function () {
@@ -245,6 +268,15 @@ var parseFunctionCall = function (id) {
   return new FunctionCall(id, params);
 }
 
+var parseArgs = function () {
+  console.log("inside parseArgs");
+  var exps = parseExpList();
+  // var exps = parseTypedExpressionList();
+  console.log("parseArgs exps: " + exps);
+  console.log("leaving parseArgs");
+  return exps;
+  // return
+}
 
 var parseAssignmentStatement = function(op, id) {
   var target = new VariableReference(id);
