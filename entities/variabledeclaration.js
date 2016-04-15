@@ -4,10 +4,13 @@ var Type = require('./type.js');
 
 var VariableDeclaration = (function() {
   function VariableDeclaration(id, exp) { // , type) {
+    // this.exp causing a lot of problems
+    // consider having a "generic" type or class
+    // for undeclared variables
     console.log("VariableDeclaration constructor: " + id.lexeme);
     this.id = id;
     this.exp = exp; // keeping type contained within exp to facilitate type inference
-    this.type = this.exp.type ? this.exp.type : Type.ARBITRARY;
+    this.type = this.exp ? (this.exp.type ? this.exp.type : Type.ARBITRARY) : (Type.ARBITRARY);
    
     // this needs to receive a type from parser
     // implement type inference, literals parsed with types,

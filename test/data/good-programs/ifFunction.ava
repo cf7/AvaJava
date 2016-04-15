@@ -1,1 +1,1 @@
-var ifFunction = (x) -> if x == 0 then return x + 10 else if x > 0 then return x + 11 end;
+var ifFunction = (x:int) -> if x == 0 then return x + 10 else if x > 0 then return x + 11 end;
