@@ -18,6 +18,10 @@ var Type = (function() {
 
   Type.FLOAT = new Type('float');
 
+  Type.ITERABLE = new Type('iterable');
+
+  Type.FUNCTION = new Type('function');
+
   Type.ARBITRARY = new Type('<arbitrary_type>');
 
   Type.prototype.toString = function() {

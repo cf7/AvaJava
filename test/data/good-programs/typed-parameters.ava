@@ -1,0 +1,1 @@
+var addOdds = (x:int, y:int) -> if x%2 and y%2 both not 0 then return x+y else return 0 end;

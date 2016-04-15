@@ -12,6 +12,9 @@ Function = (function () {
     };
 
     Function.prototype.analyze = function(context) {
+
+        // need to check for return statements!!!
+
         var localContext = context.createChildContext();
         var results = [];
         localContext.setInsideFunction(true);

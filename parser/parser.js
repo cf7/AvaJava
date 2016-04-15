@@ -4,6 +4,7 @@ var Program = require('../entities/program.js');
 var Block = require('../entities/block.js');
 var Type = require('../entities/type.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
+var TypedVariableDeclaration = require('../entities/typedvariabledeclaration.js');
 var Print = require('../entities/print.js');
 var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
@@ -178,11 +179,33 @@ var parseFunctionExp = function () {
 
 var parseArgs = function () {
   console.log("inside parseArgs");
-  var exps = parseExpList();
+  // var exps = parseExpList();
+  var exps = parseTypedExpressionList();
   console.log("parseArgs exps: " + exps);
   console.log("leaving parseArgs");
   return exps;
   // return
+}
+
+var parseTypedExpressionList = function () {
+  console.log("inside parseTypedExpressionList");
+  var exps = [];
+  exps.push(parseTypedExp());
+  while (at(',')) {
+    match(',');
+    exps.push(parseTypedExp());
+  }
+  console.log("leaving parseTypedExpressionList");
+  return exps;
+}
+
+var parseTypedExp = function () {
+  console.log("inside parseTypedExp");
+  var id = match('id');
+  match(':');
+  var type = parseType();
+  console.log("leaving parseTypedExp");
+  return new TypedVariableDeclaration(id, type);
 }
 
 var parseExpList = function () {
