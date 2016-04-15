@@ -22,6 +22,8 @@ var Type = (function() {
 
   Type.FUNCTION = new Type('function');
 
+  // make sure to export after adding more types!!!
+
   Type.ARBITRARY = new Type('<arbitrary_type>');
 
   Type.prototype.toString = function() {
@@ -86,6 +88,8 @@ module.exports = {
   INT: Type.INT,
   STRING: Type.STRING,
   FLOAT: Type.FLOAT,
+  ITERABLE: Type.ITERABLE,
+  FUNCTION: Type.FUNCTION,
   ARBITRARY: Type.ARBITRARY,
   forName: function(name) {
     return cache[name];

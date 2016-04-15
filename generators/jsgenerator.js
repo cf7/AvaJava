@@ -142,9 +142,9 @@ var generator = {
   },
 
   Function: function (f) {
-    console.log(f.args.length);
-    if (f.args.indexOf(undefined) === -1) {
-      return "function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }";
+    console.log(f.params.length);
+    if (f.params.indexOf(undefined) === -1) {
+      return "function " + "( " + gen(f.params) + " )" + "{ " + gen(f.body) + " }";
     } else {
       return "function " + "() { " + gen(f.body) + " }";
     }
@@ -200,7 +200,7 @@ var generator = {
 
   FunctionCall: function (c) {
     console.log("inside FunctionCall: " + c.id.lexeme);
-    return makeVariable(c.id.lexeme) + "(" + gen(c.params) + ")";
+    return makeVariable(c.id.lexeme) + "(" + gen(c.args) + ")";
   },
 
   WhileLoop: function (w) {

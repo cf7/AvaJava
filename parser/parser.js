@@ -167,7 +167,7 @@ var parseIfBlock = function () {
 var parseFunctionExp = function () {
   console.log("inside parseFunctionExp");
   match('(');
-  var params = parseArgs();
+  var params = parseParams();
   console.log("params " + params);
   match(')');
   match('->');
@@ -177,12 +177,12 @@ var parseFunctionExp = function () {
   return new Function(params, body); // ast return cuts off here
 }
 
-var parseArgs = function () {
-  console.log("inside parseArgs");
+var parseParams = function () {
+  console.log("inside parseParams");
   // var exps = parseExpList();
   var exps = parseTypedExpressionList();
-  console.log("parseArgs exps: " + exps);
-  console.log("leaving parseArgs");
+  console.log("parseParams exps: " + exps);
+  console.log("leaving parseParams");
   return exps;
   // return
 }
@@ -268,6 +268,15 @@ var parseFunctionCall = function (id) {
   return new FunctionCall(id, params);
 }
 
+var parseArgs = function () {
+  console.log("inside parseArgs");
+  var exps = parseExpList();
+  // var exps = parseTypedExpressionList();
+  console.log("parseArgs exps: " + exps);
+  console.log("leaving parseArgs");
+  return exps;
+  // return
+}
 
 var parseAssignmentStatement = function(op, id) {
   var target = new VariableReference(id);

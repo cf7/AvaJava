@@ -25,6 +25,9 @@ var AnalysisContext = (function() {
   };
 
   AnalysisContext.prototype.addVariable = function(name, entity) {
+    console.log("inside addVariable");
+    console.log("name of variable being added: " + name);
+    console.log("entity being added: " + entity);
     return this.symbolTable[name] = entity;
   };
 
@@ -37,6 +40,7 @@ var AnalysisContext = (function() {
   };
   
   AnalysisContext.prototype.lookupVariable = function(token) {
+    console.log("inside lookupVariable");
     console.log("Analyze lookupVariable: " + token.lexeme);
     var variable = this.symbolTable[token.lexeme];
     console.log("Variable after lookup: " + variable);
@@ -46,6 +50,7 @@ var AnalysisContext = (function() {
       error("Variable " + token.lexeme + " not found", token);
       return VariableDeclaration.ARBITRARY;
     } else {
+      console.log("lookup in parent context");
       return this.parent.lookupVariable(token);
     }
   };
