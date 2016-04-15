@@ -9,6 +9,8 @@ var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntegerLiteral = require('../entities/integerliteral.js');
 var FloatLiteral = require('../entities/floatliteral.js');
+var SetLiteral = require('../entities/setliteral.js');
+var ListLiteral = require('../entities/listliteral.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -143,20 +145,20 @@ var generator = {
     }
   },
 
-  Array: function (a) {
-    var string = "";
-    if (a.length > 1) {
-      string += '[ ';
-      string += gen(a[0]);
-      for (var i = 1; i < a.length; i++) {
-        string += ', ' + gen(a[i]);
-      }
-      string += ' ]';
-    } else {
-      string += gen(a[0]);
-    }
-    return string;
-  },
+  // Array: function (a) {
+  //   var string = "";
+  //   if (a.length > 1) {
+  //     string += '[ ';
+  //     string += gen(a[0]);
+  //     for (var i = 1; i < a.length; i++) {
+  //       string += ', ' + gen(a[i]);
+  //     }
+  //     string += ' ]';
+  //   } else {
+  //     string += gen(a[0]);
+  //   }
+  //   return string;
+  // },
 
   // if getting numbers from gen() while generating a block, might
   // be because block returns indentlevel
@@ -283,9 +285,18 @@ var generator = {
     return literal.toString();
   },
 
+  SetLiteral: function (literal) {
+    return "new Set([" + literal.values.join(',') + "])";
+  },
+
+  ListLiteral: function (literal) {
+    return literal.toString();
+  },
+
   // BooleanLiteral: function(literal) {
   //   return literal.toString();
   // },
+
   VariableReference: function(v) {
     console.log("inside VariableReference: " + v.token.lexeme);
     return makeVariable(v.token.lexeme); // later pass in v.referent once analyzer is working

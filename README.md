@@ -94,7 +94,7 @@ StringList 	::= stringLiteral (',' stringLiteral)*
 
 Literal 	::= NumericLiteral | characterLiteral | stringLiteral | boolit
 NumericLiteral	::= intlit | floatlit
-SetLiteral 	::= '{' LiteralList '}'
+SetLiteral 	::= '{' ExpList? '}'
 List 		::= '[' ExpList? ']'
 String 		::= stringLiteral
 ```
