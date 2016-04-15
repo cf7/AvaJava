@@ -180,7 +180,10 @@ var parseFunctionExp = function () {
 var parseParams = function () {
   console.log("inside parseParams");
   // var exps = parseExpList();
-  var exps = parseTypedExpressionList();
+  var exps = [];
+  if (at('id')) {
+    exps = parseTypedExpressionList();
+  }
   console.log("parseParams exps: " + exps);
   console.log("leaving parseParams");
   return exps;

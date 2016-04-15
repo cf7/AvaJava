@@ -30,6 +30,10 @@ var Type = (function() {
     return this.name;
   };
 
+  Type.prototype.analyze = function(context) {
+    // using this for undefined varDecl
+  };
+
   Type.prototype.mustBeInteger = function(message, location) {
     return this.mustBeCompatibleWith(Type.INT, message);
   };

@@ -142,8 +142,8 @@ var generator = {
   },
 
   Function: function (f) {
-    console.log(f.params.length);
-    if (f.params.indexOf(undefined) === -1) {
+    console.log("params length: " + f.params.length);
+    if (f.params.indexOf(undefined) === -1 && f.params.length > 0) {
       return "function " + "( " + gen(f.params) + " )" + "{ " + gen(f.body) + " }";
     } else {
       return "function " + "() { " + gen(f.body) + " }";
