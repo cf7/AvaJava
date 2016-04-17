@@ -26,17 +26,16 @@ var FunctionCall = (function () {
             console.log("numberArgs: " + currentFunction.getNumberParams());
             if (currentFunction.getNumberParams() !== this.args.length) {
                 error("Incorrect number of argument inputs.");
-            } else {
+            } else if (this.args.length > 0) {
                 // 1.) check the types of the incoming args and the params
                 // 2.) if no type errors, store args in params of the Function
                 // 3.) 
-                console.log(currentFunction);
                 var temporary;
                 var variables = [];
                 var message;
                 for (var i = 0; i < this.args.length; i++) {
                     if (this.args[i].getToken().kind === "id") {
-                        console.log("***lookingup***: " + this.args[i].token.lexeme);
+                        console.log("***lookingup***: " + this.args[i].getToken().lexeme);
                         // need to retrieve exp from varDecl
                         temporary = context.lookupVariable(this.args[i].getToken());
                         variables.push(temporary.exp);

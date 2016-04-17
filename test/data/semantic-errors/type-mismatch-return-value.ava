@@ -1,0 +1,5 @@
+var firstFunction = () -> return "hello";
+
+var secondFunction = (x:int) -> return x + 1;
+
+secondFunction(firstFunction());
