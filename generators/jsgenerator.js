@@ -100,9 +100,9 @@ var generator = {
 
   Program: function (program) {
     indentLevel = 0;
-    emit('(() -> ');
+    emit('(function () {');
     emit(gen(program.block));
-    return emit(');');
+    return emit('})();');
   },
 
   Block: function (block) {
@@ -110,14 +110,16 @@ var generator = {
     var string = "";
     indentLevel++;
     ref = block.statements;
-    for (i = 0, len = ref.length; i < len; i++) {
-      statement = ref[i];
-      console.log("inside Block for loop: " + statement);
-      pad = indentPadding * indentLevel;
-      string += "\n" + Array(pad + 1).join(' ') + gen(statement);
-      // }
-    }
+    if (ref[0]) {
+      for (i = 0, len = ref.length; i < len; i++) {
+        statement = ref[i];
+        console.log("inside Block for loop: " + statement);
+        pad = indentPadding * indentLevel;
+        string += "\n" + Array(pad + 1).join(' ') + gen(statement);
+        // }
+      }
     indentLevel--;
+    }
     return string;
   },
 
@@ -135,7 +137,16 @@ var generator = {
   },
 
   ListAccess: function (l) {
-    return makeVariable(l.id.lexeme) + "[" + gen(l.exp) + "]";
+      var string = "";
+      string += gen(l.exps[0]);
+      console.log("l.exps: " + l.exps);
+      if (l.exps.length > 1) {
+        for (var i = 1; i < l.exps.length; i++) {
+          string += "][" + gen(l.exps[i]);
+        }
+        console.log("STRINGSTRING: " + string);
+      }
+      return gen(l.id) + "[" + string + "]";
   },
 
   TypedVariableDeclaration: function (t) {

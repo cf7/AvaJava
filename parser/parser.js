@@ -54,7 +54,9 @@ var parseBlock = function() {
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
-    match(';');
+    if (!at('EOF')) {
+      match(';');
+    }
     console.log("matched semicolon");
     if (!at(blockStatementKeywords)) { // hardcoded 'return' for error outside of function block
       break;
@@ -122,11 +124,13 @@ var parseVariableReference = function () {
   if (at('(')) { //, 'id'])) { // currying
     console.log("going inside");
     return parseFunctionCall(id); // pass in id?
+    // hardcoding return type parsing for now
+    /**
+        // return type parsing
+    */
   } else if (at(assignmentOperators)) {
     op = match();
     return parseAssignmentStatement(op, id);
-  } else if (at('[')) {
-    return parseListAccess(id);
   } else {
     console.log("inside - id is " + id.lexeme);
     return new VariableReference(id);
@@ -547,9 +551,18 @@ var parseExp11 = function () {
   } else if (at('stringlit')) { // hardcoding for now, change to 'literal' later
     return parseStringLiteral();
   } else if (at('id')) {
+    var exps = [];
     var varref = parseVariableReference();
     console.log("Exp9 varref: " + varref);
-    return varref; //parseVariableReference();
+    if (at('[')) {
+      while (at('[')) {
+        match('[');
+        exps.push(parseExpression());
+        match(']');
+      }
+      varref = new ListAccess(varref, exps);
+    }
+    return varref;
     // How do we distinguish between an id and a function Call?
   } else if (at(['true', 'false'])) {
     return parseBooleanLiteral();
@@ -567,12 +580,12 @@ var parseList = function () {
   return new ListLiteral(exps);
 }
 
-var parseListAccess = function (id) {
-  match('[');
-  var exp = parseExpression();
-  match(']');
-  return new ListAccess(id, exp);
-}
+// var parseListAccess = function (id) {
+//   match('[');
+//   var exp = parseExpression();
+//   match(']');
+//   return new ListAccess(id, exp);
+// }
 
 var parseSet = function () {
   console.log("inside parseSet");
