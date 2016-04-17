@@ -18,6 +18,8 @@ var Type = (function() {
 
   Type.FLOAT = new Type('float');
 
+  Type.OBJECT = new Type('object');
+
   Type.ITERABLE = new Type('iterable');
 
   Type.FUNCTION = new Type('function');
@@ -32,6 +34,18 @@ var Type = (function() {
 
   Type.prototype.analyze = function(context) {
     // using this for undefined varDecl
+  };
+
+  Type.prototype.canBeIntOrString = function(message, location) {
+    if (!(this.isCompatibleWith(Type.INT) || this.isCompatibleWith(Type.STRING))) {
+      error(message, location);
+    }
+  };
+
+  Type.prototype.canBeIterOrObj = function(message, location) {
+    if (!(this.isCompatibleWith(Type.ITERABLE) || this.isCompatibleWith(Type.OBJECT))) {
+      error(message, location);
+    }
   };
 
   Type.prototype.mustBeInteger = function(message, location) {
@@ -93,6 +107,7 @@ module.exports = {
   INT: Type.INT,
   STRING: Type.STRING,
   FLOAT: Type.FLOAT,
+  OBJECT: Type.OBJECT,
   ITERABLE: Type.ITERABLE,
   FUNCTION: Type.FUNCTION,
   ARBITRARY: Type.ARBITRARY,

@@ -4,13 +4,16 @@ var Program = require('../entities/program.js');
 var Block = require('../entities/block.js');
 var Type = require('../entities/type.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
+var TypedVariableDeclaration = require('../entities/typedvariabledeclaration.js');
 var Print = require('../entities/print.js');
 var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntegerLiteral = require('../entities/integerliteral.js');
 var FloatLiteral = require('../entities/floatliteral.js');
+var ObjectLiteral = require('../entities/objectliteral.js');
 var SetLiteral = require('../entities/setliteral.js');
 var ListLiteral = require('../entities/listliteral.js');
+var Access = require('../entities/Access.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -136,7 +139,7 @@ var generator = {
     }
   },
 
-  ListAccess: function (l) {
+  Access: function (l) {
       var string = "";
       string += gen(l.exps[0]);
       if (l.exps.length > 1) {
@@ -305,6 +308,10 @@ var generator = {
 
   StringLiteral: function (literal) {
     // console.log("inside StringLiteral: " + literal.toString());
+    return literal.toString();
+  },
+
+  ObjectLiteral: function (literal) {
     return literal.toString();
   },
 

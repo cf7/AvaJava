@@ -85,9 +85,9 @@ Exp7 		::= Exp8 (mulop Exp8)*
 Exp8 		::= prefixop? Exp9
 Exp9 		::= Exp10 postfixop?
 Exp10 		::= Exp11 ('^^' Exp11)?
-Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | Object
+Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | ObjectLiteral
 
-Access		::= ('[' Exp ']')
+Access		::= '[' Exp ']'
 
 ExpList 	::= Exp ( ',' Exp )*
 idList 		::= id (',' id)*
@@ -97,7 +97,7 @@ StringList 	::= stringLiteral (',' stringLiteral)*
 Literal 	::= NumericLiteral | characterLiteral | stringLiteral | boolit
 NumericLiteral	::= intlit | floatlit
 ObjExpList 	::= ObjExp (',' ObjExp)*
-Object		::= '{' ObjExpList '}'
+ObjectLiteral	::= '{' ObjExpList '}'
 SetLiteral 	::= '{' ExpList? '}'
 List 		::= '[' ExpList? ']'
 String 		::= stringLiteral
