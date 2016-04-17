@@ -1,11 +1,43 @@
 var error = require('../error.js');
 var Type = require('./type.js');
+var ReturnStatement = require('./returnstatement.js');
 
 var FunctionCall = (function () {
     function FunctionCall (id, args) {
         this.id = id;
         this.args = args; // array of exp objects, need to get tokens
+        this.type = Type.FUNCTION;
     }
+
+    FunctionCall.prototype.getReturnType = function(block) {
+        console.log("inside get return type");
+        var returnTypes = this.findReturns(block);
+        var allEqual = true;
+        for (var i = 0; i < returnTypes.length; i++) {
+            if (returnTypes[0] !== returnTypes[i]) {
+                allEqual = false;
+            }
+        }
+        if (!allEqual) {
+            error("Return types not the matching", this);
+            return Type.FUNCTION;
+        } else {
+            return returnTypes[0];
+        }
+    };
+
+    FunctionCall.prototype.findReturns = function(block) {
+        var statements = block.statements;
+        var returnTypes = [];
+        for (var i = 0; i < statements.length; i++) {
+            if (statements[i].body) {
+                returnTypes.concat(this.findReturns(statements[i].body));
+            } else if (statements[i] instanceof ReturnStatement) {
+                returnTypes.push(statements[i].value.type);
+            }
+        }
+        return returnTypes;
+    };
 
     // need to be able to get token to lookupvariable
     FunctionCall.prototype.getToken = function() {
@@ -20,13 +52,16 @@ var FunctionCall = (function () {
         var currentFunction = context.lookupVariable(this.id);
         currentFunction = currentFunction.getExp(); // because of first class functions
         // the Function object is actually stored in the exp of the variabeDeclaration
+        this.type = this.getReturnType(currentFunction.body);
+
         console.log("..............FunctionCall Analyze...............");
         //try {
             console.log("current function: " + currentFunction);
-            console.log("numberArgs: " + currentFunction.getNumberParams());
-            if (currentFunction.getNumberParams() !== this.args.length) {
+            console.log("numberParams required: " + currentFunction.getNumberParams());
+            console.log("numberArgs input: " + this.args.length);
+            if (!(currentFunction.getNumberParams() === 0 && !this.args[0]) && currentFunction.getNumberParams() !== this.args.length) {
                 error("Incorrect number of argument inputs.");
-            } else if (this.args.length > 0) {
+            } else if (this.args.length > 0 && this.args[0]) {
                 // 1.) check the types of the incoming args and the params
                 // 2.) if no type errors, store args in params of the Function
                 // 3.) 
