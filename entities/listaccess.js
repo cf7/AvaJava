@@ -25,7 +25,7 @@ class ListAccess {
             } else {
                 // this.exp.analyze(context);
                 // check if parameter is an int
-                this.exp.type.mustBeInteger("index");
+                this.exp.type.mustBeInteger("Index not an integer", this.exp);
 
                 // check if parameter is out of bounds or not
                 if (parseInt(this.exp.value) < 0 || parseInt(this.exp.value) > variable.exp.elements.length) {

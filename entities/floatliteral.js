@@ -3,6 +3,7 @@ var Type = require('./type.js');
 var FloatLiteral = (function () {
     function FloatLiteral (value) {
         this.value = value;
+        this.type = Type.FLOAT;
     }
 
     FloatLiteral.prototype.toString = function() {

@@ -4,6 +4,7 @@ var StringLiteral = (function () {
 
     function StringLiteral (string) {
         this.string = string;
+        this.type = Type.STRING;
     }
 
     StringLiteral.prototype.toString = function() {
