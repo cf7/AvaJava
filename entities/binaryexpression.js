@@ -81,7 +81,7 @@ var BinaryExpression = (function () {
 
     BinaryExpression.prototype.canHaveDifferentOperands = function() {
         console.log("^^^^^^^^ canHaveDifferentOperands ^^^^^^^^^");
-        var error = this.operator.lexeme + " must have either both integers or an integer and a string";
+        var error = this.operator.lexeme + " must have either both integers, an integer and a string";
         Type.INT.canBeCompatibleWith(Type.INT, '*');
         Type.INT.canBeCompatibleWith(Type.STRING, '*');
         Type.STRING.canBeCompatibleWith(Type.INT, '*');

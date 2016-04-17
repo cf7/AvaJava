@@ -60,15 +60,15 @@ var Type = (function() {
 
   Type.prototype.canBeCompatibleWith = function(otherType, operator) {
     // can be compatiblewith otherType given current operator
-    this.mixTypeCache[this.name + otherType.name] = { operator: operator, type1: this, type2: otherType };
+    this.mixTypeCache[this.name + otherType.name + operator] = { operator: operator, type1: this, type2: otherType };
   };
 
   Type.prototype.isMixedCompatibleWith = function(otherType, operator, message, location) {
       var result = false;
       console.log(this);
       console.log(otherType);
-      if (this.mixTypeCache[this.name + otherType.name]) {
-        result = this.mixTypeCache[this.name + otherType.name].operator === operator;
+      if (this.mixTypeCache[this.name + otherType.name + operator]) {
+        result = this.mixTypeCache[this.name + otherType.name + operator].operator === operator;
       }
 
       // hardcoding result of string * int for now
