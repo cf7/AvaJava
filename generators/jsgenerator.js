@@ -137,7 +137,16 @@ var generator = {
   },
 
   ListAccess: function (l) {
-    return makeVariable(l.id.lexeme) + "[" + gen(l.exp) + "]";
+      var string = "";
+      string += gen(l.exps[0]);
+      console.log("l.exps: " + l.exps);
+      if (l.exps.length > 1) {
+        for (var i = 1; i < l.exps.length; i++) {
+          string += "][" + gen(l.exps[i]);
+        }
+        console.log("STRINGSTRING: " + string);
+      }
+      return gen(l.id) + "[" + string + "]";
   },
 
   TypedVariableDeclaration: function (t) {

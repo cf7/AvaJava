@@ -1,0 +1,5 @@
+var firstFunction = () -> return 2;
+
+var secondFunction = () -> return 3;
+
+firstFunction() + secondFunction();

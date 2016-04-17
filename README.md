@@ -70,7 +70,7 @@ FunctionExp	::= '(' Args ')' '->' Block ;'
 Call 		::=	id ( id+ | '(' ExpList? ')' ) ';'
 Assign 		::= id assignop Exp ';'
     			| '[' idList ']' '=' Exp ';'
-VarRef 		::= Call | Assign | id
+VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
 ConditionalExp ::= 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
 
 
@@ -85,8 +85,9 @@ Exp7 		::= Exp8 (mulop Exp8)*
 Exp8 		::= prefixop? Exp9
 Exp9 		::= Exp10 postfixop?
 Exp10 		::= Exp11 ('^^' Exp11)?
-Exp11 		::= '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit | List 
-				| SetLiteral | Object
+Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | Object
+
+Access		::= ('[' Exp ']')
 
 ExpList 	::= Exp ( ',' Exp )*
 idList 		::= id (',' id)*
