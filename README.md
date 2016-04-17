@@ -105,7 +105,7 @@ String 		::= stringLiteral
 
 ####Example Programs:
 ```
-var addOdds = (x,y) ->                                  var addOdds = function (x,y) {
+var addOdds = (x:int, y:int) ->                                  var addOdds = function (x,y) {
     if x%2 and y%2 both not 0 then x+y else Math.PI end;    if (x%2 !== 0 && y%2 !== 0) {
                                                                 return x + y;
 addOdds 3 3;                                                } else {
@@ -117,7 +117,7 @@ addOdds 3 3;                                                } else {
 
 
 
-var factorial = (n) ->                                  var factorial = function (n) {
+var factorial = (n:int) ->                                  var factorial = function (n) {
     if n <= 1 then 1 else n * factorial(n - 1) end;         if (n <= 1) {
                                                                 return 1;
 factorial addOdds 3 3;                                      } else {

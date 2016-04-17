@@ -65,7 +65,8 @@ var Type = (function() {
 
   Type.prototype.isMixedCompatibleWith = function(otherType, operator, message, location) {
       var result = false;
-
+      console.log(this);
+      console.log(otherType);
       if (this.mixTypeCache[this.name + otherType.name]) {
         result = this.mixTypeCache[this.name + otherType.name].operator === operator;
       }
