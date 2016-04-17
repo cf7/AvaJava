@@ -1,6 +1,7 @@
 "use strict";
 
 var Type = require('./type.js');
+var error = require('../error.js');
 
 var VariableDeclaration = (function() {
   function VariableDeclaration(id, exp) { // , type) {
@@ -34,13 +35,15 @@ var VariableDeclaration = (function() {
     // need to account for if variable is a single number
     // a list of expressions
     // or a function
-
+    context.variableMustNotBeAlreadyDeclared(this.id);
+    context.addVariable(this.id.lexeme, this);
     // Type inference in here!!!
     // Swift: once type is inferred, type cannot change
     var results = [];
     if (this.exp) {
+      console.log("........INSIDE THIS.EXP...... ");
       if (this.exp instanceof Array) {
-          console.log("........INSIDE THIS.EXP...... " + this.exp.length);
+          console.log(this.exp.length);
           for (var i = 0; i < this.exp.length; i++) {
             results.push(this.exp[i].analyze(context));
           }
@@ -48,10 +51,6 @@ var VariableDeclaration = (function() {
         results.push(this.exp.analyze(context));
       }
     }
-    // need to analyze exps before adding variable to context
-    // so that types have been inferred before they are stored
-    context.variableMustNotBeAlreadyDeclared(this.id);
-    context.addVariable(this.id.lexeme, this); // adds var to symbol table and returns symbol table
     
     return results;
   };

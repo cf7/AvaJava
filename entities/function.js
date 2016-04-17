@@ -8,36 +8,6 @@ var Function = (function () {
         this.type = Type.FUNCTION;
     }
 
-    Function.prototype.getReturnType = function(block) {
-        console.log("inside get return type");
-        var returnTypes = this.findReturns(block);
-        var allEqual = true;
-        for (var i = 0; i < returnTypes.length; i++) {
-            if (returnTypes[0] !== returnTypes[i]) {
-                allEqual = false;
-            }
-        }
-        if (!allEqual) {
-            error("Return types not the matching", this);
-            return Type.FUNCTION;
-        } else {
-            return returnTypes[0];
-        }
-    };
-
-    Function.prototype.findReturns = function(block) {
-        var statements = block.statements;
-        var returnTypes = [];
-        for (var i = 0; i < statements.length; i++) {
-            if (statements[i].body) {
-                returnTypes.concat(this.findReturns(statements[i].body));
-            } else if (statements[i] instanceof ReturnStatement) {
-                returnTypes.push(statements[i].value.type);
-            }
-        }
-        return returnTypes;
-    };
-
     Function.prototype.getNumberParams = function() {
         return this.params.length;
     };
@@ -54,7 +24,7 @@ var Function = (function () {
         
         var results = [];
         localContext.setInsideFunction(true);
-        
+        localContext.setScope(this);
         // need to analyze variables too
         for (var i = 0; i < this.params.length; i++) {
             localContext.addVariable(this.params[i].id.lexeme, this.params[i]);
@@ -65,9 +35,9 @@ var Function = (function () {
         // console.log(localContext.parent.symbolTable);
         // console.log("localContext: ");
         // console.log(localContext.symbolTable);
-        this.body.analyze(localContext);
+        return this.body.analyze(localContext);
 
-        return this.type = this.getReturnType(this.body);
+        // return this.type = this.getReturnType(this.body, context);
     };
 
     return Function;

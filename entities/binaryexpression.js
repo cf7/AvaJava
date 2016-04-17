@@ -11,12 +11,18 @@ var BinaryExpression = (function () {
         this.left = left;
         console.log("CONSTRUCTOR: " + this.left);
         this.right = right;
+        this.type = Type.ARBITRARY;
     }
     
+    BinaryExpression.prototype.getToken = function() {
+        return this.operator;
+    };
+
     BinaryExpression.prototype.toString = function() {
         return `( ${this.operator.lexeme} ${this.left} ${this.right} )`;
     };
     
+
     BinaryExpression.prototype.analyze = function(context) {
         console.log("inside BinaryExpression analyzer");
         // console.log("LEFT: " + this.left.constructor);
@@ -90,7 +96,8 @@ var BinaryExpression = (function () {
         Type.STRING.canBeCompatibleWith(Type.INT, '+');
 
         Type.STRING.canBeCompatibleWith(Type.STRING, '+');
-
+        console.log(this.left);
+        console.log(this.right);
         return this.left.type.isMixedCompatibleWith(this.right.type, this.operator.lexeme, error, this.operator);
     };
 
