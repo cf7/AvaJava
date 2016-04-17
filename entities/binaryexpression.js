@@ -14,6 +14,10 @@ var BinaryExpression = (function () {
         this.type = Type.ARBITRARY;
     }
     
+    BinaryExpression.prototype.getToken = function() {
+        return this.operator;
+    };
+
     BinaryExpression.prototype.toString = function() {
         return `( ${this.operator.lexeme} ${this.left} ${this.right} )`;
     };
@@ -92,7 +96,8 @@ var BinaryExpression = (function () {
         Type.STRING.canBeCompatibleWith(Type.INT, '+');
 
         Type.STRING.canBeCompatibleWith(Type.STRING, '+');
-
+        console.log(this.left);
+        console.log(this.right);
         return this.left.type.isMixedCompatibleWith(this.right.type, this.operator.lexeme, error, this.operator);
     };
 

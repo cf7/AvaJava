@@ -23,11 +23,13 @@ var FunctionCall = (function () {
         currentFunction = currentFunction.getExp(); // because of first class functions
         // the Function object is actually stored in the exp of the variabeDeclaration
         console.log("..............FunctionCall Analyze...............");
-       
+        this.type = currentFunction.type;
+        console.log(this.id);
+        console.log(currentFunction);
         //try {
             console.log("current function: " + currentFunction);
             console.log("numberParams required: " + currentFunction.getNumberParams());
-            console.log("numberArgs input: " + this.args.length);
+            console.log("numberArgs input: " + this.args[0]);
             if (!(currentFunction.getNumberParams() === 0 && !this.args[0]) && currentFunction.getNumberParams() !== this.args.length) {
                 error("Incorrect number of argument inputs.");
             } else if (this.args.length > 0 && this.args[0]) {
