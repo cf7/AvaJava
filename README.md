@@ -85,7 +85,8 @@ Exp7 		::= Exp8 (mulop Exp8)*
 Exp8 		::= prefixop? Exp9
 Exp9 		::= Exp10 postfixop?
 Exp10 		::= Exp11 ('^^' Exp11)?
-Exp11 		::= '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit | List
+Exp11 		::= '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit | List 
+				| SetLiteral | Object
 
 ExpList 	::= Exp ( ',' Exp )*
 idList 		::= id (',' id)*
@@ -94,6 +95,8 @@ StringList 	::= stringLiteral (',' stringLiteral)*
 
 Literal 	::= NumericLiteral | characterLiteral | stringLiteral | boolit
 NumericLiteral	::= intlit | floatlit
+ObjExpList 	::= ObjExp (',' ObjExp)*
+Object		::= '{' ObjExpList '}'
 SetLiteral 	::= '{' ExpList? '}'
 List 		::= '[' ExpList? ']'
 String 		::= stringLiteral
@@ -131,7 +134,7 @@ var helloWorld = () -> ava "Hello World" end;           var helloWorld = functio
 
 ######Execute:
 ```
-./avajava.js [-t] [-a] pathOrFilename.ava
+./avajava.js [-t] [-a] [-i] pathOrFilename.ava
 ```
 ######To Compile & Run:
 ```

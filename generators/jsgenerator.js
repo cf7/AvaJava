@@ -82,7 +82,8 @@ var makeVariable = (function(lastId, map) {
 // };
 
 var gen = function (e) {
-  console.log("inside gen: " + e.constructor.name);
+  console.log("inside gen1: " + e);
+  console.log("inside gen2: " + e.constructor.name);
   console.log(e);
   return generator[e.constructor.name](e); // find corresponding entity name in generator object
   // and pass in the entity into its matching function
@@ -131,6 +132,10 @@ var generator = {
     } else {
       return "var " + (makeVariable(v.id.lexeme)) + ";";
     }
+  },
+
+  ListAccess: function (l) {
+    return makeVariable(l.id.lexeme) + "[" + gen(l.exp) + "]";
   },
 
   TypedVariableDeclaration: function (t) {

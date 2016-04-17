@@ -12,6 +12,7 @@ var IntegerLiteral = require('../entities/integerliteral.js');
 var FloatLiteral = require('../entities/floatliteral.js');
 var SetLiteral = require('../entities/setliteral.js');
 var ListLiteral = require('../entities/listliteral.js');
+var ListAccess = require('../entities/listaccess.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -124,6 +125,8 @@ var parseVariableReference = function () {
   } else if (at(assignmentOperators)) {
     op = match();
     return parseAssignmentStatement(op, id);
+  } else if (at('[')) {
+    return parseListAccess(id);
   } else {
     console.log("inside - id is " + id.lexeme);
     return new VariableReference(id);
@@ -562,6 +565,13 @@ var parseList = function () {
   match(']');
   console.log("leaving parseList");
   return new ListLiteral(exps);
+}
+
+var parseListAccess = function (id) {
+  match('[');
+  var exp = parseExpression();
+  match(']');
+  return new ListAccess(id, exp);
 }
 
 var parseSet = function () {
