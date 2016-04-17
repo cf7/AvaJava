@@ -18,7 +18,14 @@ var IfElseStatements = (function () {
     };
 
     IfElseStatements.prototype.analyze = function(context) {
-        
+        this.conditional.analyze(context);
+        this.body.analyze(context);
+        if (this.elseifs) {
+            this.elseifs.analyze(context);
+        }
+        if (this.elseBody) {
+            this.elseBody.analyze(context);
+        }
     };
     
     return IfElseStatements;

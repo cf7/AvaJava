@@ -1,6 +1,7 @@
 "use strict";
 
 var Type = require('./type.js');
+var error = require('../error.js');
 
 var VariableDeclaration = (function() {
   function VariableDeclaration(id, exp) { // , type) {
@@ -39,8 +40,9 @@ var VariableDeclaration = (function() {
     // Swift: once type is inferred, type cannot change
     var results = [];
     if (this.exp) {
+      console.log("........INSIDE THIS.EXP...... ");
       if (this.exp instanceof Array) {
-          console.log("........INSIDE THIS.EXP...... " + this.exp.length);
+          console.log(this.exp.length);
           for (var i = 0; i < this.exp.length; i++) {
             results.push(this.exp[i].analyze(context));
           }

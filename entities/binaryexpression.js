@@ -11,12 +11,14 @@ var BinaryExpression = (function () {
         this.left = left;
         console.log("CONSTRUCTOR: " + this.left);
         this.right = right;
+        this.type = Type.ARBITRARY;
     }
     
     BinaryExpression.prototype.toString = function() {
         return `( ${this.operator.lexeme} ${this.left} ${this.right} )`;
     };
     
+
     BinaryExpression.prototype.analyze = function(context) {
         console.log("inside BinaryExpression analyzer");
         // console.log("LEFT: " + this.left.constructor);

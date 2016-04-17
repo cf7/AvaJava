@@ -39,6 +39,20 @@ var AnalysisContext = (function() {
     return this.insideFunction;
   };
   
+  AnalysisContext.prototype.setScope = function(fun) {
+    console.log("inside AnalysisContext setScope");
+    console.log(fun);
+    this.symbolTable["scope"] = fun;
+  };
+
+  AnalysisContext.prototype.getScope = function() {
+    if (this.symbolTable["scope"]) {
+      return this.symbolTable["scope"];
+    } else {
+      return this.parent.getScope();
+    }
+  };
+
   AnalysisContext.prototype.lookupVariable = function(token) {
     console.log("inside lookupVariable");
     console.log("Analyze lookupVariable: " + token.lexeme);
