@@ -30,6 +30,7 @@ var Block = (function() {
       }
       console.log("Block: results . . . " + results);
     }
+    console.log("leaving Block analyze");
     return results;
   };
 
