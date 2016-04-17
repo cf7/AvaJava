@@ -82,8 +82,8 @@ var makeVariable = (function(lastId, map) {
 // };
 
 var gen = function (e) {
-  console.log("inside gen1: " + e);
-  console.log("inside gen2: " + e.constructor.name);
+  console.log("inside gen entity: " + e);
+  console.log("inside gen constructor-name: " + e.constructor.name);
   console.log(e);
   return generator[e.constructor.name](e); // find corresponding entity name in generator object
   // and pass in the entity into its matching function
@@ -139,12 +139,10 @@ var generator = {
   ListAccess: function (l) {
       var string = "";
       string += gen(l.exps[0]);
-      console.log("l.exps: " + l.exps);
       if (l.exps.length > 1) {
         for (var i = 1; i < l.exps.length; i++) {
           string += "][" + gen(l.exps[i]);
         }
-        console.log("STRINGSTRING: " + string);
       }
       return gen(l.id) + "[" + string + "]";
   },
@@ -216,7 +214,11 @@ var generator = {
 
   FunctionCall: function (c) {
     console.log("inside FunctionCall: " + c.id.lexeme);
-    return makeVariable(c.id.lexeme) + "(" + gen(c.args) + ")";
+    if (c.args.length > 0 && c.args[0]) {
+      return makeVariable(c.id.lexeme) + "(" + gen(c.args) + ")";
+    } else {
+      return makeVariable(c.id.lexeme) + "()";
+    }
   },
 
   WhileLoop: function (w) {

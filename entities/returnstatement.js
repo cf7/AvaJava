@@ -10,6 +10,7 @@ var ReturnStatement = (function () {
     };
     
     ReturnStatement.prototype.analyze = function(context) {
+        this.value.analyze(context);
         if (!context.getInsideFunction()) {
             error("Return statement must be inside a function block.");
         }
