@@ -19,15 +19,17 @@ var Block = (function() {
     console.log(localContext.parent.symbolTable);
     console.log("localContext: ");
     console.log(localContext.symbolTable);
-    
+    console.log("statements: " + this.statements);
     ref = this.statements;
     results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      statement = ref[i];
-      console.log("Block CURRENT STATEMENT: " + statement);
-      results.push(statement.analyze(localContext));
+    if (ref[0]) {
+      for (i = 0, len = ref.length; i < len; i++) {
+        statement = ref[i];
+        console.log("Block CURRENT STATEMENT: " + statement);
+        results.push(statement.analyze(localContext));
+      }
+      console.log("Block: results . . . " + results);
     }
-    console.log("Block: results . . . " + results);
     return results;
   };
 

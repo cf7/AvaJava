@@ -100,9 +100,9 @@ var generator = {
 
   Program: function (program) {
     indentLevel = 0;
-    emit('(() -> ');
+    emit('(function () {');
     emit(gen(program.block));
-    return emit(');');
+    return emit('})();');
   },
 
   Block: function (block) {
@@ -110,14 +110,16 @@ var generator = {
     var string = "";
     indentLevel++;
     ref = block.statements;
-    for (i = 0, len = ref.length; i < len; i++) {
-      statement = ref[i];
-      console.log("inside Block for loop: " + statement);
-      pad = indentPadding * indentLevel;
-      string += "\n" + Array(pad + 1).join(' ') + gen(statement);
-      // }
-    }
+    if (ref[0]) {
+      for (i = 0, len = ref.length; i < len; i++) {
+        statement = ref[i];
+        console.log("inside Block for loop: " + statement);
+        pad = indentPadding * indentLevel;
+        string += "\n" + Array(pad + 1).join(' ') + gen(statement);
+        // }
+      }
     indentLevel--;
+    }
     return string;
   },
 

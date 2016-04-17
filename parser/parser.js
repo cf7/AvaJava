@@ -54,7 +54,9 @@ var parseBlock = function() {
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
-    match(';');
+    if (!at('EOF')) {
+      match(';');
+    }
     console.log("matched semicolon");
     if (!at(blockStatementKeywords)) { // hardcoded 'return' for error outside of function block
       break;
