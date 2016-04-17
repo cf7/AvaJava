@@ -10,9 +10,10 @@ var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntegerLiteral = require('../entities/integerliteral.js');
 var FloatLiteral = require('../entities/floatliteral.js');
+var ObjectLiteral = require('../entities/objectliteral.js');
 var SetLiteral = require('../entities/setliteral.js');
 var ListLiteral = require('../entities/listliteral.js');
-var ListAccess = require('../entities/listaccess.js');
+var Access = require('../entities/access.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -240,11 +241,11 @@ var parseFunctionBlock = function () {
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
-    if (at('end')) {
+    // if (at('end')) {
       match('end');
       console.log("matched end");
       break;
-    }
+    // }
     if (!at(blockStatementKeywords)) {
       break;
     } else if (error.count > numberErrors) {
@@ -541,9 +542,9 @@ var parseExp11 = function () {
     match(')');
   } else if (at('[')) {
     return parseList();
-  } else if (at(['{'])) {
+  } else if (at('{')) {
     console.log("in here");
-    return parseSet();
+    return parseCollection();
   } else if (at('intlit')) {
     return parseIntegerLiteral();
   } else if (at('floatlit')) {
@@ -560,7 +561,7 @@ var parseExp11 = function () {
         exps.push(parseExpression());
         match(']');
       }
-      varref = new ListAccess(varref, exps);
+      varref = new Access(varref, exps);
     }
     return varref;
     // How do we distinguish between an id and a function Call?
@@ -584,14 +585,56 @@ var parseList = function () {
 //   match('[');
 //   var exp = parseExpression();
 //   match(']');
-//   return new ListAccess(id, exp);
+//   return new Access(id, exp);
 // }
+
+var parseCollection = function () {
+  var result;
+  match('{');
+  if (tokens[1].lexeme === ':') {
+    result = parseObject();
+  } else {
+    result = parseSet();
+  }
+  match('}');
+  return result;
+}
+
+var parseObjectExp = function () {
+  var exp = {};
+  console.log("inside ObjectExp");
+  var key = match().lexeme;
+  match(':');
+  var value = match().lexeme;
+  console.log("value: " + value);
+  console.log("leaving ObjectExp");
+  exp[key] = value;
+  return exp
+}
+
+var parseObjectExpList = function () {
+  console.log("inside parseObjectExpList");
+  var exps = parseObjectExp();
+  while (at(',')) {
+    match(',');
+    Object.assign(exps, parseObjectExp());
+  }
+  console.log("exps: " + exps);
+  console.log("leaving parseObjectExpList");
+  return exps;
+  // return statement
+}
+
+var parseObject = function () {
+  console.log("inside parseObject");
+  var exps = parseObjectExpList();
+  console.log("leaving parseObject");
+  return new ObjectLiteral(exps);
+}
 
 var parseSet = function () {
   console.log("inside parseSet");
-  match('{');
   var exps = parseExpList();
-  match('}');
   console.log("leaving parseSet");
   return new SetLiteral(exps);
 }

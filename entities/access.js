@@ -46,7 +46,7 @@ class Access {
         // } else if (variable.type === Type.OBJECT) {
         //
         // }
-
+        variable.analyze(context);
         variable.type.canBeIterOrObj("Variable not of type ITERABLE or type OBJECT", variable);
 
         console.log("variable ))()()()()()()()()()()()(");
@@ -57,8 +57,9 @@ class Access {
                 var checkVar = this.exps[i];
                 if (checkVar instanceof VariableReference) {
                     checkVar = context.lookupVariable(checkVar.getToken());
+                    console.log(checkVar);
                 }
-                checkVar.type.canBeIntOrString("Index not an integer", checkVar);
+                checkVar.type.canBeIntOrString("Index not an integer or a string", checkVar);
             }
         } else {
             error("No index parameter specified", this.id);

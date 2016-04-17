@@ -10,7 +10,7 @@ var DIGIT = /[0-9]/;
 // var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
 var WORD_CHAR = /[A-Za-z_]/;
 var KEYWORDS = /^(?:var|while|and|or|not|true|false|return|for|each|if|then|else|in|both|ava|end|times|int|string|bool|float)$/;
-var oneCharacterTokens = /["+\-*\/()\[\]{},:;=\<\>\%\@\.\!\#]/;
+var oneCharacterTokens = /["'+\-*\/()\[\]{},:;=\<\>\%\@\.\!\#]/;
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /\.\.\.|\*\*\*/;
 var intlit = /^\d+$/;
@@ -197,11 +197,13 @@ var scan = function (line, lineNumber, tokens) {
       } else if (oneCharacterTokens.test(line[pos])) {
         var string = "";
         var encounteredString = false;
-        if (/"/.test(line[pos])) {
+        if (/["']/.test(line[pos])) {
           encounteredString = true;
+          var quoteType = new RegExp(line[pos]);
+          console.log("quoteType: " + quoteType);
           start = pos;
           pos++
-          while (!/"/.test(line[pos]) && pos < line.length) {
+          while (!quoteType.test(line[pos]) && pos < line.length) {
             pos++;
           }
           pos++;

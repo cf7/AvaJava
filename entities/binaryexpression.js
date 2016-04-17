@@ -45,6 +45,8 @@ var BinaryExpression = (function () {
             var type = this.canHaveDifferentOperands();
             return this.type = type;
           case '+':
+            var type = this.canHaveDifferentOperands();
+            return this.type = type;
           case '-':
             this.mustHaveCompatibleOperands(); // want to be able to support
             // ints and strings
@@ -79,10 +81,16 @@ var BinaryExpression = (function () {
 
     BinaryExpression.prototype.canHaveDifferentOperands = function() {
         console.log("^^^^^^^^ canHaveDifferentOperands ^^^^^^^^^");
-        var error = this.operator.lexeme + " must have either both integers or an integer and a string";
+        var error = this.operator.lexeme + " must have either both integers, an integer and a string";
         Type.INT.canBeCompatibleWith(Type.INT, '*');
         Type.INT.canBeCompatibleWith(Type.STRING, '*');
         Type.STRING.canBeCompatibleWith(Type.INT, '*');
+        Type.INT.canBeCompatibleWith(Type.INT, '+');
+        Type.INT.canBeCompatibleWith(Type.STRING, '+');
+        Type.STRING.canBeCompatibleWith(Type.INT, '+');
+
+        Type.STRING.canBeCompatibleWith(Type.STRING, '+');
+
         return this.left.type.isMixedCompatibleWith(this.right.type, this.operator.lexeme, error, this.operator);
     };
 

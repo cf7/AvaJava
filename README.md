@@ -85,9 +85,9 @@ Exp7 		::= Exp8 (mulop Exp8)*
 Exp8 		::= prefixop? Exp9
 Exp9 		::= Exp10 postfixop?
 Exp10 		::= Exp11 ('^^' Exp11)?
-Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | Object
+Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | ObjectLiteral
 
-Access		::= ('[' Exp ']')
+Access		::= '[' Exp ']'
 
 ExpList 	::= Exp ( ',' Exp )*
 idList 		::= id (',' id)*
@@ -97,7 +97,7 @@ StringList 	::= stringLiteral (',' stringLiteral)*
 Literal 	::= NumericLiteral | characterLiteral | stringLiteral | boolit
 NumericLiteral	::= intlit | floatlit
 ObjExpList 	::= ObjExp (',' ObjExp)*
-Object		::= '{' ObjExpList '}'
+ObjectLiteral	::= '{' ObjExpList '}'
 SetLiteral 	::= '{' ExpList? '}'
 List 		::= '[' ExpList? ']'
 String 		::= stringLiteral
@@ -105,7 +105,7 @@ String 		::= stringLiteral
 
 ####Example Programs:
 ```
-var addOdds = (x,y) ->                                  var addOdds = function (x,y) {
+var addOdds = (x:int, y:int) ->                                  var addOdds = function (x,y) {
     if x%2 and y%2 both not 0 then x+y else Math.PI end;    if (x%2 !== 0 && y%2 !== 0) {
                                                                 return x + y;
 addOdds 3 3;                                                } else {
@@ -117,7 +117,7 @@ addOdds 3 3;                                                } else {
 
 
 
-var factorial = (n) ->                                  var factorial = function (n) {
+var factorial = (n:int) ->                                  var factorial = function (n) {
     if n <= 1 then 1 else n * factorial(n - 1) end;         if (n <= 1) {
                                                                 return 1;
 factorial addOdds 3 3;                                      } else {

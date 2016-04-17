@@ -18,6 +18,8 @@ var Type = (function() {
 
   Type.FLOAT = new Type('float');
 
+  Type.OBJECT = new Type('object');
+
   Type.ITERABLE = new Type('iterable');
 
   Type.FUNCTION = new Type('function');
@@ -32,6 +34,18 @@ var Type = (function() {
 
   Type.prototype.analyze = function(context) {
     // using this for undefined varDecl
+  };
+
+  Type.prototype.canBeIntOrString = function(message, location) {
+    if (!(this.isCompatibleWith(Type.INT) || this.isCompatibleWith(Type.STRING))) {
+      error(message, location);
+    }
+  };
+
+  Type.prototype.canBeIterOrObj = function(message, location) {
+    if (!(this.isCompatibleWith(Type.ITERABLE) || this.isCompatibleWith(Type.OBJECT))) {
+      error(message, location);
+    }
   };
 
   Type.prototype.mustBeInteger = function(message, location) {
@@ -60,14 +74,15 @@ var Type = (function() {
 
   Type.prototype.canBeCompatibleWith = function(otherType, operator) {
     // can be compatiblewith otherType given current operator
-    this.mixTypeCache[this.name + otherType.name] = { operator: operator, type1: this, type2: otherType };
+    this.mixTypeCache[this.name + otherType.name + operator] = { operator: operator, type1: this, type2: otherType };
   };
 
   Type.prototype.isMixedCompatibleWith = function(otherType, operator, message, location) {
       var result = false;
-
-      if (this.mixTypeCache[this.name + otherType.name]) {
-        result = this.mixTypeCache[this.name + otherType.name].operator === operator;
+      console.log(this);
+      console.log(otherType);
+      if (this.mixTypeCache[this.name + otherType.name + operator]) {
+        result = this.mixTypeCache[this.name + otherType.name + operator].operator === operator;
       }
 
       // hardcoding result of string * int for now
@@ -92,6 +107,7 @@ module.exports = {
   INT: Type.INT,
   STRING: Type.STRING,
   FLOAT: Type.FLOAT,
+  OBJECT: Type.OBJECT,
   ITERABLE: Type.ITERABLE,
   FUNCTION: Type.FUNCTION,
   ARBITRARY: Type.ARBITRARY,
