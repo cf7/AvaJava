@@ -1,5 +1,5 @@
 var x = "hello";
 
-var thisFunction = (x:int) -> return x + 1;
+var thisFunction = function (x:int) -> return x + 1;
 
 thisFunction(x);

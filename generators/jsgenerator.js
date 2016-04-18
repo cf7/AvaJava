@@ -251,7 +251,7 @@ var generator = {
     if (!f.id) {
         console.log("inside ForLoop: " + f);
         // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
-        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
+        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp.lexeme)))
           + ' ' + gen(new BinaryExpression(op, left, right)) + '; '
           +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
           + gen(f.body) + ' }';
