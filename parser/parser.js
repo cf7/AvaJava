@@ -511,7 +511,7 @@ var parseExp9 = function () {
   var op, operand;
   console.log("inside parseExp9");
   var operand = parseExp10();
-  if (at(['!', '++', '--'])) {
+  if (at(['++', '--'])) { // add ! for factorial operation
     op = match();
     console.log("leaving parseExp9");
     return new PostfixExpression(op, operand);

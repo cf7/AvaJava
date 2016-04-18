@@ -10,7 +10,7 @@ var DIGIT = /[0-9]/;
 // var WORD_CHAR = XRegExp('[\\p{L}\\p{Nd}_]');
 var WORD_CHAR = /[A-Za-z_]/;
 var KEYWORDS = /^(?:var|while|and|or|function|not|true|false|return|for|each|if|then|else|in|both|ava|end|times|int|string|bool|float)$/;
-var oneCharacterTokens = /["'+\-*\/()\[\]{},:;=\<\>\%\@\.\!\#]/;
+var oneCharacterTokens = /["'+\-*\/()\[\]{},:;=\<\>\%\@\.\#]/; // add ! for factorial
 var twoCharacterTokens = /<=|==|>=|!=|\+=|\-=|\*=|\/=|\+\+|\-\-|\^\^|::|\.\.|\->/;
 var threeCharacterTokens = /\.\.\.|\*\*\*/;
 var intlit = /^\d+$/;
