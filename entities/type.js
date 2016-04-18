@@ -48,6 +48,12 @@ var Type = (function() {
     }
   };
 
+  Type.prototype.mustBeIterable = function(message, location) {
+    if (!(this.isCompatibleWith(Type.ITERABLE))) {
+      error(message, location);
+    }
+  };
+  
   Type.prototype.mustBeInteger = function(message, location) {
     return this.mustBeCompatibleWith(Type.INT, message);
   };

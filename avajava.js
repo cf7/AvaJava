@@ -41,7 +41,7 @@ scan(argv._[0], function(tokens) {
     // program = program.optimize();
   }
   if (argv.i) {
-    // program.showSemanticGraph();
+    program.showSemanticGraph();
     return;
   }
   

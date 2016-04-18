@@ -98,6 +98,15 @@ var gen = function (e) {
 // need to determine whether to use gen() or not
 // sometimes will only need to return strings in the cases below
 // can have a mix of calling entitiy toStrings() and calling gen() to keep traversing
+var hasStatement = function (array) {
+  var hasStmt = false;
+  for (var i = 0; i < array.length; i++) {
+    if (array[i]) {
+      hasStmt = true;
+    }
+  }
+  return hasStmt;
+}
 
 var generator = {
 
@@ -113,13 +122,14 @@ var generator = {
     var string = "";
     indentLevel++;
     ref = block.statements;
-    if (ref[0]) {
+    if (hasStatement(ref)) {
       for (i = 0, len = ref.length; i < len; i++) {
         statement = ref[i];
-        console.log("inside Block for loop: " + statement);
-        pad = indentPadding * indentLevel;
-        string += "\n" + Array(pad + 1).join(' ') + gen(statement);
-        // }
+        if (statement) {
+          console.log("inside Block for loop: " + statement);
+          pad = indentPadding * indentLevel;
+          string += "\n" + Array(pad + 1).join(' ') + gen(statement);
+        }
       }
     indentLevel--;
     }
@@ -241,7 +251,7 @@ var generator = {
     if (!f.id) {
         console.log("inside ForLoop: " + f);
         // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
-        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
+        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp.lexeme)))
           + ' ' + gen(new BinaryExpression(op, left, right)) + '; '
           +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
           + gen(f.body) + ' }';
