@@ -29,7 +29,9 @@ var WhileLoop = require('../entities/whileloop.js');
 
 var tokens = [];
 
-var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 'floatlit', 'boolit'];
+var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 
+                            'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 
+                            'floatlit', 'boolit', '(', 'function'];
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
@@ -66,6 +68,7 @@ var parseBlock = function() {
     }
   }
   console.log("leaving parseBlock");
+  console.log(statements);
   return new Block(statements);
 };
 
@@ -85,14 +88,6 @@ var parseStatement = function() {
     return parseForLoop();
   } else if (at('while')) {
     return parseWhileLoop();
-  // } else if (at('id')) { // need to have lookahead before adding Assignment
-  //   return parseAssignmentStatement();
-  // } else if (at('read')) {
-  //   return parseReadStatement();
-  // } else if (at('write')) {
-  //   return parseWriteStatement();
-  // } else if (at('while')) {
-  //   return parseWhileStatement();
   } else {
     return parseExpression();//error('Statement expected', tokens[0]);
   }
@@ -174,6 +169,7 @@ var parseIfBlock = function () {
 
 var parseFunctionExp = function () {
   console.log("inside parseFunctionExp");
+  match('function');
   match('(');
   var params = parseParams();
   console.log("params " + params);
@@ -385,7 +381,11 @@ var parseExpression = function () {
     return parseVariableDeclaration();
   // } else if (at('if')) {
   //   return parseConditionalExp();
-  } else if (at('(')) {
+  } else if (at('function')) { // added an indicator to syntax
+    // this is why other languages have a keyword
+    // indicator for functions, because how could you differentiate
+    // the beginning of a functionDeclaration from the beginning
+    // of a parenthesized expression without lookahead?
     return parseFunctionExp();
   } else {
     return parseExp1(); //error('inside parse expression error', tokens[0]);
@@ -538,8 +538,9 @@ var parseExp11 = function () {
   console.log("inside parseExp11");
   if (at('(')) {
     match('(');
-    return parseExpression();
+    var exp = parseExpression();
     match(')');
+    return exp;
   } else if (at('[')) {
     return parseList();
   } else if (at('{')) {
