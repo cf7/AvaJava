@@ -31,7 +31,8 @@ var tokens = [];
 
 var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 
                             'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 
-                            'floatlit', 'boolit', '(', 'function'];
+                            'floatlit', 'boolit', '(', 'function',
+                            'true', 'false'];
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
@@ -117,8 +118,8 @@ var parseVariableReference = function () {
   var id = match('id');
   console.log("matched " + id.lexeme);
   var op;
-  if (at('(')) { //, 'id'])) { // currying
-    console.log("going inside");
+  if (at(['(', 'id', 'intlit', 'floatlit', 'stringlit', 'boolit'])) { // need 'id' for currying (first two calls)
+    console.log("going inside"); // hardcoding currying cases for now
     return parseFunctionCall(id); // pass in id?
     // hardcoding return type parsing for now
     /**
@@ -257,19 +258,21 @@ var parseFunctionBlock = function () {
 var parseFunctionCall = function (id) {
   console.log("inside parseFunctionCall: id " + id.lexeme);
   var params = [];
-  if (at('id')) { // use later for currying
-    // params.push(parseVariableReference());
+  if (at('id')) { // use for currying, first id already matched beforehand
+    params.push(parseVariableReference());
+  } else { // if at another functionCall should not take in rest of line
+    if (at('(')) {
+      match('('); // hardcoding for now until adding currying
+      params = params.concat(parseArgs());
+      match(')');
+    } else { // currying
+      console.log("before non-function params");
+      while (!at([';', 'EOF'])) { // 'EOF' case accounts for missing semicolons
+        console.log("non-function params");
+        params.push(parseExpression());
+      }
+    }
   }
-  if (at('(')) {
-    match('('); // hardcoding for now until adding currying
-    params = params.concat(parseArgs());
-    match(')');
-  } 
-  // else { // currying
-  //   while (!at([';', 'EOF'])) { // 'EOF' case accounts for missing semicolons
-  //     params.push(parseExpression());
-  //   }
-  // }
   console.log("params: " + params);
   console.log("leaving parseFunctionCall");
   return new FunctionCall(id, params);
