@@ -2,6 +2,7 @@
 
 var VariableDelcaration = require('./variabledeclaration.js');
 var VariableReference = require('./variablereference.js');
+var ObjectLiteral = require('./objectliteral.js');
 var Function = require('./function.js');
 var FunctionCall = require('./functioncall.js');
 var Type = require('./type.js');
@@ -13,22 +14,29 @@ class Access {
         this.exps = exps;
     }
 
+    getToken() {
+        console.log("getToken");
+        return this.id.getToken();
+    }
+
     toString() {
         console.log("Access toString");
         console.log(this.id);
+        console.log(this.exps);
         if (this.id instanceof FunctionCall) { // hardcoding edge case for now
             console.log("case1");
-            return this.id + "[" + this.exps.join('][') + "]";
+            return this.id + "[" + this.exps.join('][') + "]"; // for functions that return lists or objects
         } else {
             console.log("case2");
-            return this.id.token.lexeme + "[" + this.exps.join('][') + "]";
+            return this.id.getToken().lexeme + "[" + this.exps.join('][') + "]";
         }
     }
 
     analyze(context) {
-        console.log("inside Access analyze");
+        console.log("----------inside Access analyze----------");
+        console.log(this.id);
+        
         // check if list is already declared
-
         var variable = context.lookupVariable(this.id.getToken()); // this returns a VarDecl
 
         console.log(variable);
@@ -51,20 +59,36 @@ class Access {
 
         console.log("variable ))()()()()()()()()()()()(");
         console.log(variable);
+       
         if (this.exps.length > 0 && this.exps[0]) {
             for (var i = 0; i < this.exps.length; i++) {
-                this.exps[i].analyze(context);
+                // this.exps[i].analyze(context);
                 var checkVar = this.exps[i];
-                if (checkVar instanceof VariableReference) {
-                    checkVar = context.lookupVariable(checkVar.getToken());
+
+                // make sure the object contains this key
+                // if (variable instanceof ObjectLiteral && !(variable.exps.hasOwnProperty(checkVar.getToken().lexeme))) {
+                //     error("Property not found in object", checkVar.getToken());
+                // }
+
+                if (checkVar instanceof Access) {
+                    // checkVar.analyze(context);
+
+
+
+                } else {
+                    if (checkVar instanceof VariableReference) {
+                        checkVar = context.lookupVariable(checkVar.getToken());
+                        console.log(checkVar);
+                    }
+                    console.log("before canBeIntOrString");
                     console.log(checkVar);
+                    checkVar.type.canBeIntOrString("Index not an integer or a string", checkVar);
                 }
-                checkVar.type.canBeIntOrString("Index not an integer or a string", checkVar);
             }
         } else {
             error("No index parameter specified", this.id);
         }
-
+        
         console.log("leaving Access analyze");
     }
 }

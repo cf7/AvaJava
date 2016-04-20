@@ -18,6 +18,10 @@ var VariableDeclaration = (function() {
     // function's type-signatures determined by their args and return types
   }
 
+  VariableDeclaration.prototype.getToken = function() {
+    return this.id;
+  };
+  
   VariableDeclaration.prototype.getExp = function() {
     return this.exp;
   };

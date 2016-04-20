@@ -560,18 +560,18 @@ var parseExp11 = function () {
   } else if (at('id')) {
     var exps = [];
     var varref = parseVariableReference();
-    console.log("Exp9 varref: " + varref);
-    if (at('[')) {
-      while (at('[')) {
-        match('[');
-        exps.push(parseExpression());
-        match(']');
-      }
-      varref = new Access(varref, exps);
-    } else if (at('.')) {
-      while (at('.')) {
-        match('.');
-        exps.push(parseExpression());
+    console.log("Exp11 varref: " + varref);
+    if (at(['[', '.'])) {
+      while (at(['[', '.'])) {
+        while (at('[')) {
+          match('[');
+          exps.push(parseExpression());
+          match(']');
+        }
+        while (at('.')) {
+          match('.');
+          exps.push(parseExpression());
+        }
       }
       varref = new Access(varref, exps);
     }
@@ -593,7 +593,7 @@ var parseList = function () {
   return new ListLiteral(exps);
 }
 
-// var parseListAccess = function (id) {
+// var parseAccess = function (id) {
 //   match('[');
 //   var exp = parseExpression();
 //   match(']');

@@ -13,7 +13,7 @@ var FloatLiteral = require('../entities/floatliteral.js');
 var ObjectLiteral = require('../entities/objectliteral.js');
 var SetLiteral = require('../entities/setliteral.js');
 var ListLiteral = require('../entities/listliteral.js');
-var Access = require('../entities/Access.js');
+var Access = require('../entities/access.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -150,14 +150,41 @@ var generator = {
   },
 
   Access: function (l) {
-      var string = "";
-      string += gen(l.exps[0]);
-      if (l.exps.length > 1) {
-        for (var i = 1; i < l.exps.length; i++) {
-          string += "][" + gen(l.exps[i]);
+    console.log("inside Access generate");
+    console.log(l.id);
+    console.log(l.exps);
+    console.log(l.exps[0]);
+    // hardcoding for now
+    if (l.exps[0]) {
+      if (l.exps[0] instanceof Access) { // had been recursively stored as dot operators
+        if (l.exps[0].exps[0] instanceof VariableReference) { // base case
+          return gen(l.id) + '.' + makeVariable(l.exps[0].getToken().lexeme) + '.' + makeVariable(l.exps[0].exps[0].getToken().lexeme);
+        } else {
+          return gen(l.id) + '.' + gen(l.exps[0]);
         }
+      } else {
+        var string = "";
+        string += gen(l.exps[0]);
+        if (l.exps.length > 1) {
+          for (var i = 1; i < l.exps.length; i++) {
+            console.log(l.exps[i]);
+            string += "][" + gen(l.exps[i]);
+          }
+        }
+        return gen(l.id) + "[" + string + "]";
       }
-      return gen(l.id) + "[" + string + "]";
+    } else {
+      return gen(l.id);
+    }    
+  },
+
+  ObjectAccess: function (o) {
+    console.log("inside ObjectAccess generate");
+    console.log(o.id);
+    console.log(o.exps);
+    console.log(o.exps[0]);
+
+    return gen(o.id) + '.' + gen(o.exps[0]);
   },
 
   TypedVariableDeclaration: function (t) {
@@ -322,6 +349,13 @@ var generator = {
   },
 
   ObjectLiteral: function (literal) {
+    // console.log("inside ObjectLiteral generator");
+    //   var keys = Object.keys(literal.exps);
+    //   var strings = [];
+    //   for (var property of keys) {
+    //       strings.push(makeVariable(property) + ":" + gen(literal.exps[property]));
+    //   }
+    //   return "{" + strings.join(',') + "}";
     return literal.toString();
   },
 
