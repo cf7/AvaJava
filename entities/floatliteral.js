@@ -2,10 +2,15 @@ var Type = require('./type.js');
 
 var FloatLiteral = (function () {
     function FloatLiteral (value) {
-        this.value = value;
+        this.token = value;
+        this.value = value.lexeme;
         this.type = Type.FLOAT;
     }
 
+    FloatLiteral.prototype.getToken = function() {
+        return this.token;
+    };
+    
     FloatLiteral.prototype.toString = function() {
         return '( ' + this.value + ' )';
     };

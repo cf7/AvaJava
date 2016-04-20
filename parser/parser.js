@@ -118,7 +118,9 @@ var parseVariableReference = function () {
   var id = match('id');
   console.log("matched " + id.lexeme);
   var op;
-  if (at(['(', 'id', 'intlit', 'floatlit', 'stringlit', 'boolit'])) { // need 'id' for currying (first two calls)
+  if (at(['(', 'id', 'intlit', 'floalit', 'stringlit', 'boolit'])) { // need 'id' for currying (first two calls)
+    // issue: for all variables case, will think non-function variables are functions
+    // perhaps address this issue in semantics?
     console.log("going inside"); // hardcoding currying cases for now
     return parseFunctionCall(id); // pass in id?
     // hardcoding return type parsing for now
@@ -257,25 +259,25 @@ var parseFunctionBlock = function () {
 
 var parseFunctionCall = function (id) {
   console.log("inside parseFunctionCall: id " + id.lexeme);
-  var params = [];
+  var args = [];
   if (at('id')) { // use for currying, first id already matched beforehand
-    params.push(parseVariableReference());
+    args.push(parseVariableReference());
   } else { // if at another functionCall should not take in rest of line
     if (at('(')) {
       match('('); // hardcoding for now until adding currying
-      params = params.concat(parseArgs());
+      args = args.concat(parseArgs());
       match(')');
     } else { // currying
-      console.log("before non-function params");
+      console.log("before non-function args");
       while (!at([';', 'EOF'])) { // 'EOF' case accounts for missing semicolons
-        console.log("non-function params");
-        params.push(parseExpression());
+        console.log("non-function args");
+        args.push(parseExpression());
       }
     }
   }
-  console.log("params: " + params);
+  console.log("args: " + args);
   console.log("leaving parseFunctionCall");
-  return new FunctionCall(id, params);
+  return new FunctionCall(id, args);
 }
 
 var parseArgs = function () {
@@ -645,22 +647,22 @@ var parseSet = function () {
 
 var parseIntegerLiteral = function () {
   console.log("inside parseIntegerLiteral");
-  return new IntegerLiteral(match().lexeme);
+  return new IntegerLiteral(match());
 }
 
 var parseFloatLiteral = function () {
   console.log("inside parseFloatLiteral");
-  return new FloatLiteral(match().lexeme); // need to implement floatlits
+  return new FloatLiteral(match()); // need to implement floatlits
 }
 
 var parseStringLiteral = function () {
   console.log("inside parseStringLiteral");
-  return new StringLiteral(match().lexeme);
+  return new StringLiteral(match());
 }
 
 var parseBooleanLiteral = function () {
   console.log("inside parseBooleanLiteral");
-  return new BooleanLiteral(match().lexeme);
+  return new BooleanLiteral(match());
 }
 var parseReturnStatement = function () {
   console.log("inside parseReturnStatement");
