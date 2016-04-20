@@ -4,9 +4,14 @@ Type = require('./type');
 
 BooleanLiteral = (function() {
   function BooleanLiteral(name) {
-    this.name = "" + name;
+    this.token = name;
+    this.name = name.lexeme;
   }
 
+  BooleanLiteral.prototype.getToken = function() {
+    return this.token;
+  };
+  
   BooleanLiteral.prototype.value = function() {
     return this.name === 'true';
   };

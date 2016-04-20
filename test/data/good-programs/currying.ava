@@ -2,5 +2,4 @@ var addOdds = function (x:int, y:int) -> if x%2 and y%2 both not 0 then return x
 
 var factorial = function (n:int) -> if n <= 1 then return 1 else return n * factorial(n - 1) end;
 
-factorial(addOdds(3, 3)); // holding off on currying for now
-
+factorial addOdds 3 3;

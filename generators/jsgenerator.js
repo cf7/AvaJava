@@ -85,9 +85,9 @@ var makeVariable = (function(lastId, map) {
 // };
 
 var gen = function (e) {
-  console.log("inside gen entity: " + e);
+  console.log("inside gen entity: " + e); // prints toString() of entity
   console.log("inside gen constructor-name: " + e.constructor.name);
-  console.log(e);
+  // console.log(e); // prints entire entity
   return generator[e.constructor.name](e); // find corresponding entity name in generator object
   // and pass in the entity into its matching function
 };
