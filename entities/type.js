@@ -8,6 +8,7 @@ var Type = (function() {
     this.name = name1;
     cache[this.name] = this;
     this.mixTypeCache = {};
+    this.validTypeCache = {};
   }
 
   Type.BOOL = new Type('bool');
@@ -19,6 +20,8 @@ var Type = (function() {
   Type.FLOAT = new Type('float');
 
   Type.OBJECT = new Type('object');
+
+  Type.SET = new Type('set');
 
   Type.ITERABLE = new Type('iterable');
 
@@ -78,6 +81,23 @@ var Type = (function() {
     return this === otherType || this === Type.ARBITRARY || otherType === Type.ARBITRARY;
   };
 
+  Type.prototype.addValidType = function(otherType, circumstance) {
+    // can be compatiblewith otherType given current circumstance
+    this.validTypeCache[otherType.name + circumstance] = { type: otherType };
+  };
+
+  Type.prototype.isValidType = function(circumstance, message, location) {
+    // can be compatiblewith otherType given current operator
+    if (!(this.validTypeCache[this.name + circumstance])) {
+      error(message, location);
+    }
+  };
+
+  Type.prototype.removeValidType = function(otherType, circumstance) {
+    // can be compatiblewith otherType given current circumstance
+    this.validTypeCache[otherType.name + circumstance] = { type: otherType };
+  };
+
   Type.prototype.canBeCompatibleWith = function(otherType, operator) {
     // can be compatiblewith otherType given current operator
     this.mixTypeCache[this.name + otherType.name + operator] = { operator: operator, type1: this, type2: otherType };
@@ -114,6 +134,7 @@ module.exports = {
   STRING: Type.STRING,
   FLOAT: Type.FLOAT,
   OBJECT: Type.OBJECT,
+  SET: Type.SET,
   ITERABLE: Type.ITERABLE,
   FUNCTION: Type.FUNCTION,
   ARBITRARY: Type.ARBITRARY,

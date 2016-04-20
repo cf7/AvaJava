@@ -11,7 +11,7 @@ class SetLiteral {
     }
 
     analyze(context) {
-        // typechecking
+        return this.type = Type.SET;
     }
 
     optimize() {
