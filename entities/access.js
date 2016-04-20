@@ -34,8 +34,9 @@ class Access {
 
     analyze(context) {
         console.log("----------inside Access analyze----------");
-        // check if list is already declared
         console.log(this.id);
+        
+        // check if list is already declared
         var variable = context.lookupVariable(this.id.getToken()); // this returns a VarDecl
 
         console.log(variable);
