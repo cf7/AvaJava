@@ -5,3 +5,7 @@ w['x'];
 var name = 'y';
 
 w[name];
+
+w = { x: 1, y: { z: 2 } };
+
+w[name];

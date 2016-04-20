@@ -9,6 +9,9 @@ var AssignmentStatement = (function() {
     this.source = source;
   }
 
+  AssignmentStatement.prototype.getToken = function() {
+    return this.operator;
+  };
   AssignmentStatement.prototype.toString = function() {
     return "( " + this.operator.lexeme + " " + this.target + this.source + " )";
   };
