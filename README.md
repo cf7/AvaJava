@@ -7,14 +7,17 @@ This language will be designed in a way to facilitate faster typing and more con
 ####<i>Features/Planned Implementation (Subject to Change)</i>
 <ul>
 <li> Type Inference
-<li> Dynamic and Strong Typing
-<li> Pattern Matching
+<li> Static and Strong Typing
+<li> Typed parameters
+<li> Function Return Types
+<li> List Ranges
 <li> List Comprehensions
-<li> Higher Order Functions
+<li> First-Class/Higher Order Functions
 <li> Currying
 <li> User-defined types
 <li> Default Parameters
 <li> Named Parameters
+<li> Pattern Matching
 </ul>
 
 ##Grammar
@@ -87,7 +90,7 @@ Exp9 		::= Exp10 postfixop?
 Exp10 		::= Exp11 ('^^' Exp11)?
 Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | ObjectLiteral
 
-Access		::= '[' Exp ']'
+Access		::= '[' Exp ']' | '.' Exp11
 
 ExpList 	::= Exp ( ',' Exp )*
 idList 		::= id (',' id)*
