@@ -2,16 +2,17 @@
 
 var error = require('../error.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
+var BuiltIns = require('../entities/builtins.js');
 
 var AnalysisContext = (function() {
-  function AnalysisContext(parent) {
+  function AnalysisContext(parent, symbolTable) {
     this.parent = parent;
-    this.symbolTable = {};
+    this.symbolTable = symbolTable || {};
     this.insideFunction = false;
   }
 
   AnalysisContext.initialContext = function() {
-    return new AnalysisContext(null);
+    return new AnalysisContext(null, BuiltIns);
   };
 
   AnalysisContext.prototype.createChildContext = function() {

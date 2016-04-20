@@ -55,6 +55,15 @@ class Access {
         //
         // }
         variable.analyze(context);
+
+        // experimenting with type checking
+        // variable.type.addValidType(Type.ITERABLE, "access");
+        // variable.type.addValidType(Type.OBJECT, "access");
+        // variable.type.addValidType(Type.FUNCTION, "builtin");
+        // variable.type.isValidType("access", "Variable not of type ITERABLE or type OBJECT", variable);
+        // variable.type.removeValidType(Type.ITERABLE, "access");
+        // variable.type.removeValidType(Type.OBJECT, "access");
+        // variable.type.removeValidType(Type.FUNCTION, "builtin");
         variable.type.canBeIterOrObj("Variable not of type ITERABLE or type OBJECT", variable);
 
         console.log("variable ))()()()()()()()()()()()(");
