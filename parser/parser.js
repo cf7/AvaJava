@@ -32,7 +32,7 @@ var tokens = [];
 var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 
                             'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 
                             'floatlit', 'boolit', '(', 'function',
-                            'true', 'false'];
+                            'true', 'false', 'type'];
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
@@ -568,6 +568,12 @@ var parseExp11 = function () {
         match(']');
       }
       varref = new Access(varref, exps);
+    } else if (at('.')) {
+      while (at('.')) {
+        match('.');
+        exps.push(parseExpression());
+      }
+      varref = new Access(varref, exps);
     }
     return varref;
     // How do we distinguish between an id and a function Call?
@@ -611,7 +617,7 @@ var parseObjectExp = function () {
   console.log("inside ObjectExp");
   var key = match().lexeme;
   match(':');
-  var value = match().lexeme;
+  var value = parseExpression();
   console.log("value: " + value);
   console.log("leaving ObjectExp");
   exp[key] = value;
@@ -668,7 +674,7 @@ var parseReturnStatement = function () {
   console.log("inside parseReturnStatement");
   match('return');
   var exp = parseExpression();
-    console.log("leaving parseReturnStatement");
+  console.log("leaving parseReturnStatement");
   return new ReturnStatement(exp);//parseExpression();
 }
 
