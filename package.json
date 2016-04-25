@@ -10,6 +10,7 @@
     "yargs": "latest"
   },
   "devDependencies": {
+    "mocha": "latest",
     "should": "latest"
   }
 }
