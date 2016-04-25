@@ -1,6 +1,6 @@
-var addOdds = function (x:int, y:int) -> if x%2 and y%2 both not 0 then return x+y else return 0 end;
+var addOdds = function (x:int, y:int) -> if x%2 and y%2 both not 0 then return x+y else return 0 end; end;
 
-var factorial = function (n:int) -> if n <= 1 then return 1 else return n * factorial(n - 1) end;
+var factorial = function (n:int) -> if n <= 1 then return 1 else return n * factorial(n - 1) end; end;
 
 var x = 3;
 var y = 5;

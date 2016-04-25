@@ -16,8 +16,8 @@ This language will be designed in a way to facilitate faster typing and more con
 <li> Currying
 <li> User-defined types
 <li> Default Parameters
-<li> Named Parameters
-<li> Pattern Matching
+<li> Named Parameters (maybe)
+<li> Pattern Matching (maybe)
 </ul>
 
 ##Grammar

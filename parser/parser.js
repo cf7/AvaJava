@@ -375,6 +375,7 @@ var parseConditionalExp = function () {
       elseBody = parseIfBlock();
     }
   }
+  match('end');
   return new IfElseStatements(conditional, body, elseifs, elseBody);
 }
 

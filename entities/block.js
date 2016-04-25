@@ -39,7 +39,7 @@ var Block = (function() {
   Block.prototype.optimize = function() {
     console.log("inside Block optimize");
 
-    // extraneous code removal for return statements
+    // unreachable code removal for return statements
     var temporary = [];
     var extraneous = false;
     for (var i = 0; i < this.statements.length; i += 1) {
