@@ -530,7 +530,7 @@ var parseExp10 = function () {
   var op, left, right;
   console.log("inside parseExp10");
   left = parseExp11();
-  if (at('^^')) {
+  while (at('^^')) {
     op = match();
     right = parseExp11();
     left = new BinaryExpression(op, left, right);

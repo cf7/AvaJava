@@ -87,7 +87,7 @@ Exp6 		::= Exp7 (addop Exp7)*
 Exp7 		::= Exp8 (mulop Exp8)*
 Exp8 		::= prefixop? Exp9
 Exp9 		::= Exp10 postfixop?
-Exp10 		::= Exp11 ('^^' Exp11)?
+Exp10 		::= Exp11 ('^^' Exp11)*
 Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | ObjectLiteral
 
 Access		::= '[' Exp ']' | '.' Exp11

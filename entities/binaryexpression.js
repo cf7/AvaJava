@@ -188,6 +188,8 @@ var BinaryExpression = (function () {
           return new IntegerLiteral({ kind: 'intlit', lexeme: x * y, line: 0, col: 0 });
         case '/':
           return new IntegerLiteral({ kind: 'intlit', lexeme: x / y, line: 0, col: 0 });
+        case '^^':
+          return new IntegerLiteral({ kind: 'intlit', lexeme: Math.pow(x, y), line: 0, col: 0 });
         case '<':
           return new BooleanLiteral({ kind: 'boolit', lexeme: x < y, line: 0, col: 0 });
         case '<=':
