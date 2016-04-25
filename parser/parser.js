@@ -32,7 +32,7 @@ var tokens = [];
 var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 
                             'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 
                             'floatlit', 'boolit', '(', 'function',
-                            'true', 'false', 'type'];
+                            'true', 'false', 'type', 'return'];
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
@@ -238,19 +238,17 @@ var parseFunctionBlock = function () {
   console.log("#########inside parseFunctionBlock##########");
   var statements = [];
   var numberErrors = error.count;
-  while (true) {
+  while (!at('end')) {
     statements.push(parseStatement());
-    // if (at('end')) {
-      match('end');
-      console.log("matched end");
-      break;
-    // }
+    match(';');
     if (!at(blockStatementKeywords)) {
       break;
     } else if (error.count > numberErrors) {
       break;
     }
   }
+  match('end');
+  console.log("matched end");
   // only print block statement, need to return entity that also includes args
     console.log("##########leaving parseFunctionBlock##########");
 
