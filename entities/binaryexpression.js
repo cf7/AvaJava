@@ -206,13 +206,13 @@ var BinaryExpression = (function () {
     BinaryExpression.prototype.foldBooleanConstants = function(op, x, y) {
       switch (op) {
         case '==':
-          return new BooleanLiteral(x === y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x == y, line: 0, col: 0 });
         case '!=':
-          return new BooleanLiteral(x !== y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x != y, line: 0, col: 0 });
         case 'and':
-          return new BooleanLiteral(x && y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x && y, line: 0, col: 0 });
         case 'or':
-          return new BooleanLiteral(x || y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x || y, line: 0, col: 0 });
       }
     };
 

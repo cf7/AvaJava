@@ -60,6 +60,7 @@ var VariableDeclaration = (function() {
   };
 
   VariableDeclaration.prototype.optimize = function() {
+    this.exp = this.exp.optimize();
     return this;
   };
 
