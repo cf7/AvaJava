@@ -1,6 +1,8 @@
 // baseline code from Iki
 "use strict";
 
+var ReturnStatement = require('./returnstatement.js');
+
 var Block = (function() {
   function Block(statements) {
     this.statements = statements;
@@ -35,6 +37,24 @@ var Block = (function() {
   };
 
   Block.prototype.optimize = function() {
+    console.log("inside Block optimize");
+
+    // extraneous code removal for return statements
+    var temporary = [];
+    var extraneous = false;
+    for (var i = 0; i < this.statements.length; i += 1) {
+      console.log(this.statements[i]);
+      if (this.statements[i] instanceof ReturnStatement) {
+        temporary = this.statements.slice(0, i + 1);
+        console.log(temporary);
+        extraneous = true;
+      }
+    }
+    if (extraneous) {
+      this.statements = temporary.slice();
+      console.log(this.statements);
+    }
+
     var s;
     this.statements = (function() {
       var ref = this.statements;

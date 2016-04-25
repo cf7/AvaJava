@@ -41,10 +41,12 @@ var Function = (function () {
     };
 
     Function.prototype.optimize = function() {
+        console.log("inside Function optimize");
         for (param of this.params) {
             param = param.optimize();
         }
         this.body = this.body.optimize();
+        console.log("leaving Function optimize");
         return this;
     };
 
