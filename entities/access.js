@@ -3,6 +3,7 @@
 var VariableDelcaration = require('./variabledeclaration.js');
 var VariableReference = require('./variablereference.js');
 var ObjectLiteral = require('./objectliteral.js');
+var StringLiteral = require('./stringLiteral.js');
 var Function = require('./function.js');
 var FunctionCall = require('./functioncall.js');
 var Type = require('./type.js');
@@ -85,13 +86,19 @@ class Access {
 
 
                 } else {
-                    if (checkVar instanceof VariableReference) {
+                    if (checkVar instanceof VariableReference && variable.exps.hasOwnProperty(checkVar.getToken().lexeme)) {
+                       // turn them into string literals so that generator does not
+                       // confuse them for variableReferences later on
+                       this.exps[i] = new StringLiteral(checkVar.getToken());
+                    } else if (checkVar instanceof VariableReference && !variable.exps.hasOwnProperty(checkVar.getToken().lexeme)) {
                         checkVar = context.lookupVariable(checkVar.getToken());
+                        console.log("before canBeIntOrString");
+                        console.log(checkVar);
+                        checkVar.type.canBeIntOrString("Index not an integer or a string", checkVar);
                         console.log(checkVar);
                     }
-                    console.log("before canBeIntOrString");
-                    console.log(checkVar);
-                    checkVar.type.canBeIntOrString("Index not an integer or a string", checkVar);
+                   
+                    
                 }
             }
         } else {

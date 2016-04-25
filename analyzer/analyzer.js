@@ -8,6 +8,7 @@ var AnalysisContext = (function() {
   function AnalysisContext(parent, symbolTable) {
     this.parent = parent;
     this.symbolTable = symbolTable || {};
+    this.objectTable = {};
     this.insideFunction = false;
   }
 
@@ -30,6 +31,10 @@ var AnalysisContext = (function() {
     console.log("name of variable being added: " + name);
     console.log("entity being added: " + entity);
     return this.symbolTable[name] = entity;
+  };
+
+  AnalysisContext.prototype.addObject = function(name, entity) {
+    return this.objectTable[name] = entity;
   };
 
   AnalysisContext.prototype.setInsideFunction = function(bool) {
