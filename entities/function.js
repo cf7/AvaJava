@@ -40,6 +40,14 @@ var Function = (function () {
         // return this.type = this.getReturnType(this.body, context);
     };
 
+    Function.prototype.optimize = function() {
+        for (param of this.params) {
+            param = param.optimize();
+        }
+        this.body = this.body.optimize();
+        return this;
+    };
+
     return Function;
 
 })();

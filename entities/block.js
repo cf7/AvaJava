@@ -37,20 +37,18 @@ var Block = (function() {
   Block.prototype.optimize = function() {
     var s;
     this.statements = (function() {
-      var i, len, ref, results;
-      ref = this.statements;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
+      var ref = this.statements;
+      var results = [];
+      for (var i = 0, len = ref.length; i < len; i++) {
         s = ref[i];
         results.push(s.optimize());
       }
       return results;
     }).call(this);
     this.statements = (function() {
-      var i, len, ref, results;
-      ref = this.statements;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
+      var ref = this.statements;
+      var results = [];
+      for (var i = 0, len = ref.length; i < len; i++) {
         s = ref[i];
         if (s !== null) {
           results.push(s);

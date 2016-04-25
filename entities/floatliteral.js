@@ -24,6 +24,10 @@ var FloatLiteral = (function () {
         return this.type = Type.FLOAT;
     };
 
+    FloatLiteral.prototype.optimize = function() {
+        return this;
+    };
+    
     return FloatLiteral;
 })();
 

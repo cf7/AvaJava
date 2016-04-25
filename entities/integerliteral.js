@@ -21,6 +21,10 @@ var IntegerLiteral = (function () {
         return this.type = Type.INT;
     };
 
+    IntegerLiteral.prototype.optimize = function() {
+        return this;
+    };
+    
     return IntegerLiteral;
 })();
 

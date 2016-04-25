@@ -20,6 +20,7 @@ var Program = (function() {
   };
 
   Program.prototype.optimize = function() {
+    console.log("*********************Optimizer********************");
     this.block = this.block.optimize();
     return this;
   };

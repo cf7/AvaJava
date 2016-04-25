@@ -102,15 +102,28 @@ var BinaryExpression = (function () {
     };
 
 
-    var optimize = function() {
+    BinaryExpression.prototype.optimize = function() {
+        console.log("inside BinaryExpression optimize");
+        console.log("OPERATOR");
+        console.log(this.operator);
+        console.log("LEFT");
+        console.log(this.left);
+        console.log("RIGHT");
+        console.log(this.right);
         this.left = this.left.optimize();
         this.right = this.right.optimize();
         if (this.left instanceof IntegerLiteral && this.right instanceof IntegerLiteral) {
-          return foldIntegerConstants(this.op.lexeme, +this.left.value, +this.right.value);
+          console.log("=-=-=-=-=-=-=-=- about to fold integer constants -=-=-=-=-=-=-=-=");
+          console.log(this.left);
+          console.log(this.right);
+          // the unary '+this.left.value' operator is converting the value to a number
+          // just in case the value is a string or char
+          return this.foldIntegerConstants(this.operator.lexeme, +this.left.value, +this.right.value);
         } else if (this.left instanceof BooleanLiteral && this.right instanceof BooleanLiteral) {
-          return foldBooleanConstants(this.op.lexeme, this.left.value(), this.right.value());
+          console.log("=-=-=-=-=-=-=-=- about to fold boolean constants -=-=-=-=-=-=-=-=");
+          return this.foldBooleanConstants(this.operator.lexeme, this.left.value(), this.right.value());
         } else {
-          switch (this.op.lexeme) {
+          switch (this.operator.lexeme) {
             case '+':
               if (isIntegerLiteral(this.right, 0)) {
                 return this.left;
@@ -150,43 +163,47 @@ var BinaryExpression = (function () {
               }
           }
         }
-        return this;
+      return this;
     }
 
-    var isIntegerLiteral = function(operand, value) {
+    BinaryExpression.prototype.isIntegerLiteral = function(operand, value) {
       return operand instanceof IntegerLiteral && operand.value === value;
     };
 
-    var sameVariable = function(exp1, exp2) {
+    BinaryExpression.prototype.sameVariable = function(exp1, exp2) {
       return exp1 instanceof VariableReference && exp2 instanceof VariableReference && exp1.referent === exp2.referent;
     };
 
-    var foldIntegerConstants = function(op, x, y) {
+    BinaryExpression.prototype.foldIntegerConstants = function(op, x, y) {
+      console.log("inside foldIntegerConstants");
       switch (op) {
         case '+':
-          return new IntegerLiteral(x + y);
+          console.log("'+' case inside foldIntegerConstants");
+          // decided to pass in entire tokens to literal entities
+          // to facilitate getToken() function standardization throughout all entities
+          return new IntegerLiteral({ kind: 'intlit', lexeme: x + y, line: 0, col: 0 });
         case '-':
-          return new IntegerLiteral(x - y);
+          return new IntegerLiteral({ kind: 'intlit', lexeme: x - y, line: 0, col: 0 });
         case '*':
-          return new IntegerLiteral(x * y);
+          return new IntegerLiteral({ kind: 'intlit', lexeme: x * y, line: 0, col: 0 });
         case '/':
-          return new IntegerLiteral(x / y);
+          return new IntegerLiteral({ kind: 'intlit', lexeme: x / y, line: 0, col: 0 });
         case '<':
-          return new BooleanLiteral(x < y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x < y, line: 0, col: 0 });
         case '<=':
-          return new BooleanLiteral(x <= y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x <= y, line: 0, col: 0 });
         case '==':
-          return new BooleanLiteral(x === y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x === y, line: 0, col: 0 });
         case '!=':
-          return new BooleanLiteral(x !== y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x !== y, line: 0, col: 0 });
         case '>=':
-          return new BooleanLiteral(x >= y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x >= y, line: 0, col: 0 });
         case '>':
-          return new BooleanLiteral(x > y);
+          return new BooleanLiteral({ kind: 'boolit', lexeme: x > y, line: 0, col: 0 });
       }
     };
 
-    var foldBooleanConstants = function(op, x, y) {
+    BinaryExpression.prototype.foldBooleanConstants = function(op, x, y) {
       switch (op) {
         case '==':
           return new BooleanLiteral(x === y);

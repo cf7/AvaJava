@@ -19,17 +19,20 @@ var AssignmentStatement = (function() {
   AssignmentStatement.prototype.analyze = function(context) {
     this.target.analyze(context);
     this.source.analyze(context);
-    // want type to be chaneable later on
+    // want type to be changeable later on
     // return this.source.type.mustBeCompatibleWith(this.target.type, 'Type mismatch in assignment');
   };
 
   AssignmentStatement.prototype.optimize = function() {
-    // this.target = this.target.optimize();
-    // this.source = this.source.optimize();
-    // if (this.source instanceof VariableReference && this.target.referent === this.source.referent) {
-    //   null;
-    // }
-    // return this;
+    console.log("inside AssignmentStatement optimize");
+    this.target = this.target.optimize();
+    this.source = this.source.optimize();
+    if (this.source instanceof VariableReference && this.target.referent === this.source.referent) {
+      console.log("leaving null AssignmentStatement optimize");
+      return null;
+    }
+    console.log("leaving AssignmentStatement optimize");
+    return this;
   };
 
   return AssignmentStatement;

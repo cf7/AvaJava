@@ -41,9 +41,9 @@ var VariableReference = (function() {
     }
   };
 
-  // VariableReference.prototype.optimize = function() {
-  //   return this;
-  // };
+  VariableReference.prototype.optimize = function() {
+    return this;
+  };
 
   return VariableReference;
 

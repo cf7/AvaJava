@@ -25,6 +25,12 @@ var ReturnStatement = (function () {
         // setting the return type for the function!!!
 
     };
+
+    ReturnStatement.prototype.optimize = function() {
+        this.value = this.value.optimize();
+        return this;
+    };
+
     return ReturnStatement;
 })();
 
