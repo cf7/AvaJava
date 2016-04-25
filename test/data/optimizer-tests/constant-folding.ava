@@ -1,0 +1,20 @@
+var thisFunction = function () -> return 3 + 5 end;
+
+var x = 1 + 2;
+
+x = 1 + 2 + 3 + 4;
+
+x = 1* 2;
+
+x = 2 / 1;
+
+
+var y = 1 < 2;
+
+y = 2 > 1;
+
+y = 3 <= 2;
+
+y = 3 >= 2;
+
+y = 3 > 2;
