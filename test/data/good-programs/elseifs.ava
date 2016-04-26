@@ -10,4 +10,3 @@ else if (x < 10) then
 	ava "9"
 else 
 	ava "10"
-end;
