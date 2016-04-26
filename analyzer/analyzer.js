@@ -13,7 +13,7 @@ var AnalysisContext = (function() {
   }
 
   AnalysisContext.initialContext = function() {
-    return new AnalysisContext(null, BuiltIns);
+    return new AnalysisContext(null, new BuiltIns().entities);
   };
 
   AnalysisContext.prototype.createChildContext = function() {

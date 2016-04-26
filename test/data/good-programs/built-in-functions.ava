@@ -1,7 +1,7 @@
 var x = { 1, 2, 3, 4 };
 
-x.contains(3);
+contains(x, 3);
 
 x = [1, 2, 3, 4];
 
-x.length;
+length(x);

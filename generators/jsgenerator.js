@@ -2,6 +2,7 @@ var scanner = require('../scanner/scanner.js');
 var error = require('../error.js');
 var Program = require('../entities/program.js');
 var Block = require('../entities/block.js');
+var BuiltIns = require('../entities/builtins.js');
 var Type = require('../entities/type.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
 var TypedVariableDeclaration = require('../entities/typedvariabledeclaration.js');
@@ -30,6 +31,8 @@ var WhileLoop = require('../entities/whileloop.js');
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
 var code = "";
+
+var builtins = new BuiltIns();
 
 // var map;
 // var lastId;
@@ -254,10 +257,24 @@ var generator = {
 
   FunctionCall: function (c) {
     console.log("inside FunctionCall: " + c.id.lexeme);
-    if (c.args.length > 0 && c.args[0]) {
-      return makeVariable(c.id.lexeme) + "(" + gen(c.args) + ")";
+    console.log(builtins);
+    if (builtins.entities[c.id.lexeme]) {
+      if (c.args.length > 0 && c.args[0]) {
+        console.log("insideinsideinsideinsideinsideinsideinsideinside");
+        console.log(c.id.lexeme);
+        var newArgs = c.args.map(gen);
+        return builtins.entities[c.id.lexeme].generateCode(newArgs);
+      } else {
+        console.log("inhereinhereinhereinhereinhereinhereinhereinhere");
+        console.log(c.id.lexeme);
+        return builtins.entities[c.id.lexeme].generateCode();
+      }
     } else {
-      return makeVariable(c.id.lexeme) + "()";
+      if (c.args.length > 0 && c.args[0]) {
+        return makeVariable(c.id.lexeme) + "(" + gen(c.args) + ")";
+      } else {
+        return makeVariable(c.id.lexeme) + "()";
+      }
     }
   },
 

@@ -28,6 +28,10 @@ var IfElseStatements = (function () {
         }
     };
     
+    IfElseStatements.prototype.optimize = function() {
+        return this;
+    };
+
     return IfElseStatements;
 })();
 
