@@ -106,6 +106,7 @@ List 		::= '[' ExpList? ']'
 String 		::= stringLiteral
 ```
 
+
 ####Example Programs:
 ```
 var addOdds = (x:int, y:int) ->                                  var addOdds = function (x,y) {
@@ -246,7 +247,6 @@ z - "i";
 [1,2,3]++ => [2,3,4]
 [1,2,3]^^2 => [1,4,9]
 ```
-#####List Comprehensions:
 
 #####Objects:
 ```
