@@ -15,10 +15,12 @@ var Program = (function() {
 
   Program.prototype.analyze = function() {
     console.log("*********************ANALYZER*********************");
-    return this.block.analyze(initialContext());
+    return this.block.analyze(initialContext()); 
+    // returning analyze results is for semantic graph (below)
   };
 
   Program.prototype.optimize = function() {
+    console.log("*********************Optimizer********************");
     this.block = this.block.optimize();
     return this;
   };

@@ -1,20 +1,33 @@
 "use strict";
 
-var Type, cache, error;
+var error = require('../error');
+var cache = {};
 
-error = require('../error');
-
-cache = {};
-
-Type = (function() {
+var Type = (function() {
   function Type(name1) {
     this.name = name1;
     cache[this.name] = this;
+    this.mixTypeCache = {};
+    this.validTypeCache = {};
   }
 
   Type.BOOL = new Type('bool');
 
   Type.INT = new Type('int');
+
+  Type.STRING = new Type('string');
+
+  Type.FLOAT = new Type('float');
+
+  Type.OBJECT = new Type('object');
+
+  Type.SET = new Type('set');
+
+  Type.ITERABLE = new Type('iterable');
+
+  Type.FUNCTION = new Type('function');
+
+  // make sure to export after adding more types!!!
 
   Type.ARBITRARY = new Type('<arbitrary_type>');
 
@@ -22,6 +35,28 @@ Type = (function() {
     return this.name;
   };
 
+  Type.prototype.analyze = function(context) {
+    // using this for undefined varDecl
+  };
+
+  Type.prototype.canBeIntOrString = function(message, location) {
+    if (!(this.isCompatibleWith(Type.INT) || this.isCompatibleWith(Type.STRING))) {
+      error(message, location);
+    }
+  };
+
+  Type.prototype.canBeIterOrObj = function(message, location) {
+    if (!(this.isCompatibleWith(Type.ITERABLE) || this.isCompatibleWith(Type.OBJECT))) {
+      error(message, location);
+    }
+  };
+
+  Type.prototype.mustBeIterable = function(message, location) {
+    if (!(this.isCompatibleWith(Type.ITERABLE))) {
+      error(message, location);
+    }
+  };
+  
   Type.prototype.mustBeInteger = function(message, location) {
     return this.mustBeCompatibleWith(Type.INT, message);
   };
@@ -46,6 +81,49 @@ Type = (function() {
     return this === otherType || this === Type.ARBITRARY || otherType === Type.ARBITRARY;
   };
 
+  Type.prototype.addValidType = function(otherType, circumstance) {
+    // can be compatiblewith otherType given current circumstance
+    this.validTypeCache[otherType.name + circumstance] = { type: otherType };
+  };
+
+  Type.prototype.isValidType = function(circumstance, message, location) {
+    // can be compatiblewith otherType given current operator
+    if (!(this.validTypeCache[this.name + circumstance])) {
+      error(message, location);
+    }
+  };
+
+  Type.prototype.removeValidType = function(otherType, circumstance) {
+    // can be compatiblewith otherType given current circumstance
+    this.validTypeCache[otherType.name + circumstance] = { type: otherType };
+  };
+
+  Type.prototype.canBeCompatibleWith = function(otherType, operator) {
+    // can be compatiblewith otherType given current operator
+    this.mixTypeCache[this.name + otherType.name + operator] = { operator: operator, type1: this, type2: otherType };
+  };
+
+  Type.prototype.isMixedCompatibleWith = function(otherType, operator, message, location) {
+      var result = false;
+      console.log(this);
+      console.log(otherType);
+      if (this.mixTypeCache[this.name + otherType.name + operator]) {
+        result = this.mixTypeCache[this.name + otherType.name + operator].operator === operator;
+      }
+
+      // hardcoding result of string * int for now
+      if (result) {
+        if (this.name === 'int' && otherType.name === 'int') {
+          return Type.INT;
+        } else {
+          return Type.STRING;
+        }
+      } else {
+        return error(message, location);
+      }
+
+  };
+
   return Type;
 
 })();
@@ -53,6 +131,12 @@ Type = (function() {
 module.exports = {
   BOOL: Type.BOOL,
   INT: Type.INT,
+  STRING: Type.STRING,
+  FLOAT: Type.FLOAT,
+  OBJECT: Type.OBJECT,
+  SET: Type.SET,
+  ITERABLE: Type.ITERABLE,
+  FUNCTION: Type.FUNCTION,
   ARBITRARY: Type.ARBITRARY,
   forName: function(name) {
     return cache[name];

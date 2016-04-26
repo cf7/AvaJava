@@ -1,1 +1,1 @@
-var thisFunction = () ->
+var thisFunction = function () ->

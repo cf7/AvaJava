@@ -11,5 +11,8 @@
   },
   "devDependencies": {
     "should": "latest"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }

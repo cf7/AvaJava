@@ -1,4 +1,4 @@
-var x = 10;
+var x = 8;
 
 if (x < 7) then
 	ava "6"
@@ -9,4 +9,5 @@ else if (x < 9) then
 else if (x < 10) then
 	ava "9"
 else 
-	ava "10";
+	ava "10" 
+end;

@@ -2,13 +2,19 @@ var scanner = require('../scanner/scanner.js');
 var error = require('../error.js');
 var Program = require('../entities/program.js');
 var Block = require('../entities/block.js');
+var BuiltIns = require('../entities/builtins.js');
 var Type = require('../entities/type.js');
 var VariableDeclaration = require('../entities/variabledeclaration.js');
+var TypedVariableDeclaration = require('../entities/typedvariabledeclaration.js');
 var Print = require('../entities/print.js');
 var AssignmentStatement = require('../entities/assignmentstatement.js');
 var IfElseStatements = require('../entities/ifelseexpressions.js');
 var IntegerLiteral = require('../entities/integerliteral.js');
 var FloatLiteral = require('../entities/floatliteral.js');
+var ObjectLiteral = require('../entities/objectliteral.js');
+var SetLiteral = require('../entities/setliteral.js');
+var ListLiteral = require('../entities/listliteral.js');
+var Access = require('../entities/access.js');
 var BinaryExpression = require('../entities/binaryexpression.js');
 var UnaryExpression = require('../entities/unaryexpression.js');
 var PostfixExpression = require('../entities/postfixexpression.js');
@@ -25,6 +31,8 @@ var WhileLoop = require('../entities/whileloop.js');
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
 var code = "";
+
+var builtins = new BuiltIns();
 
 // var map;
 // var lastId;
@@ -80,7 +88,9 @@ var makeVariable = (function(lastId, map) {
 // };
 
 var gen = function (e) {
-  console.log("inside gen: " + e.constructor.name);
+  console.log("inside gen entity: " + e); // prints toString() of entity
+  console.log("inside gen constructor-name: " + e.constructor.name);
+  // console.log(e); // prints entire entity
   return generator[e.constructor.name](e); // find corresponding entity name in generator object
   // and pass in the entity into its matching function
 };
@@ -91,14 +101,23 @@ var gen = function (e) {
 // need to determine whether to use gen() or not
 // sometimes will only need to return strings in the cases below
 // can have a mix of calling entitiy toStrings() and calling gen() to keep traversing
+var hasStatement = function (array) {
+  var hasStmt = false;
+  for (var i = 0; i < array.length; i++) {
+    if (array[i]) {
+      hasStmt = true;
+    }
+  }
+  return hasStmt;
+}
 
 var generator = {
 
   Program: function (program) {
     indentLevel = 0;
-    emit('(() -> ');
+    emit('(function () {');
     emit(gen(program.block));
-    return emit(');');
+    return emit('})();');
   },
 
   Block: function (block) {
@@ -106,14 +125,17 @@ var generator = {
     var string = "";
     indentLevel++;
     ref = block.statements;
-    for (i = 0, len = ref.length; i < len; i++) {
-      statement = ref[i];
-      console.log("inside Block for loop: " + statement);
-      pad = indentPadding * indentLevel;
-      string += "\n" + Array(pad + 1).join(' ') + gen(statement);
-      // }
-    }
+    if (hasStatement(ref)) {
+      for (i = 0, len = ref.length; i < len; i++) {
+        statement = ref[i];
+        if (statement) {
+          console.log("inside Block for loop: " + statement);
+          pad = indentPadding * indentLevel;
+          string += "\n" + Array(pad + 1).join(' ') + gen(statement);
+        }
+      }
     indentLevel--;
+    }
     return string;
   },
 
@@ -130,14 +152,56 @@ var generator = {
     }
   },
 
+  Access: function (l) {
+    console.log("inside Access generate");
+    console.log(l.id);
+    console.log(l.exps);
+    console.log(l.exps[0]);
+    // hardcoding for now
+    if (l.exps[0]) {
+      if (l.exps[0] instanceof Access) { // had been recursively stored as dot operators
+        if (l.exps[0].exps[0] instanceof VariableReference) { // base case
+          return gen(l.id) + '.' + makeVariable(l.exps[0].getToken().lexeme) + '.' + makeVariable(l.exps[0].exps[0].getToken().lexeme);
+        } else {
+          return gen(l.id) + '.' + gen(l.exps[0]);
+        }
+      } else {
+        var string = "";
+        string += gen(l.exps[0]);
+        if (l.exps.length > 1) {
+          for (var i = 1; i < l.exps.length; i++) {
+            console.log(l.exps[i]);
+            string += "][" + gen(l.exps[i]);
+          }
+        }
+        return gen(l.id) + "[" + string + "]";
+      }
+    } else {
+      return gen(l.id);
+    }    
+  },
+
+  ObjectAccess: function (o) {
+    console.log("inside ObjectAccess generate");
+    console.log(o.id);
+    console.log(o.exps);
+    console.log(o.exps[0]);
+
+    return gen(o.id) + '.' + gen(o.exps[0]);
+  },
+
+  TypedVariableDeclaration: function (t) {
+    return makeVariable(t.id.lexeme);
+  },
+
   AssignmentStatement: function (s) {
-    return (gen(s.target)) + " = " + (gen(s.source)) + ";";
+    return (gen(s.target)) + " " + makeOp(s.operator.lexeme) + " " + (gen(s.source)) + ";";
   },
 
   Function: function (f) {
-    console.log(f.args.length);
-    if (f.args.indexOf(undefined) === -1) {
-      return "function " + "( " + gen(f.args) + " )" + "{ " + gen(f.body) + " }";
+    console.log("params length: " + f.params.length);
+    if (f.params.indexOf(undefined) === -1 && f.params.length > 0) {
+      return "function " + "( " + gen(f.params) + " )" + "{ " + gen(f.body) + " }";
     } else {
       return "function " + "() { " + gen(f.body) + " }";
     }
@@ -146,12 +210,12 @@ var generator = {
   Array: function (a) {
     var string = "";
     if (a.length > 1) {
-      string += '[ ';
+      // string += '[ ';
       string += gen(a[0]);
       for (var i = 1; i < a.length; i++) {
         string += ', ' + gen(a[i]);
       }
-      string += ' ]';
+      // string += ' ]';
     } else {
       string += gen(a[0]);
     }
@@ -193,7 +257,25 @@ var generator = {
 
   FunctionCall: function (c) {
     console.log("inside FunctionCall: " + c.id.lexeme);
-    return makeVariable(c.id.lexeme) + "(" + gen(c.params) + ")";
+    console.log(builtins);
+    if (builtins.entities[c.id.lexeme]) {
+      if (c.args.length > 0 && c.args[0]) {
+        console.log("insideinsideinsideinsideinsideinsideinsideinside");
+        console.log(c.id.lexeme);
+        var newArgs = c.args.map(gen);
+        return builtins.entities[c.id.lexeme].generateCode(newArgs);
+      } else {
+        console.log("inhereinhereinhereinhereinhereinhereinhereinhere");
+        console.log(c.id.lexeme);
+        return builtins.entities[c.id.lexeme].generateCode();
+      }
+    } else {
+      if (c.args.length > 0 && c.args[0]) {
+        return makeVariable(c.id.lexeme) + "(" + gen(c.args) + ")";
+      } else {
+        return makeVariable(c.id.lexeme) + "()";
+      }
+    }
   },
 
   WhileLoop: function (w) {
@@ -213,7 +295,7 @@ var generator = {
     if (!f.id) {
         console.log("inside ForLoop: " + f);
         // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
-        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
+        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp.lexeme)))
           + ' ' + gen(new BinaryExpression(op, left, right)) + '; '
           +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
           + gen(f.body) + ' }';
@@ -274,14 +356,38 @@ var generator = {
     return literal.toString(); // sometimes may not want to emit, just return a string
   },
 
+  FloatLiteral: function (literal) {
+    return literal.toString();
+  },
+
   StringLiteral: function (literal) {
     // console.log("inside StringLiteral: " + literal.toString());
+    return literal.toString();
+  },
+
+  ObjectLiteral: function (literal) {
+    // console.log("inside ObjectLiteral generator");
+    //   var keys = Object.keys(literal.exps);
+    //   var strings = [];
+    //   for (var property of keys) {
+    //       strings.push(makeVariable(property) + ":" + gen(literal.exps[property]));
+    //   }
+    //   return "{" + strings.join(',') + "}";
+    return literal.toString();
+  },
+
+  SetLiteral: function (literal) {
+    return "new Set([" + literal.values.join(',') + "])";
+  },
+
+  ListLiteral: function (literal) {
     return literal.toString();
   },
 
   // BooleanLiteral: function(literal) {
   //   return literal.toString();
   // },
+
   VariableReference: function(v) {
     console.log("inside VariableReference: " + v.token.lexeme);
     return makeVariable(v.token.lexeme); // later pass in v.referent once analyzer is working

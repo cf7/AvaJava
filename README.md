@@ -1,20 +1,23 @@
 ![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
 
-<b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, and OCaml that compiles into Python.</b> 
-It combines the most interesting parts of these languages, and also provides a new selection of operators (<i>to come</i>).
+<b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, Swift, and OCaml that compiles into Javascript.</b> 
+It combines the most interesting parts of these languages and also provides a new selection of operators (<i>to come</i>).
 This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.
 
 ####<i>Features/Planned Implementation (Subject to Change)</i>
 <ul>
 <li> Type Inference
-<li> Static Scoping
-<li> Pattern Matching
+<li> Static and Strong Typing
+<li> Typed parameters
+<li> Function Return Types
+<li> List Ranges
 <li> List Comprehensions
-<li> Higher Order Functions
+<li> First-Class/Higher Order Functions
 <li> Currying
 <li> User-defined types
 <li> Default Parameters
-<li> Named Parameters
+<li> Named Parameters (maybe)
+<li> Pattern Matching (maybe)
 </ul>
 
 ##Grammar
@@ -68,9 +71,9 @@ Decl 		::=	'var' id ('=' Exp)? ';'
     			| 'function' id '(' idList? ')' '=' Exp ';'
 FunctionExp	::= '(' Args ')' '->' Block ;'
 Call 		::=	id ( id+ | '(' ExpList? ')' ) ';'
-Assign 		::= id '=' Exp ';'
+Assign 		::= id assignop Exp ';'
     			| '[' idList ']' '=' Exp ';'
-VarRef 		::= Call | Assign | id
+VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
 ConditionalExp ::= 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
 
 
@@ -84,8 +87,10 @@ Exp6 		::= Exp7 (addop Exp7)*
 Exp7 		::= Exp8 (mulop Exp8)*
 Exp8 		::= prefixop? Exp9
 Exp9 		::= Exp10 postfixop?
-Exp10 		::= Exp11 ('^^' Exp11)?
-Exp11 		::= '(' Exp ')' | VarRef | intlit | floatlit | stringLiteral | boolit | List
+Exp10 		::= Exp11 ('^^' Exp11)*
+Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | ObjectLiteral
+
+Access		::= '[' Exp ']' | '.' Exp11
 
 ExpList 	::= Exp ( ',' Exp )*
 idList 		::= id (',' id)*
@@ -94,14 +99,16 @@ StringList 	::= stringLiteral (',' stringLiteral)*
 
 Literal 	::= NumericLiteral | characterLiteral | stringLiteral | boolit
 NumericLiteral	::= intlit | floatlit
-SetLiteral 	::= '{' LiteralList '}'
+ObjExpList 	::= ObjExp (',' ObjExp)*
+ObjectLiteral	::= '{' ObjExpList '}'
+SetLiteral 	::= '{' ExpList? '}'
 List 		::= '[' ExpList? ']'
 String 		::= stringLiteral
 ```
 
 ####Example Programs:
 ```
-var addOdds = (x,y) ->                                  var addOdds = function (x,y) {
+var addOdds = (x:int, y:int) ->                                  var addOdds = function (x,y) {
     if x%2 and y%2 both not 0 then x+y else Math.PI end;    if (x%2 !== 0 && y%2 !== 0) {
                                                                 return x + y;
 addOdds 3 3;                                                } else {
@@ -113,7 +120,7 @@ addOdds 3 3;                                                } else {
 
 
 
-var factorial = (n) ->                                  var factorial = function (n) {
+var factorial = (n:int) ->                                  var factorial = function (n) {
     if n <= 1 then 1 else n * factorial(n - 1) end;         if (n <= 1) {
                                                                 return 1;
 factorial addOdds 3 3;                                      } else {
@@ -131,7 +138,7 @@ var helloWorld = () -> ava "Hello World" end;           var helloWorld = functio
 
 ######Execute:
 ```
-./avajava.js [-t] [-a] pathOrFilename.ava
+./avajava.js [-t] [-a] [-i] pathOrFilename.ava
 ```
 ######To Compile & Run:
 ```
@@ -201,13 +208,15 @@ x -= 10;
 x *= 10; 
 x /= 10; 
 x % 2;
-'' = "";
-'' => ''; 
-"" => "";
 '' => "";
+'' => '';
+"" => "";
 "" => '';
 x and y => boolean literal
 x or y => boolean literal
+
+not 4 // equivalent to !== 4
+not true // false
 ```
 
 #####Pattern Matching/Destructuring (basically CoffeeScript):
