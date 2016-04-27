@@ -54,35 +54,31 @@ type		::=  'int' | 'string | 'bool' | 'function' | 'list' | 'object' | 'set'
 ```
 Program 	::= Block
 Block 		::= (Stmt ';')+
-Stmt 		::= Decl
-    			(| 'return' Exp
+Stmt 		::= 'return' Exp
     			| ConditionalExp
     			| Print    
     			| Loop
-    			| Exp) ';'
+    			| Exp
 
 VarDecl		::= 'var' id ('=' Exp)
-
 Print 		::= 'ava' Exp
 
 Exp 		::= VarDecl | FunctionExp | Exp1
-
 TypedExp	::= id ':' type
 
-Loop 		::= ForLoop
-				| 'while' '(' Exp ')' '{' Block '}'
-				
-ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' | 'for' 
+Loop 		::= ForLoop | WhileLoop
 
-Decl 		::=	'var' id ('=' Exp)? ';'
-    			| 'function' id '(' idList? ')' '=' Exp ';'
+ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' 
+				| 'for' id 'times' '{' Block '}'
+				
+WhileLoop	::=	'while' '(' Exp ')' '{' Block '}'
     			
 FunctionExp	::= 'function' '(' Params ')' '->' Block 'end'
-
-Call 		::=	id ( id+ | '(' Args? ')' ) | id ( id+ | Exp+ )
+Call 		::=	id ( id+ | '(' Args? ')' ) 
+				| id ( id+ | Exp+ )
 
 Assign 		::= id assignop Exp
-    			
+
 VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
 
 ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') then' Block ('else if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? ';'
@@ -158,10 +154,15 @@ reserved words - 'var' | 'while' | 'and' | 'or' | 'not'
 		
 #####Commments:
 ```
-Single Line Comments => // This is commented
+// Single Line Comments
 
-Multi-Line Comments => ***Cada ... 
-                        ... Cada***
+
+***
+
+Multi-Line Comments
+
+***
+
 ```
 
 #####Higher Order Functions
@@ -178,7 +179,11 @@ var addOne = function (x:int) -> return x + 1; end;
 
 mapFunction(addOne, [1,2,3]);
 ```
-                       
+#####Lambda (Anonymous) Functions   
+```
+(function () -> return function () -> return function () -> return 0; end; end; end);
+```
+                 
 ######Literals:
 ```
 1 - integer
