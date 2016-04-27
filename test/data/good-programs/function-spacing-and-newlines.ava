@@ -17,8 +17,6 @@ factorial
 
 (n - 
 
-1)
-
-end;
+1);
 
 end;

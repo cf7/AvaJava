@@ -36,11 +36,11 @@ var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not',
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
-  // console.log("********************PARSER******************");
+  console.log("********************PARSER******************");
   tokens = scannerOutput;
   // debugging
   for (token of tokens) {
-    // console.log(token);
+    console.log(token);
   }
   var program = parseProgram();
   match('EOF');
@@ -53,7 +53,7 @@ var parseProgram = function() {
 };
 
 var parseBlock = function() {
-  // console.log("inside parseBlock");
+  console.log("inside parseBlock");
   var statements = [];
   var numberErrors = error.count;
   while (true) {
@@ -61,22 +61,22 @@ var parseBlock = function() {
     if (!at('EOF')) {
       match(';');
     }
-    // console.log("matched semicolon");
+    console.log("matched semicolon");
     if (!at(blockStatementKeywords)) { // hardcoded 'return' for error outside of function block
       break;
     } else if (error.count > numberErrors) {
       break;
     }
   }
-  // console.log("leaving parseBlock");
-  // console.log(statements);
+  console.log("leaving parseBlock");
+  console.log(statements);
   return new Block(statements);
 };
 
 var parseStatement = function() {
   // since parseBlock no longer matches ';'s, need to match ';'
   // within each of these parseFunctions below
-  // console.log("inside parseStatement");
+  console.log("inside parseStatement");
   if (at('var')) {
     return parseVariableDeclaration();
   } else if (at('ava')) {
@@ -98,7 +98,7 @@ var parseVariableDeclaration = function() {
   // match with a 'var', if yes
   // shift tokens left (i.e. delete current token
   // and shift index of rest of tokens down)
-  // console.log("inside parseVariableDeclaration");
+  console.log("inside parseVariableDeclaration");
   var exp;
   match('var');
   var id = match('id');
@@ -109,19 +109,19 @@ var parseVariableDeclaration = function() {
     // or a similar entity
   }
   // var type = parseType();
-  // console.log("leaving parseVariableDeclaration");
+  console.log("leaving parseVariableDeclaration");
   return new VariableDeclaration(id, exp); //, type);
 };
 
 var parseVariableReference = function () {
-  // console.log("inside parseVariableReference");
+  console.log("inside parseVariableReference");
   var id = match('id');
-  // console.log("matched " + id.lexeme);
+  console.log("matched " + id.lexeme);
   var op;
   if (at(['(', 'id', 'intlit', 'floalit', 'stringlit', 'boolit'])) { // need 'id' for currying (first two calls)
     // issue: for all variables case, will think non-function variables are functions
     // perhaps address this issue in semantics?
-    // console.log("going inside"); // hardcoding currying cases for now
+    console.log("going inside"); // hardcoding currying cases for now
     return parseFunctionCall(id); // pass in id?
     // hardcoding return type parsing for now
     /**
@@ -131,7 +131,7 @@ var parseVariableReference = function () {
     op = match();
     return parseAssignmentStatement(op, id);
   } else {
-    // console.log("inside - id is " + id.lexeme);
+    console.log("inside - id is " + id.lexeme);
     return new VariableReference(id);
   }
 
@@ -149,7 +149,7 @@ var parseType = function() {
 };
 
 var parseIfBlock = function () {
-  // console.log("inside parseIfBlock");
+  console.log("inside parseIfBlock");
   var statements = [];
   var numberErrors = error.count;
   // if (at('return')) {
@@ -166,76 +166,76 @@ var parseIfBlock = function () {
       break;
     }
   }
-  // console.log("leaving parseIfBlock");
+  console.log("leaving parseIfBlock");
   return new Block(statements);
 }
 
 var parseFunctionExp = function () {
-  // console.log("inside parseFunctionExp");
+  console.log("inside parseFunctionExp");
   match('function');
   match('(');
   var params = parseParams();
-  // console.log("params " + params);
+  console.log("params " + params);
   match(')');
   match('->');
   var body = parseFunctionBlock();
-    // console.log("leaving parseFunctionExp");
+    console.log("leaving parseFunctionExp");
 
   return new Function(params, body); // ast return cuts off here
 }
 
 var parseParams = function () {
-  // console.log("inside parseParams");
+  console.log("inside parseParams");
   // var exps = parseExpList();
   var exps = [];
   if (at('id')) {
     exps = parseTypedExpressionList();
   }
-  // console.log("parseParams exps: " + exps);
-  // console.log("leaving parseParams");
+  console.log("parseParams exps: " + exps);
+  console.log("leaving parseParams");
   return exps;
   // return
 }
 
 var parseTypedExpressionList = function () {
-  // console.log("inside parseTypedExpressionList");
+  console.log("inside parseTypedExpressionList");
   var exps = [];
   exps.push(parseTypedExp());
   while (at(',')) {
     match(',');
     exps.push(parseTypedExp());
   }
-  // console.log("leaving parseTypedExpressionList");
+  console.log("leaving parseTypedExpressionList");
   return exps;
 }
 
 var parseTypedExp = function () {
-  // console.log("inside parseTypedExp");
+  console.log("inside parseTypedExp");
   var id = match('id');
   match(':');
   var type = parseType();
-  // console.log("leaving parseTypedExp");
+  console.log("leaving parseTypedExp");
   return new TypedVariableDeclaration(id, type);
 }
 
 var parseExpList = function () {
-  // console.log("inside parseExpList");
+  console.log("inside parseExpList");
   var exps = [];
-  // console.log("exps before: " + exps[0]);
+  console.log("exps before: " + exps[0]);
   exps.push(parseExpression());
-  // console.log("exps after: " + exps[0]);
+  console.log("exps after: " + exps[0]);
   while (at(',')) {
     match(',');
     exps.push(parseExpression());
   }
-    // console.log("leaving parseExpList");
-  // console.log("exps: " + exps);
+    console.log("leaving parseExpList");
+  console.log("exps: " + exps);
   return exps;
   // return statement
 }
 
 var parseFunctionBlock = function () {
-  // console.log("#########inside parseFunctionBlock##########");
+  console.log("#########inside parseFunctionBlock##########");
   var statements = [];
   var numberErrors = error.count;
   while (!at('end')) {
@@ -248,15 +248,15 @@ var parseFunctionBlock = function () {
     }
   }
   match('end');
-  // console.log("matched end");
+  console.log("matched end");
   // only print block statement, need to return entity that also includes args
-    // console.log("##########leaving parseFunctionBlock##########");
+    console.log("##########leaving parseFunctionBlock##########");
 
   return new Block(statements);
 }
 
 var parseFunctionCall = function (id) {
-  // console.log("inside parseFunctionCall: id " + id.lexeme);
+  console.log("inside parseFunctionCall: id " + id.lexeme);
   var args = [];
   if (at('id')) { // use for currying, first id already matched beforehand
     args.push(parseVariableReference());
@@ -266,24 +266,24 @@ var parseFunctionCall = function (id) {
       args = args.concat(parseArgs());
       match(')');
     } else { // currying
-      // console.log("before non-function args");
+      console.log("before non-function args");
       while (!at([';', 'EOF'])) { // 'EOF' case accounts for missing semicolons
-        // console.log("non-function args");
+        console.log("non-function args");
         args.push(parseExpression());
       }
     }
   }
-  // console.log("args: " + args);
-  // console.log("leaving parseFunctionCall");
+  console.log("args: " + args);
+  console.log("leaving parseFunctionCall");
   return new FunctionCall(id, args);
 }
 
 var parseArgs = function () {
-  // console.log("inside parseArgs");
+  console.log("inside parseArgs");
   var exps = parseExpList();
   // var exps = parseTypedExpressionList();
-  // console.log("parseArgs exps: " + exps);
-  // console.log("leaving parseArgs");
+  console.log("parseArgs exps: " + exps);
+  console.log("leaving parseArgs");
   return exps;
   // return
 }
@@ -306,7 +306,7 @@ var parsePrintStatement = function () {
 }
 
 var parseForLoop = function () {
-  // console.log("inside parseForLoop");
+  console.log("inside parseForLoop");
   var id;
   var counter;
   var exp;
@@ -331,12 +331,12 @@ var parseForLoop = function () {
     body = parseBlock();
     match('}');
   }
-  // console.log("leaving parseForLoop");
+  console.log("leaving parseForLoop");
   return new ForLoop(id, exp, body);
 }
 
 var parseWhileLoop = function () {
-  // console.log("inside parseWhileLoop");
+  console.log("inside parseWhileLoop");
   match('while');
   match('(');
   var condition = parseExpression();
@@ -344,7 +344,7 @@ var parseWhileLoop = function () {
   match('{');
   var body = parseBlock();
   match('}');
-  // console.log("leaving parseWhileLoop");
+  console.log("leaving parseWhileLoop");
   return new WhileLoop(condition, body);
 }
 
@@ -353,7 +353,7 @@ var parseConditionalExp = function () {
   var elseBody;
   var body;
   var parentheses = false;
-  // console.log("inside parseConditionalExp");
+  console.log("inside parseConditionalExp");
   match('if');
   if (at('(')) {
     match('(');
@@ -375,12 +375,11 @@ var parseConditionalExp = function () {
       elseBody = parseIfBlock();
     }
   }
-  match('end');
   return new IfElseStatements(conditional, body, elseifs, elseBody);
 }
 
 var parseExpression = function () {
-  // console.log("inside parseExpression");
+  console.log("inside parseExpression");
   if (at('var')) {
     return parseVariableDeclaration();
   // } else if (at('if')) {
@@ -399,7 +398,7 @@ var parseExpression = function () {
 
 var parseExp1 = function () {
   var op, left, right;
-  // console.log("inside parseExp1");
+  console.log("inside parseExp1");
   left = parseExp2();
   while (at('or')) {
     op = match('or');
@@ -412,10 +411,10 @@ var parseExp1 = function () {
 
 var parseExp2 = function () {
   var op, left, right;
-  // console.log("inside parseExp2");
+  console.log("inside parseExp2");
   left = parseExp3();
   while (at('and')) {
-    // console.log("inside binary parseExp2");
+    console.log("inside binary parseExp2");
     op = match('and');
     right = parseExp3();
     left = new BinaryExpression(op, left, right);
@@ -425,13 +424,13 @@ var parseExp2 = function () {
     right = parseExpression();
     left = new BothExpression(left, right); // pass in left side and right side
   }
-  // console.log("leaving parseExp2");
+  console.log("leaving parseExp2");
   return left;
 }
 
 var parseExp3 = function () {
   var op, left, right;
-  // console.log("inside parseExp3");
+  console.log("inside parseExp3");
   left = parseExp4();
   if (at(['<', '>', '<=', '==', '>=', '!='])) {
     op = match();
@@ -456,7 +455,7 @@ var parseExp4 = function () {
 
 var parseExp5 = function () {
   var op, left, right;
-  // console.log("inside parseExp5");
+  console.log("inside parseExp5");
   left = parseExp6();
   // if (at(['::'])) {
   //   op = match();
@@ -468,14 +467,14 @@ var parseExp5 = function () {
 
 var parseExp6 = function () {
   var op, left, right;
-  // console.log("inside parseExp6");
+  console.log("inside parseExp6");
   left = parseExp7();
   while (at(['+', '-'])) {
     op = match();
     right = parseExp7();
-    // console.log("=========================");
+    console.log("=========================");
     left = new BinaryExpression(op, left, right);
-    // console.log("========================");
+    console.log("========================");
   }
   return left;
   // return statement
@@ -485,7 +484,7 @@ var parseExp6 = function () {
 // ** may need them to pass to a different parsing branch
 var parseExp7 = function () {
   var op, left, right;
-  // console.log("inside parseExp7");
+  console.log("inside parseExp7");
   left = parseExp8();
   while (at(['*', '/', '%'])) {
     op = match();
@@ -499,7 +498,7 @@ var parseExp7 = function () {
 // parseExp6
 var parseExp8 = function () {
   var op, operand;
-  // console.log("inside parseExp8");
+  console.log("inside parseExp8");
   if (at(['-', 'not'])) {
     op = match(); // need to branch to a different case for negation
     operand = parseExp9();
@@ -513,33 +512,33 @@ var parseExp8 = function () {
 // parseExp7
 var parseExp9 = function () {
   var op, operand;
-  // console.log("inside parseExp9");
+  console.log("inside parseExp9");
   var operand = parseExp10();
   if (at(['++', '--'])) { // add ! for factorial operation
     op = match();
-    // console.log("leaving parseExp9");
+    console.log("leaving parseExp9");
     return new PostfixExpression(op, operand);
   } else {
-    // console.log("leaving parseExp9");
+    console.log("leaving parseExp9");
     return operand;
   }
 }
 
 var parseExp10 = function () {
   var op, left, right;
-  // console.log("inside parseExp10");
+  console.log("inside parseExp10");
   left = parseExp11();
   while (at('^^')) {
     op = match();
     right = parseExp11();
     left = new BinaryExpression(op, left, right);
   }
-  // console.log("leaving parseExp10");
+  console.log("leaving parseExp10");
   return left;
 }
 
 var parseExp11 = function () {
-  // console.log("inside parseExp11");
+  console.log("inside parseExp11");
   if (at('(')) {
     match('(');
     var exp = parseExpression();
@@ -548,7 +547,7 @@ var parseExp11 = function () {
   } else if (at('[')) {
     return parseList();
   } else if (at('{')) {
-    // console.log("in here");
+    console.log("in here");
     return parseCollection();
   } else if (at('intlit')) {
     return parseIntegerLiteral();
@@ -559,7 +558,7 @@ var parseExp11 = function () {
   } else if (at('id')) {
     var exps = [];
     var varref = parseVariableReference();
-    // console.log("Exp11 varref: " + varref);
+    console.log("Exp11 varref: " + varref);
     if (at(['[', '.'])) {
       while (at(['[', '.'])) {
         while (at('[')) {
@@ -584,11 +583,11 @@ var parseExp11 = function () {
 }
 
 var parseList = function () {
-  // console.log("inside parseList");
+  console.log("inside parseList");
   match('[');
   var exps = parseExpList();
   match(']');
-  // console.log("leaving parseList");
+  console.log("leaving parseList");
   return new ListLiteral(exps);
 }
 
@@ -613,72 +612,72 @@ var parseCollection = function () {
 
 var parseObjectExp = function () {
   var exp = {};
-  // console.log("inside ObjectExp");
+  console.log("inside ObjectExp");
   var key = match().lexeme;
   match(':');
   var value = parseExpression();
-  // console.log("value: " + value);
-  // console.log("leaving ObjectExp");
+  console.log("value: " + value);
+  console.log("leaving ObjectExp");
   exp[key] = value;
   return exp
 }
 
 var parseObjectExpList = function () {
-  // console.log("inside parseObjectExpList");
+  console.log("inside parseObjectExpList");
   var exps = parseObjectExp();
   while (at(',')) {
     match(',');
     Object.assign(exps, parseObjectExp());
   }
-  // console.log("exps: " + exps);
-  // console.log("leaving parseObjectExpList");
+  console.log("exps: " + exps);
+  console.log("leaving parseObjectExpList");
   return exps;
   // return statement
 }
 
 var parseObject = function () {
-  // console.log("inside parseObject");
+  console.log("inside parseObject");
   var exps = parseObjectExpList();
-  // console.log("leaving parseObject");
+  console.log("leaving parseObject");
   return new ObjectLiteral(exps);
 }
 
 var parseSet = function () {
-  // console.log("inside parseSet");
+  console.log("inside parseSet");
   var exps = parseExpList();
-  // console.log("leaving parseSet");
+  console.log("leaving parseSet");
   return new SetLiteral(exps);
 }
 
 var parseIntegerLiteral = function () {
-  // console.log("inside parseIntegerLiteral");
+  console.log("inside parseIntegerLiteral");
   return new IntegerLiteral(match());
 }
 
 var parseFloatLiteral = function () {
-  // console.log("inside parseFloatLiteral");
+  console.log("inside parseFloatLiteral");
   return new FloatLiteral(match()); // need to implement floatlits
 }
 
 var parseStringLiteral = function () {
-  // console.log("inside parseStringLiteral");
+  console.log("inside parseStringLiteral");
   return new StringLiteral(match());
 }
 
 var parseBooleanLiteral = function () {
-  // console.log("inside parseBooleanLiteral");
+  console.log("inside parseBooleanLiteral");
   return new BooleanLiteral(match());
 }
 var parseReturnStatement = function () {
-  // console.log("inside parseReturnStatement");
+  console.log("inside parseReturnStatement");
   match('return');
   var exp = parseExpression();
-  // console.log("leaving parseReturnStatement");
+  console.log("leaving parseReturnStatement");
   return new ReturnStatement(exp);//parseExpression();
 }
 
 var parseExpWithBoth = function () {
-  // console.log("inside parseExpWithBoth");
+  console.log("inside parseExpWithBoth");
 }
 
 var at = function(kind) {
