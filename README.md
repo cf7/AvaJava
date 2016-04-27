@@ -13,11 +13,11 @@ This language will be designed in a way to facilitate faster typing and more con
 <li> List Ranges
 <li> List Comprehensions
 <li> First-Class/Higher Order Functions
-<li> Currying
-<li> User-defined types
-<li> Default Parameters
+<li> Currying/Uncurrying
+<li> User-defined types (maybe)
+<li> Default Parameters (maybe)
 <li> Named Parameters (maybe)
-<li> Pattern Matching (maybe)
+<li> Pattern Matching/Destructuring (maybe)
 </ul>
 
 ##Grammar
@@ -26,27 +26,27 @@ This language will be designed in a way to facilitate faster typing and more con
 
 ```
 characterLiteral ::=  letter | digit | [\s]
-stringLiteral    ::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
+stringlit    ::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 
-letter    ::=  [a-zA-Z]
-digit     ::=  [\d]
-keyword   ::=  'var' | 'while' | 'and' | 'or' | 'not' 
-           	| 'true' | 'false' | 'return' | 'for' | 'each' 
-	   		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
-id        ::=  letter (letter | digit | '_')*
-		
-assignop  ::=  '=' | '+=' | '-=' | '*=' | '/='
-relop     ::=  '<' | '>' | '<=' | '==' | '>=' | '!='
-appendop  ::=  '@'
-consop    ::=  '::'
-addop     ::=  '+' | '-'
-mulop     ::=  '*' | '/' | '%' 
-prefixop  ::=  '-' | 'not'
-postfixop ::=  '!' | '++' | '--'
-intlit    ::=  [\d]+
-floatlit  ::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
-boollit   ::=  'true' | 'false'
-comment   ::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
+letter    	::=  [a-zA-Z]
+digit     	::=  [\d]
+keyword   	::=  'var' | 'while' | 'and' | 'or' | 'not' 
+           		| 'true' | 'false' | 'return' | 'for' | 'each' 
+	   			| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+id        	::=  letter (letter | digit | '_')*
+key		   	::=	 id | stringlit
+assignop  	::=  '=' | '+=' | '-=' | '*=' | '/='
+relop     	::=  '<' | '>' | '<=' | '==' | '>=' | '!='
+appendop  	::=  '@'
+consop    	::=  '::'
+addop     	::=  '+' | '-'
+mulop     	::=  '*' | '/' | '%' 
+prefixop  	::=  '-' | 'not'
+postfixop 	::=  '!' | '++' | '--'
+intlit    	::=  [\d]+
+floatlit  	::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
+boolit   	::=  'true' | 'false'
+comment   	::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
 ```
 
 ###Macrosyntax
@@ -54,29 +54,39 @@ comment   ::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
 Program 	::= Block
 Block 		::= (Stmt ';')+
 Stmt 		::= Decl
-    			| 'return' Exp
+    			(| 'return' Exp
     			| ConditionalExp
     			| Print    
     			| Loop
-    			| Exp
-    
-Print 		::= 'ava' Exp ';'
-Exp 		::= Exp1 
-    			| '[' StringList ']'
-    			| FunctionExp
+    			| Exp) ';'
+
+VarDecl		::= 'var' id ('=' Exp)
+
+Print 		::= 'ava' Exp
+
+Exp 		::= VarDecl | FunctionExp | Exp1
+
+TypedExp	::= id ':' Type
+
 Loop 		::= ForLoop
 				| 'while' '(' Exp ')' '{' Block '}'
+				
 ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' | 'for' 
+
 Decl 		::=	'var' id ('=' Exp)? ';'
     			| 'function' id '(' idList? ')' '=' Exp ';'
-FunctionExp	::= '(' Args ')' '->' Block ;'
-Call 		::=	id ( id+ | '(' ExpList? ')' ) ';'
-Assign 		::= id assignop Exp ';'
-    			| '[' idList ']' '=' Exp ';'
+    			
+FunctionExp	::= 'function' '(' Params ')' '->' Block ';'
+
+Call 		::=	id ( id+ | '(' Args? ')' ) | id ( id+ | Exp+ )
+
+Assign 		::= id assignop Exp
+    			
 VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
-ConditionalExp ::= 'if' Exp1 'then' Block ('else if' Exp1 'then' Block)* ('else' Block)? ';'
 
+ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') then' Block ('else if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? ';'
 
+Params		::= TypedExpList
 Args 		::= ExpList
 Exp1 		::= Exp2 ('or' Exp2)*
 Exp2 		::= Exp3 ('and' Exp3)* ('both' Exp)?
@@ -88,22 +98,18 @@ Exp7 		::= Exp8 (mulop Exp8)*
 Exp8 		::= prefixop? Exp9
 Exp9 		::= Exp10 postfixop?
 Exp10 		::= Exp11 ('^^' Exp11)*
-Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringLiteral | boolit | List | SetLiteral | ObjectLiteral
+Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringlit | boolit | List | SetLiteral | ObjectLiteral
 
 Access		::= '[' Exp ']' | '.' Exp11
 
 ExpList 	::= Exp ( ',' Exp )*
-idList 		::= id (',' id)*
-LiteralList	::= Literal (',' Literal)*
-StringList 	::= stringLiteral (',' stringLiteral)*
+TypedExpList	::= TypedExp (',' TypedExp)*
 
-Literal 	::= NumericLiteral | characterLiteral | stringLiteral | boolit
-NumericLiteral	::= intlit | floatlit
+ObjectLiteral	::= '{' ObjExpList? '}'
 ObjExpList 	::= ObjExp (',' ObjExp)*
-ObjectLiteral	::= '{' ObjExpList '}'
+ObjExp 		::= key ':' Exp
 SetLiteral 	::= '{' ExpList? '}'
 List 		::= '[' ExpList? ']'
-String 		::= stringLiteral
 ```
 
 
@@ -127,9 +133,7 @@ var factorial = (n:int) ->                                  var factorial = func
 factorial addOdds 3 3;                                      } else {
                                                                 return n * factorial(n - 1);
                                                             }
-                                                        }
-                                                        
-                                                        factorial(addOdds(3,3));
+                                                        }                                                                                    factorial(addOdds(3,3));
 
 
 var helloWorld = () -> ava "Hello World" end;           var helloWorld = function () {
@@ -137,14 +141,10 @@ var helloWorld = () -> ava "Hello World" end;           var helloWorld = functio
                                                         }                                             
 ```
 
-######Execute:
-```
-./avajava.js [-t] [-a] [-i] pathOrFilename.ava
-```
+
 ######To Compile & Run:
 ```
-guac hellowWorld.ava
-eat hellowWorld
+./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
 ```
 
 #####Identifiers and Reserved Words:
@@ -161,7 +161,23 @@ Single Line Comments => // This is commented
 
 Multi-Line Comments => ***Cada ... 
                         ... Cada***
-```                        
+```
+
+#####Higher Order Functions
+```
+var mapFunction = function (f:function, l:list) -> 
+	var newList = [];
+	for each x in l {
+		push(newList, f x);
+	};
+	return newList;
+end;
+
+var addOne = function (x:int) -> return x + 1; end;
+
+mapFunction(addOne, [1,2,3]);
+```
+                       
 ######Literals:
 ```
 1 - integer

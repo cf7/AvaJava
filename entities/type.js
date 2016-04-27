@@ -23,6 +23,8 @@ var Type = (function() {
 
   Type.SET = new Type('set');
 
+  Type.LIST = new Type('list');
+
   Type.ITERABLE = new Type('iterable');
 
   Type.FUNCTION = new Type('function');
@@ -45,14 +47,14 @@ var Type = (function() {
     }
   };
 
-  Type.prototype.canBeIterOrObj = function(message, location) {
-    if (!(this.isCompatibleWith(Type.ITERABLE) || this.isCompatibleWith(Type.OBJECT))) {
+  Type.prototype.canBeListOrObj = function(message, location) {
+    if (!(this.isCompatibleWith(Type.LIST) || this.isCompatibleWith(Type.OBJECT))) {
       error(message, location);
     }
   };
 
-  Type.prototype.mustBeIterable = function(message, location) {
-    if (!(this.isCompatibleWith(Type.ITERABLE))) {
+  Type.prototype.mustBeList = function(message, location) {
+    if (!(this.isCompatibleWith(Type.LIST))) {
       error(message, location);
     }
   };
@@ -135,6 +137,7 @@ module.exports = {
   FLOAT: Type.FLOAT,
   OBJECT: Type.OBJECT,
   SET: Type.SET,
+  LIST: Type.LIST,
   ITERABLE: Type.ITERABLE,
   FUNCTION: Type.FUNCTION,
   ARBITRARY: Type.ARBITRARY,

@@ -26,7 +26,27 @@ class BuiltIns {
                 generateCode: function (args) {
                     return args[0] + ".length";
                 }
-            }
+            },
+
+            map: {
+                value: {},
+                type: Type.FUNCTION,
+                generateCode: function (args) {
+                    return args[1] + '.map(' + args[0] + ')';
+                }
+            },
+
+            push: {
+                value: {},
+                type: Type.FUNCTION,
+                generateCode: function (args) {
+                    return args[0] + '.push(' + args[1] + ')';
+                }
+            },
+
+            pull: {
+
+            },
         }
     }
 

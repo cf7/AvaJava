@@ -1,5 +1,11 @@
-var addOdds = function (x:int, y:int) -> if x%2 and y%2 both not 0 then return x+y else return 0; end;
+var mapFunction = function (f:function, l:list) -> 
+	var newList = [];
+	for each x in l {
+		push(newList, f x);
+	};
+	return newList;
+end;
 
-var factorial = function (n:int) -> if n <= 1 then return 1 else return n * factorial(n - 1); end;
+var addOne = function (x:int) -> return x + 1; end;
 
-factorial(addOdds(3, 3));
+mapFunction(addOne, [1,2,3]);
