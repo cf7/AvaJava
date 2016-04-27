@@ -12,3 +12,5 @@ map(addOne, x);
 
 
 push(x, 10);
+
+pop(x);

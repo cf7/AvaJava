@@ -111,6 +111,8 @@ List 		::= '[' ExpList? ']'
 
 
 ####Example Programs:
+(with their equivalent Javascript translations)
+
 ```
 var addOdds = (x:int, y:int) ->                                  var addOdds = function (x,y) {
     if x%2 and y%2 both not 0 then x+y else Math.PI end;    if (x%2 !== 0 && y%2 !== 0) {
@@ -129,7 +131,7 @@ var factorial = (n:int) ->                                  var factorial = func
                                                                 return 1;
 factorial addOdds 3 3;                                      } else {
                                                                 return n * factorial(n - 1);
-                                                            }
+// currying is optional                                     }
                                                         }                                                                                    factorial(addOdds(3,3));
 
 
@@ -139,12 +141,12 @@ var helloWorld = () -> ava "Hello World" end;           var helloWorld = functio
 ```
 
 
-######To Compile & Run:
+######To Compile & Run
 ```
 ./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
 ```
 
-#####Identifiers and Reserved Words:
+#####Identifiers and Reserved Words
 ```
 var - variable declaration
 reserved words - 'var' | 'while' | 'and' | 'or' | 'not' 
@@ -152,7 +154,7 @@ reserved words - 'var' | 'while' | 'and' | 'or' | 'not'
 		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
 ```
 		
-#####Commments:
+####Commments
 ```
 // Single Line Comments
 
@@ -165,7 +167,12 @@ Multi-Line Comments
 
 ```
 
-#####Higher Order Functions
+####Print Statements
+```
+ava("Hello World!");
+```
+
+####Higher Order Functions
 ```
 var mapFunction = function (f:function, l:list) -> 
 	var newList = [];
@@ -179,30 +186,27 @@ var addOne = function (x:int) -> return x + 1; end;
 
 mapFunction(addOne, [1,2,3]);
 ```
-#####Lambda (Anonymous) Functions   
+
+####Lambda (Anonymous) Functions   
 ```
 (function () -> return function () -> return function () -> return 0; end; end; end);
 ```
                  
-######Literals:
+####Primitives
 ```
-1 - integer
-1.00 - float
-1.00e24 - exponentiation
-1.00E24 - exponentiation
-"h" - character
-"hi" - string
-true - boolean
-false - boolean
-[1,2,3] - list
-{x:1,y:2} - object
+1; 			// integer
+1.00; 		// float
+1.00e24;	// float in scientific notation
+1.00E24;
+"h"			// string (even though it is only one character)
+"hi"		// string
+true 		// boolean
+false		// boolean
+[1,2,3]		// list
+{x:1,y:2}	// object
+{1,2,3}		// set
 ```
  
-#####To Print:
-```
-ava("Hello World!");
-```
-
 #####Assignment:
 ```
 var x = 1; // plain javascript

@@ -44,8 +44,12 @@ class BuiltIns {
                 }
             },
 
-            pull: {
-
+            pop: {
+                value: {},
+                type: Type.FUNCTION,
+                generateCode: function (args) {
+                    return args[0] + '.pop()';
+                }
             },
         }
     }
