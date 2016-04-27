@@ -445,11 +445,11 @@ var parseExp4 = function () {
   var op, left, right;
   console.log("inside parseExp4");
   left = parseExp5();
-  // if (at(['@'])) {
-  //   op = match();
-  //   right = parseExp5();
-  //   left = new BinaryExpression(op, left, right);
-  // }
+  while(at('@')){
+    op = match('@');
+    right = parseExp11();
+    left = new BinaryExpression(op, left, right);
+  }
   return left;
 }
 
