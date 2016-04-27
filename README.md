@@ -28,7 +28,7 @@ This language will be designed in a way to facilitate faster typing and more con
 characterLiteral ::=  letter | digit | [\s]
 stringlit    ::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 
-letter    	::=  [a-zA-Z]
+letter    	::=	[a-zA-Z]
 digit     	::=  [\d]
 keyword   	::=  'var' | 'while' | 'and' | 'or' | 'not' 
            		| 'true' | 'false' | 'return' | 'for' | 'each' 
@@ -47,41 +47,38 @@ intlit    	::=  [\d]+
 floatlit  	::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
 boolit   	::=  'true' | 'false'
 comment   	::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
+type		::=  'int' | 'string | 'bool' | 'function' | 'list' | 'object' | 'set'
 ```
 
 ###Macrosyntax
 ```
 Program 	::= Block
 Block 		::= (Stmt ';')+
-Stmt 		::= Decl
-    			(| 'return' Exp
+Stmt 		::= 'return' Exp
     			| ConditionalExp
     			| Print    
     			| Loop
-    			| Exp) ';'
+    			| Exp
 
 VarDecl		::= 'var' id ('=' Exp)
-
 Print 		::= 'ava' Exp
 
 Exp 		::= VarDecl | FunctionExp | Exp1
+TypedExp	::= id ':' type
 
-TypedExp	::= id ':' Type
+Loop 		::= ForLoop | WhileLoop
 
-Loop 		::= ForLoop
-				| 'while' '(' Exp ')' '{' Block '}'
+ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' 
+				| 'for' id 'times' '{' Block '}'
 				
-ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' | 'for' 
-
-Decl 		::=	'var' id ('=' Exp)? ';'
-    			| 'function' id '(' idList? ')' '=' Exp ';'
+WhileLoop	::=	'while' '(' Exp ')' '{' Block '}'
     			
-FunctionExp	::= 'function' '(' Params ')' '->' Block ';'
-
-Call 		::=	id ( id+ | '(' Args? ')' ) | id ( id+ | Exp+ )
+FunctionExp	::= 'function' '(' Params ')' '->' Block 'end'
+Call 		::=	id ( id+ | '(' Args? ')' ) 
+				| id ( id+ | Exp+ )
 
 Assign 		::= id assignop Exp
-    			
+
 VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
 
 ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') then' Block ('else if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? ';'
@@ -157,10 +154,15 @@ reserved words - 'var' | 'while' | 'and' | 'or' | 'not'
 		
 #####Commments:
 ```
-Single Line Comments => // This is commented
+// Single Line Comments
 
-Multi-Line Comments => ***Cada ... 
-                        ... Cada***
+
+***
+
+Multi-Line Comments
+
+***
+
 ```
 
 #####Higher Order Functions
@@ -177,7 +179,11 @@ var addOne = function (x:int) -> return x + 1; end;
 
 mapFunction(addOne, [1,2,3]);
 ```
-                       
+#####Lambda (Anonymous) Functions   
+```
+(function () -> return function () -> return function () -> return 0; end; end; end);
+```
+                 
 ######Literals:
 ```
 1 - integer
