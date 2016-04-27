@@ -28,7 +28,7 @@ This language will be designed in a way to facilitate faster typing and more con
 characterLiteral ::=  letter | digit | [\s]
 stringlit    ::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 
-letter    	::=  [a-zA-Z]
+letter    	::=	[a-zA-Z]
 digit     	::=  [\d]
 keyword   	::=  'var' | 'while' | 'and' | 'or' | 'not' 
            		| 'true' | 'false' | 'return' | 'for' | 'each' 
@@ -47,6 +47,7 @@ intlit    	::=  [\d]+
 floatlit  	::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
 boolit   	::=  'true' | 'false'
 comment   	::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
+type		::=  'int' | 'string | 'bool' | 'function' | 'list' | 'object' | 'set'
 ```
 
 ###Macrosyntax
@@ -66,7 +67,7 @@ Print 		::= 'ava' Exp
 
 Exp 		::= VarDecl | FunctionExp | Exp1
 
-TypedExp	::= id ':' Type
+TypedExp	::= id ':' type
 
 Loop 		::= ForLoop
 				| 'while' '(' Exp ')' '{' Block '}'
@@ -76,7 +77,7 @@ ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' | 'for'
 Decl 		::=	'var' id ('=' Exp)? ';'
     			| 'function' id '(' idList? ')' '=' Exp ';'
     			
-FunctionExp	::= 'function' '(' Params ')' '->' Block ';'
+FunctionExp	::= 'function' '(' Params ')' '->' Block 'end'
 
 Call 		::=	id ( id+ | '(' Args? ')' ) | id ( id+ | Exp+ )
 
