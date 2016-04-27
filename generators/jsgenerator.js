@@ -402,6 +402,9 @@ var generator = {
     if( e.operator.lexeme == '@'){
       return gen(e.left) + '.concat(' + gen(e.right) + ')';
     }
+    if(e.operator.lexeme == '::'){
+      return "[" + gen(e.left) +  "]" + ".concat(" + gen(e.right) + ")";
+    }
     if (e.operator.lexeme === '^^') {
       return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
     } else if (e.left instanceof StringLiteral && e.right instanceof StringLiteral) {
