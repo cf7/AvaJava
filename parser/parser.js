@@ -81,8 +81,6 @@ var parseStatement = function() {
     return parseVariableDeclaration();
   } else if (at('ava')) {
     return parsePrintStatement();
-  } else if (at('if')) {
-    return parseConditionalExp();
   } else if (at('for')) {
     return parseForLoop();
   } else if (at('while')) {
@@ -396,6 +394,8 @@ var parseExpression = function () {
     return parseFunctionExp();
   } else if (at('return')) {
     return parseReturnStatement();
+  } else if (at('if')) {
+    return parseConditionalExp();
   } else {
     return parseExp1(); //error('inside parse expression error', tokens[0]);
   }

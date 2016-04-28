@@ -6,15 +6,25 @@ This language will be designed to facilitate faster typing and more concise repr
 
 ####<i>Features</i>
 <ul>
-<li> Type Inference
-<li> Static and Strong Typing
 <li> Static Scoping
+<li> Static and Strong Typing
+<li> Type Inference
 <li> Typed parameters
 <li> Function Return Types
-<li> List Ranges
-<li> List Comprehensions
+<li> Built-In Functions
 <li> First-Class/Higher Order Functions
+<li> Lambda Functions
 <li> Currying/Uncurrying
+<li> List Ranges (maybe)
+<li> List Comprehensions
+<li> Cons and Append Operators
+<li> String Interpolation
+<li> String-Int Operations
+<li> Both Expressions
+<li> Exponentiation Operator
+<li> Scientific Notation
+<li> Constant Folding
+<li> Unreachable Code Elimination
 <li> User-defined types (maybe)
 <li> Default Parameters (maybe)
 <li> Named Parameters (maybe)
@@ -48,24 +58,21 @@ intlit    	::=  [\d]+
 floatlit  	::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
 boolit   	::=  'true' | 'false'
 comment   	::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
-type		::=  'int' | 'string' | 'bool' | 'function' | 'list' | 'object' | 'set'
+type		::=  'int' | 'string' | 'float' | 'bool' | 'function' | 'list' | 'object' | 'set'
 ```
 
 ###Macrosyntax
 ```
 Program 	::= Block
-Block 		::= (Stmt ';')+
+Block 		::= (Stmt ';')*
 Stmt 		::= VarDecl
-				| ConditionalExp
     			| Print    
     			| Loop
     			| Exp
 
-VarDecl		::= 'var' id ('=' Exp)
-Print 		::= 'ava' Exp
+VarDecl		::= 'var' id ('=' Exp)?
 
-Exp 		::= FunctionExp | Exp1
-TypedExp	::= id ':' type
+Print 		::= 'ava' Exp
 
 Loop 		::= ForLoop | WhileLoop
 
@@ -74,19 +81,23 @@ ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}'
 				| 'for' '(' VarDecl ConditionalExp ')' '{' Block '}'
 				
 WhileLoop	::=	'while' '(' Exp ')' '{' Block '}'
+
+Exp 		::= FunctionExp 
+				| 'return' Exp 
+				| ConditionalExp 
+				| Exp1
     			
 FunctionExp	::= 'function' '(' Params ')' '->' Block 'end'
-Call 		::=	id ( id+ | '(' Args? ')' ) 
-				| id ( id+ | Exp+ )
-
-Assign 		::= id assignop Exp
-
-VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
+Call 		::=	id ( id* | '(' Args? ')' | Exp* )
+Params		::= TypedExpList
+Args		::= ExpList
+ExpList 	::= Exp ( ',' Exp )*
+TypedExpList	::= TypedExp (',' TypedExp)*
+TypedExp	::= id ':' type
 
 ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') then' Block ('else if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? ';'
 
-Params		::= TypedExpList
-Args		::= ExpList
+
 Exp1 		::= Exp2 ('or' Exp2)*
 Exp2 		::= Exp3 ('and' Exp3)* ('both' Exp)?
 Exp3 		::= Exp4 (relop Exp4)?
@@ -99,10 +110,9 @@ Exp9 		::= Exp10 postfixop?
 Exp10 		::= Exp11 ('^^' Exp11)*
 Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringlit | boolit | List | SetLiteral | ObjectLiteral
 
+VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
+Assign 		::= id assignop Exp
 Access		::= '[' Exp ']' | '.' Exp11
-
-ExpList 	::= Exp ( ',' Exp )*
-TypedExpList	::= TypedExp (',' TypedExp)*
 
 ObjectLiteral	::= '{' ObjExpList? '}'
 ObjExpList 	::= ObjExp (',' ObjExp)*
