@@ -128,17 +128,22 @@ FunctionCalls can utilize currying to take in arguments.
 
 ```
 var factorial = function (n:int) ->                     var factorial = function (n) {
-    if n <= 1 then 1 else n * factorial(n - 1); end;        if (n <= 1) {
-                                                                return 1;
-factorial addOdds 3 3;                                      } else {
-                                                                return n * factorial(n - 1);
-// currying is optional                                     }
-                                                        }                                                                                    factorial(addOdds(3,3));
+    if n <= 1 then 							                  if (n <= 1) {
+    	return 1; 					                             return 1;
+    else                                                     } else {
+    	return n * factorial(n - 1);                            return n * factorial(n - 1);
+    end;                                                     }
+end;                                                    }
+                                                                
+factorial addOdds 3 3;                                      
+                                                                
+// currying is optional                                                                                                                                                           factorial(addOdds(3,3));
 
 
-var helloWorld = function () -> ava "Hello World"; end; var helloWorld = function () {
-                                                            console.log("Hello World");
-                                                        }     
+var helloWorld = function () -> 			             var helloWorld = function () {
+	ava "Hello World";                                       console.log("Hello World");
+end;                                                    }   
+                                                            
       
 var mapFunction = function (f:function, l:list) ->      var mapFunction = function (f, l) {
 	var newList = [];							              var newList = [];
