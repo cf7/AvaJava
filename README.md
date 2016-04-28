@@ -270,6 +270,16 @@ Both expressions is a feature that attempts to reduce the redundant code associa
 x and y both 0 		// instaead of (x == 0 && y == 0)
 x and y both not 0 	// intead of (x != 0 && y != 0)
 ```
+
+##### If Statements
+```
+var x = 10;
+
+if x > 1 then ava "inside if statement" else ava "not inside if statement";
+
+if x < 1 then
+	ava "0"
+```
 #####Lists and List Operations
 ```
 var x = [1,2,3,4,5,6,7];

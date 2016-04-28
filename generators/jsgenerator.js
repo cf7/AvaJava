@@ -225,25 +225,17 @@ var generator = {
   // if getting numbers from gen() while generating a block, might
   // be because block returns indentlevel
   IfElseStatements: function (ifelse) {
-    // can still use gen() without using emit(), use gen() to traverse
-    // gen() allows recursion from outside this function! 
-    // allows it to leave and come back
-    // basically use generator['key'](input) to get same effect
-    if (ifelse.elseifs) {
-      // console.log("inside elseifs ......" + ifelse.elseifs);
-      // console.log("alsdkjas;lj ===== " + "console.log(" + gen(ifelse.body) + ")");
-      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } else ' + gen(ifelse.elseifs);
-
-    } else if (ifelse.elseBody) {
-      // console.log("inside else ........" + ifelse.elseBody.statements.constructor.name);
-      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }';
-
-    } else {
-
-      // console.log("inside no else");
-      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }';
-
+    var strings = [];
+    strings.push('if' + '(' + gen(ifelse.conditionals[0]) + ')' + ' { '+ gen(ifelse.bodies[0]) + ' }');
+    if (ifelse.conditionals.length > 1) {
+        for (var i = 1; i < ifelse.conditionals.length; i++) {
+            strings.push('else if ( ' + gen(ifelse.conditionals[i]) + ' ) { ' + gen(ifelse.bodies[i]) + ' } ');
+        }
     }
+    if (ifelse.elseBody) {
+        strings.push(' else { ' + gen(ifelse.bodies[ifelse.bodies.length - 1]) + ' } ');
+    }
+    return strings.join('');
   },
 
   ReturnStatement: function (r) {

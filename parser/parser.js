@@ -144,27 +144,6 @@ var parseType = function() {
   }
 };
 
-var parseIfBlock = function () {
-  console.log("inside parseIfBlock");
-  var statements = [];
-  var numberErrors = error.count;
-  // if (at('return')) {
-  //   statements.push(parseReturnStatement());
-  // }
-  while (true) {
-    statements.push(parseStatement());
-    // if (at(match(';'))) {
-    //   match(';');
-    // }
-    if (!at(blockStatementKeywords)) {
-      break;
-    } else if (error.count > numberErrors) {
-      break;
-    }
-  }
-  console.log("leaving parseIfBlock");
-  return new Block(statements);
-}
 
 var parseFunctionExp = function () {
   console.log("inside parseFunctionExp");
@@ -354,34 +333,63 @@ var parseWhileLoop = function () {
   return new WhileLoop(condition, body);
 }
 
-var parseConditionalExp = function () {
-  var elseifs;
-  var elseBody;
-  var body;
-  var parentheses = false;
-  console.log("inside parseConditionalExp");
-  match('if');
-  if (at('(')) {
-    match('(');
-    parentheses = true;
-  }
-  var conditional = parseExpression();
-  if (at(')') && !parentheses) {
-    return error("Unbalanced parentheses", tokens[0]);
-  } else if (at(')') && parentheses) {
-    match(')');
-  }
-  match('then');
-  body = parseIfBlock();
-  if (at('else')) {
-    match('else');
-    if (at('if')) {
-      elseifs = parseConditionalExp();
-    } else {
-      elseBody = parseIfBlock();
+var parseIfBlock = function () {
+  console.log("inside parseIfBlock");
+  var statements = [];
+  var numberErrors = error.count;
+  // if (at('return')) {
+  //   statements.push(parseReturnStatement());
+  // }
+  while (true) {
+    statements.push(parseStatement());
+    // if (at(match(';'))) {
+      match(';');
+    // }
+    if (!at(blockStatementKeywords)) {
+      break;
+    } else if (error.count > numberErrors) {
+      break;
     }
   }
-  return new IfElseStatements(conditional, body, elseifs, elseBody);
+  console.log("leaving parseIfBlock");
+  return new Block(statements);
+}
+
+var parseConditionalBody = function () {
+
+}
+
+var parseConditionalExp = function () {
+  var conditionals = [];
+  var bodies = [];
+  var elseifs = [];
+  var elseBody;
+  var parentheses = false;
+  console.log("inside parseConditionalExp");
+  while (at('if')) {
+    match('if');
+    if (at('(')) {
+      match('(');
+      parentheses = true;
+    }
+    conditionals.push(parseExp1());
+    if (at(')') && !parentheses) {
+      return error("Unbalanced parentheses", tokens[0]);
+    } else if (at(')') && parentheses) {
+      match(')');
+    }
+    match('then');
+    bodies.push(parseIfBlock());
+    if (at('else') && tokens[1].lexeme === 'if') {
+      match('else');
+    } else if (at('else')) {
+      match('else');
+      elseBody = parseIfBlock();
+      break;
+    }
+  }
+  match('end');
+  return new IfElseStatements(conditionals, bodies, elseBody);
 }
 
 var parseExpression = function () {
@@ -463,7 +471,7 @@ var parseExp5 = function () {
   var op, left, right;
   console.log("inside parseExp5");
   left = parseExp6();
-  if (at(['::'])) {
+  while (at(['::'])) {
     op = match();
     right = parseExp6();
     left = new BinaryExpression(op, left, right);

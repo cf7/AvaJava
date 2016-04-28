@@ -1,31 +1,36 @@
 var IfElseStatements = (function () {
-    function IfElseStatements(conditionalExp, body, elseifs, elseBody) {
-        this.conditional = conditionalExp;
-        this.body = body;
-        this.elseifs = elseifs;
+    function IfElseStatements(conditionals, bodies, elseBody) {
+        this.conditionals = conditionals;
+        this.bodies = bodies;
         this.elseBody = elseBody;
     }
 
     IfElseStatements.prototype.toString = function() {
-        // add elseifs!!!
-        if (this.elseBody) {
-            return '( if ' + '( ' + this.conditional + ' )' + ' then ' + (this.body) + ' else ' + (this.elseBody) + ' )';
-        } else if (this.elseifs) {
-            return '( if ' + '( ' + this.conditional + ' )' + ' then ' + (this.body) + ' else ' + (this.elseifs);
-        } else {
-            return '( if ' + '( ' + this.conditional + ' )' + ' then ' + (this.body) + ' )';
+        var strings = [];
+        strings.push('( if ' + '( ' + this.conditionals[0] + ' )' + ' then ' + (this.bodies[0]) + ' )');
+        if (this.conditionals.length > 1) {
+            for (var i = 1; i < this.conditionals.length; i++) {
+                strings.push('else if ( ' + this.conditionals[i] + ' ) then ' + this.bodies[i]);
+            }
         }
+        if (this.elseBody) {
+            strings.push('else ' + this.bodies[this.bodies.length - 1]);
+        }
+        return strings.join('');
     };
 
     IfElseStatements.prototype.analyze = function(context) {
-        this.conditional.analyze(context);
-        this.body.analyze(context);
-        if (this.elseifs) {
-            this.elseifs.analyze(context);
-        }
-        if (this.elseBody) {
-            this.elseBody.analyze(context);
-        }
+        // for (conditional of this.conditionals) {
+        //     conditional.analyze(context);
+        // }
+        // // this.conditionals.analyze(context);
+        // for (body of this.bodies) {
+        //     body.analyze(context);
+        // }
+        // // this.bodies.analyze(context);
+        // if (this.elseBody) {
+        //     this.elseBody.analyze(context);
+        // }
     };
     
     IfElseStatements.prototype.optimize = function() {
