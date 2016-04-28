@@ -51,6 +51,14 @@ class BuiltIns {
                     return args[0] + '.pop()';
                 }
             },
+
+            export: {
+                value: {},
+                type: Type.FUNCTION,
+                generateCode: function (args) {
+                    return 'module.exports = ' + args[0];
+                }
+            }
         }
     }
 

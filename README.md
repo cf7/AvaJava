@@ -202,43 +202,123 @@ false		// boolean
 {1,2,3}		// set
 ```
  
+#####Loops
+```
+var x = 10;
+
+while (x < 20) {
+	ava "Hello World";
+}
+
+for x times { ava "Hello World"; };
+
+
+
+var x = [ 1, 2, 3, 4, 5 ];
+
+for each var number in x { 
+	number++; 
+};
+
+for each number in x { number++; }; 
+// 'var' is optional in for each loops
+
+
+
+
+
+var m = [ 1, 2, 3, 4, 5 ];
+
+for (var i = 0 if i < length(m) then i++) { 
+	ava m[i]; 
+} 
+// this version requires 'var'
+```
+
 #####Assignment:
 ```
-var x = 1; // plain javascript
-x - 1
-x,y = "hi";
-x - "hi"
-y - "hi"
-x,y = 5;
-x - 5
-y - 5
-x = y = 5;
-x - 5
-y - 5
-w = {y: 21, x, z: 22};
-w - {y: 21, x: 100, z: 22}
+var x = 1;
+x = "hi";
+x = {y: 21, x: 100, z: 22};
 ```
 
 #####Operators:
 ```
-x++;
-x--;
-x^^2; //square x
-x^^3; //cube x
-x += 10; 
+x++;		// increment
+x--;		// decrement
+x^^2; 		// exponentiation, square x
+x^^3; 		// cube x
+x += 10; 	// x = x + 10;
 x -= 10; 
 x *= 10; 
 x /= 10; 
-x % 2;
-'' => "";
-'' => '';
-"" => "";
-"" => '';
-x and y => boolean literal
-x or y => boolean literal
+x % 2;		// modulus
+x and y
+x or y
+```
 
-not 4 // equivalent to !== 4
-not true // false
+#####Conditionals
+```
+1 == 1
+1 >= 2
+1 <= 2
+1 != 2 			// not equal
+true and false 	// yields false
+true or false	// yields true
+
+true and true both true 	// yields true
+true and true both false 	// yields false
+true and false both false 	// yields false
+false and false both false 	// yields true
+
+x and y both 0 		// instaead of (x == 0 && y == 0)
+x and y both not 0 	// intead of (x != 0 && y != 0)
+```
+#####Lists and List Operations
+```
+var x = [1,2,3,4,5,6,7];
+x[0];		// 1
+x[1];		// 2
+
+[1..10]		// [1,2,3,4,5,6,7,8,9]
+[1...10] 	// [1,2,3,4,5,6,7,8,9,10]
+
+[1,2,3] @ [4,5,6,7] 	//	[1,2,3,4,5,6,7] = [1...7]
+
+1::2::3::[] 			// [1,2,3]
+[1,2,3]::[4,5,6,7]::[] 	// [[1,2,3], [4,5,6,7]]
+
+[1,2,3]++ => [2,3,4]
+[1,2,3]^^2 => [1,4,9]
+```
+
+#####Objects
+```
+var w = { x:2, y:3, z: { inside: 3 } };
+w.x;
+w.z.inside;
+```
+
+#####Sets
+``` 
+{ 2, 3, 4 } 
+```
+
+#####Tuples
+
+```
+(x,y,z)
+((1,2), (2,3), (3,4))
+```
+
+#####String Operations
+```
+"t" + "e" => "te" 
+"e" - "e" => ""
+"te" - "e" => "t"
+"heeh" - "h" => "eeh"
+"hehe" - "h" => "ehe"
+"t" * 3 => "ttt"
 ```
 
 #####Pattern Matching/Destructuring (basically CoffeeScript):
@@ -255,102 +335,6 @@ y - "h";
 z - "i";
 ```
 
-#####Lists (basically CoffeeScript):
-```
-[1..10] => [1,2,3,4,5,6,7,8,9]
-[1...10] => [1,2,3,4,5,6,7,8,9,10]
-```
-
-#####List Operations (basically OCaml and some extra):
-```
-[1,2,3] @ [4,5,6,7] = [1,2,3,4,5,6,7] = [1...7]
-[1,2,3]::[4,5,6,7]::[] = [[1,2,3], [4,5,6,7]]
-[1,2,3]++ => [2,3,4]
-[1,2,3]^^2 => [1,4,9]
-```
-
-#####Objects:
-```
-{ x:2, y:3, z: { inside: 3 } }
-```
-
-#####Sets:
-``` 
-{ 2, 3, 4 } 
-
-```
-
-#####Tuples:
-
-```
-(x,y,z)
-((1,2), (2,3), (3,4))
-```
-
-#####Functions:
-```
-var addOdds = (x,y) -> if x % 2 and y % 2 both not 0 then x + y; 
-addOdds 3 3;
-addOdds(3,3);
-addOdds(x=3, y=3);
-addOdds 3; // x=3 and y=0  default parameters
-```
-
-#####Higher Order Functions:
-```
-var map = (g, list) -> for each item in list: g item
-map ((x) -> x + 1) [1...10]
-=> [2,3,4,5,6,7,8,9,10,11]
-```
-
-#####Conditionals:
-```
-1 == 1
-1 >= 2
-1 <= 2
-1 != 2 // not equal
-true and false => false
-true or false => true
-
-true and true both true => true
-true and true both false => false
-true and false both false => false
-false and false both false => true
-```
-
-#####Loops:
-``` 
-while (x and y both less than 10): ava "Hello World"; 
-for x times: ava "Hello World";  
-```
-
-#####String Operations:
-```
-"h" + "e" => "he"  
-"e" - "e" => ""
-"he" - "e" => "h"  
-"heh" - "h" => "he" 
-"hehe" - "h" => "hee"
-x and y both 0 // instaead of (x == 0 && y == 0)
-x and y both not 0 // intead of (x != 0 && y != 0)
-```
-
-#####String Operations:
-```
-"t" + "e" => "te" 
-"e" - "e" => ""
-"te" - "e" => "t"
-"heeh" - "h" => "eeh"
-"hehe" - "h" => "ehe"
-"t" * 3 => "ttt"
-```
-
-#####Arrays:
-```
-x = []
-x[0] => 1 
-```
-
 #####Errors and Exceptions:
 ```
 1 + true
@@ -361,25 +345,31 @@ var addOdds = (x,y) -> if x % 2 + y % 2 both not 0 then x + y;
 --------------------------------------^^^^^^^^^^^^^
 ```
 
-#####Modules (just use "export"):
+#####Modules (just use "export")
+export() is a builtin function
+
 ```
-export: { } // exports objects
-export: { "add": ((x,y) -> x + y) }
+export: { }															module.exports = {};
+export: { "add": (function (x:int,y:int) -> return x + y; end;) }	module.exports = { "add": (function (x:int,y:int) -> return x + y; end;) }
 ```
 
 #####Scoping:
 ```
+***
 avajava will utilize static scoping.
 For example . . .
+***
 
 var x = 3;
 var printNumber = () -> ava(x);
 var printAgain = () -> var x = 10; printNumber;
 printAgain();
 
-will print out 3 because printNumber was instantiated with var x = 3
+***
+. . . will print out 3 because printNumber was instantiated with var x = 3
 The var x = 10 instantiated within the printAgain will not affect the scope
 of the printNumber call within printAgain. (That would by dynamic scoping.)
+***
 ```
 
 
