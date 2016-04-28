@@ -422,10 +422,11 @@ var generator = {
         }else if(e.operator.lexeme == '::' && counter == 1){
           counter++
           return gen(e.left) + "4.concat(" + gen(e.right) + ")"
-        }else{
-          counter++;
-          return "[hi" + gen(e.left) + "]" + "5.concat(" + gen(e.right) + ")"
         }
+        // }else{
+        //   counter++;
+        //   return "[hi" + gen(e.left) + "]" + "5.concat(" + gen(e.right) + ")"
+        // }
       }
       else{
         return e.left + " " + e.right
