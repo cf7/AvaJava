@@ -288,12 +288,12 @@ var generator = {
         console.log("inside ForLoop: " + f);
         // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
         return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
-          + ' ' + gen(new BinaryExpression(op, left, right)) + '; '
+          + '; ' + gen(new BinaryExpression(op, left, right)) + '; '
           +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
           + gen(f.body) + ' }';
     } else if (f.exp instanceof IfElseStatements) {
         return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
-          + '; ' + gen(f.exp.conditional) + '; ' + gen(f.exp.body) + ') { '
+          + '; ' + gen(f.exp.conditionals[0]) + '; ' + gen(f.exp.bodies[0]) + ') { '
           + gen(f.body) + ' }';
     } else {
         console.log("inside ForLoop: " + f.id);
