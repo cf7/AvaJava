@@ -1,1 +1,0 @@
-if true then var x = 10; var y = 10; return x;

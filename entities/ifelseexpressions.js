@@ -20,17 +20,17 @@ var IfElseStatements = (function () {
     };
 
     IfElseStatements.prototype.analyze = function(context) {
-        // for (conditional of this.conditionals) {
-        //     conditional.analyze(context);
-        // }
-        // // this.conditionals.analyze(context);
-        // for (body of this.bodies) {
-        //     body.analyze(context);
-        // }
-        // // this.bodies.analyze(context);
-        // if (this.elseBody) {
-        //     this.elseBody.analyze(context);
-        // }
+        for (conditional of this.conditionals) {
+            conditional.analyze(context);
+        }
+        // this.conditionals.analyze(context);
+        for (body of this.bodies) {
+            body.analyze(context);
+        }
+        // this.bodies.analyze(context);
+        if (this.elseBody) {
+            this.elseBody.analyze(context);
+        }
     };
     
     IfElseStatements.prototype.optimize = function() {
