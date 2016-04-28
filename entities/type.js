@@ -25,6 +25,8 @@ var Type = (function() {
 
   Type.LIST = new Type('list');
 
+  Type.TUPLE = new Type('tuple');
+
   Type.ITERABLE = new Type('iterable');
 
   Type.FUNCTION = new Type('function');
@@ -138,6 +140,7 @@ module.exports = {
   OBJECT: Type.OBJECT,
   SET: Type.SET,
   LIST: Type.LIST,
+  TUPLE: Type.TUPLE,
   ITERABLE: Type.ITERABLE,
   FUNCTION: Type.FUNCTION,
   ARBITRARY: Type.ARBITRARY,
