@@ -9,7 +9,7 @@ var i = require('util').inspect;
 describe('The scanner', function() {
   it('scans a simple program', function(done) {
     return scan('test/data/good-programs/peace.ava', function(tokens) {
-      tokens.length.should.equal(14);
+      tokens.length.should.equal(16);
       i(tokens[0]).should.equal(i({
         kind: 'var',
         lexeme: 'var',
@@ -34,67 +34,73 @@ describe('The scanner', function() {
         line: 1,
         col: 13
       }));
-      i(tokens[3]).should.equal(i({
+      i(tokens[4]).should.equal(i({
         kind: '(',
         lexeme: '(',
         line: 1,
-        col: 13
+        col: 22
       }));
-      i(tokens[4]).should.equal(i({
+      i(tokens[5]).should.equal(i({
         kind: ')',
         lexeme: ')',
         line: 1,
-        col: 14
+        col: 23
       }));
-      i(tokens[5]).should.equal(i({
+      i(tokens[6]).should.equal(i({
         kind: '->',
         lexeme: '->',
         line: 1,
-        col: 16
+        col: 25
       }));
-      i(tokens[6]).should.equal(i({
+      i(tokens[7]).should.equal(i({
         kind: 'ava',
         lexeme: 'ava',
         line: 1,
-        col: 19
+        col: 28
       }));
-      i(tokens[7]).should.equal(i({
+      i(tokens[8]).should.equal(i({
         kind: 'stringlit',
         lexeme: '\"Peace\"',
         line: 1,
-        col: 23
-      }));
-      i(tokens[8]).should.equal(i({
-        kind: 'end',
-        lexeme: 'end',
-        line: 1,
-        col: 31
+        col: 32
       }));
       i(tokens[9]).should.equal(i({
         kind: ';',
         lexeme: ';',
         line: 1,
-        col: 34
+        col: 39
       }));
       i(tokens[10]).should.equal(i({
+        kind: 'end',
+        lexeme: 'end',
+        line: 1,
+        col: 41
+      }));
+      i(tokens[11]).should.equal(i({
+        kind: ';',
+        lexeme: ';',
+        line: 1,
+        col: 44
+      }));
+      i(tokens[12]).should.equal(i({
         kind: 'var',
         lexeme: 'var',
         line: 3,
         col: 1
       }));
-      i(tokens[11]).should.equal(i({
+      i(tokens[13]).should.equal(i({
         kind: 'id',
         lexeme: 'x',
         line: 3,
         col: 5
       }));
-      i(tokens[12]).should.equal(i({
+      i(tokens[14]).should.equal(i({
         kind: ';',
         lexeme: ';',
         line: 3,
         col: 6
       }));
-      i(tokens[13]).should.equal(i({
+      i(tokens[15]).should.equal(i({
         kind: 'EOF',
         lexeme: 'EOF'
       }));
@@ -305,7 +311,7 @@ describe('The scanner', function() {
   });
   it('scans numbers properly', function(done) {
     return scan('test/data/token-tests/numbers', function(tokens) {
-      tokens.length.should.equal(5);
+      tokens.length.should.equal(7);
       i(tokens[0]).should.equal(i({
         kind: 'intlit',
         lexeme: '1000',
@@ -331,6 +337,18 @@ describe('The scanner', function() {
         col: 24
       }));
       i(tokens[4]).should.equal(i({
+        kind: '-',
+        lexeme: '-',
+        line: 1,
+        col: 32
+      }));
+      i(tokens[5]).should.equal(i({
+        kind: 'intlit',
+        lexeme: '1000',
+        line: 1,
+        col: 33
+      }));
+      i(tokens[6]).should.equal(i({
         kind: 'EOF',
         lexeme: 'EOF'
       }));
