@@ -35,11 +35,12 @@ This language will be designed to facilitate faster typing and more concise repr
 characterLiteral 	::=  letter | digit | [\s]
 stringlit	::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 
-letter		::=	[a-zA-Z]
+letter		::=	 [a-zA-Z]
 digit		::=  [\d]
 keyword		::=  'var' | 'while' | 'and' | 'or' | 'not' 
-           		| 'true' | 'false' | 'return' | 'for' | 'each' 
-	   			| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+           		| 'true' | 'false' | 'return' | 'for' | 'each' | 'do'
+	   			| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava' | 'times'
+	   			| type
 id        	::=  letter (letter | digit | '_')*
 key		   	::=	 id | stringlit
 assignop  	::=  '=' | '+=' | '-=' | '*=' | '/='
@@ -49,7 +50,8 @@ consop    	::=  '::'
 addop     	::=  '+' | '-'
 mulop     	::=  '*' | '/' | '%' 
 prefixop  	::=  '-' | 'not'
-postfixop 	::=  '!' | '++' | '--'
+postfixop 	::=  '++' | '--'
+exponent	::=  '^^'
 intlit    	::=  [\d]+
 floatlit  	::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
 boolit   	::=  'true' | 'false'
@@ -285,18 +287,27 @@ if x > 1 then ava "inside if statement" else ava "not inside if statement";
 if x < 1 then
 	ava "0"
 ```
+
 #####Lists and List Operations
 ```
 var x = [1,2,3,4,5,6,7];
 x[0];
 x[1];
 
-[1..10]		// [1,2,3,4,5,6,7,8,9]
 [1...10] 	// [1,2,3,4,5,6,7,8,9,10]
 
 [1,2,3]++ 	// [2,3,4]
 [1,2,3]^^2 	// [1,4,9]
 ```
+
+#####List Comprehensions
+```
+var u = [z^^2 for z in [1,2,3,4,5]];
+
+var w = [(x, y) for x in [1,2,3] for y in [3,1,4] if x != y];
+
+```
+
 #####Cons and Append Operators
 ```
 [1,2,3] @ [4,5,6,7] 	//	[1,2,3,4,5,6,7] = [1...7]
@@ -305,6 +316,7 @@ x[1];
 [1,2,3]::[4,5,6,7]::[] 	// [[1,2,3], [4,5,6,7]]
 
 ```
+
 #####Objects
 ```
 var w = { x:2, y:3, z: { inside: 3 } };
