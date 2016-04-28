@@ -5,7 +5,7 @@ var Type = require('./type.js');
 class ListLiteral {
     constructor(elements) {
         this.elements = elements;
-        this.type = Type.ITERABLE;
+        this.type = Type.LIST;
     }
 
     toString() {

@@ -32,7 +32,7 @@ var tokens = [];
 var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 
                             'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 
                             'floatlit', 'boolit', '(', 'function',
-                            'true', 'false', 'type', 'return'];
+                            'true', 'false', 'type', 'return', 'list'];
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
@@ -77,9 +77,10 @@ var parseStatement = function() {
   // since parseBlock no longer matches ';'s, need to match ';'
   // within each of these parseFunctions below
   console.log("inside parseStatement");
-  if (at('var')) {
-    return parseVariableDeclaration();
-  } else if (at('ava')) {
+  // if (at('var')) {
+  //   return parseVariableDeclaration();
+  // } else 
+  if (at('ava')) {
     return parsePrintStatement();
   } else if (at('return')) {
     return parseReturnStatement();
@@ -139,7 +140,7 @@ var parseVariableReference = function () {
 
 // change parse types
 var parseType = function() {
-  if (at(['int', 'float', 'bool', 'string'])) {
+  if (at(['int', 'float', 'bool', 'string', 'function', 'list'])) {
     return Type.forName(match().lexeme); // need to return type into Type class for analyzer
     // so analyzer can check if it is valid, and if yes, set the type for this variable
     // in the environment

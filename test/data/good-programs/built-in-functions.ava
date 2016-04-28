@@ -5,3 +5,12 @@ contains(x, 3);
 x = [1, 2, 3, 4];
 
 length(x);
+
+var addOne = function (x:int) -> return x + 1; end;
+
+map(addOne, x);
+
+
+push(x, 10);
+
+pop(x);

@@ -87,7 +87,7 @@ class Access {
             // variable.type.removeValidType(Type.OBJECT, "access");
             // variable.type.removeValidType(Type.FUNCTION, "builtin");
 
-            variable.type.canBeIterOrObj("Variable not of type ITERABLE or type OBJECT", variable);
+            variable.type.canBeListOrObj("Variable not of type LIST or type OBJECT", variable);
 
             console.log("variable ))()()()()()()()()()()()(");
             console.log(variable);
