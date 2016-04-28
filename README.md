@@ -1,13 +1,14 @@
 ![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
 
 <b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, Swift, and OCaml that compiles into Javascript.</b> 
-It combines the most interesting parts of these languages and also provides a new selection of operators (<i>to come</i>).
-This language will be designed in a way to facilitate faster typing and more concise representations that do not sacrifice readability.
+It combines the most interesting parts of these languages and also provides a new selection of operators.
+This language will be designed to facilitate faster typing and more concise representations that do not sacrifice readability.
 
-####<i>Features/Planned Implementation (Subject to Change)</i>
+####<i>Features</i>
 <ul>
 <li> Type Inference
 <li> Static and Strong Typing
+<li> Static Scoping
 <li> Typed parameters
 <li> Function Return Types
 <li> List Ranges
@@ -25,12 +26,12 @@ This language will be designed in a way to facilitate faster typing and more con
 ###Microsyntax
 
 ```
-characterLiteral ::=  letter | digit | [\s]
-stringlit    ::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
+characterLiteral 	::=  letter | digit | [\s]
+stringlit	::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 
-letter    	::=	[a-zA-Z]
-digit     	::=  [\d]
-keyword   	::=  'var' | 'while' | 'and' | 'or' | 'not' 
+letter		::=	[a-zA-Z]
+digit		::=  [\d]
+keyword		::=  'var' | 'while' | 'and' | 'or' | 'not' 
            		| 'true' | 'false' | 'return' | 'for' | 'each' 
 	   			| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
 id        	::=  letter (letter | digit | '_')*
@@ -47,15 +48,15 @@ intlit    	::=  [\d]+
 floatlit  	::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
 boolit   	::=  'true' | 'false'
 comment   	::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
-type		::=  'int' | 'string | 'bool' | 'function' | 'list' | 'object' | 'set'
+type		::=  'int' | 'string' | 'bool' | 'function' | 'list' | 'object' | 'set'
 ```
 
 ###Macrosyntax
 ```
 Program 	::= Block
 Block 		::= (Stmt ';')+
-Stmt 		::= 'return' Exp
-    			| ConditionalExp
+Stmt 		::= VarDecl
+				| ConditionalExp
     			| Print    
     			| Loop
     			| Exp
@@ -63,13 +64,14 @@ Stmt 		::= 'return' Exp
 VarDecl		::= 'var' id ('=' Exp)
 Print 		::= 'ava' Exp
 
-Exp 		::= VarDecl | FunctionExp | Exp1
+Exp 		::= FunctionExp | Exp1
 TypedExp	::= id ':' type
 
 Loop 		::= ForLoop | WhileLoop
 
 ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' 
 				| 'for' id 'times' '{' Block '}'
+				| 'for' '(' VarDecl ConditionalExp ')' '{' Block '}'
 				
 WhileLoop	::=	'while' '(' Exp ')' '{' Block '}'
     			
@@ -84,7 +86,7 @@ VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
 ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') then' Block ('else if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? ';'
 
 Params		::= TypedExpList
-Args 		::= ExpList
+Args		::= ExpList
 Exp1 		::= Exp2 ('or' Exp2)*
 Exp2 		::= Exp3 ('and' Exp3)* ('both' Exp)?
 Exp3 		::= Exp4 (relop Exp4)?
@@ -113,17 +115,19 @@ List 		::= '[' ExpList? ']'
 ####Example Programs:
 (with their equivalent Javascript translations)
 
+FunctionCalls can utilize currying to take in arguments.
+
 ```
 var factorial = function (n:int) ->                     var factorial = function (n) {
-    if n <= 1 then 1 else n * factorial(n - 1) end;         if (n <= 1) {
+    if n <= 1 then 1 else n * factorial(n - 1); end;        if (n <= 1) {
                                                                 return 1;
 factorial addOdds 3 3;                                      } else {
                                                                 return n * factorial(n - 1);
-// currying is optional                                     }
+// however, currying is optional                            }
                                                         }                                                                                    factorial(addOdds(3,3));
 
 
-var helloWorld = function () -> ava "Hello World" end;  var helloWorld = function () {
+var helloWorld = function () -> ava "Hello World"; end; var helloWorld = function () {
                                                             console.log("Hello World");
                                                         }     
       
@@ -140,14 +144,6 @@ end;                                                    }
 ######To Compile & Run
 ```
 ./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
-```
-
-#####Identifiers and Reserved Words
-```
-var - variable declaration
-reserved words - 'var' | 'while' | 'and' | 'or' | 'not' 
-		| 'true' | 'false' | 'return' | 'for' | 'each' 
-		| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
 ```
 		
 ####Commments
@@ -257,7 +253,7 @@ x and y
 x or y
 ```
 
-#####Conditionals
+#####Relational Operators
 ```
 1 == 1
 1 >= 2
@@ -265,12 +261,12 @@ x or y
 1 != 2 			// not equal
 true and false 	// yields false
 true or false	// yields true
+```
 
-true and true both true 	// yields true
-true and true both false 	// yields false
-true and false both false 	// yields false
-false and false both false 	// yields true
+#####Both Expressions
+Both expressions is a feature that attempts to reduce the redundant code associated with conditional expressions.
 
+```
 x and y both 0 		// instaead of (x == 0 && y == 0)
 x and y both not 0 	// intead of (x != 0 && y != 0)
 ```
@@ -321,20 +317,6 @@ w.z.inside;
 "t" * 3 => "ttt"
 ```
 
-#####Pattern Matching/Destructuring (basically CoffeeScript):
-```
-[x, y] = [1, 2, 3];
-x - 1
-y - 2
-[x, y] = "hi";
-x - "h"
-y - "i" 
-[x, y, z] = " hi";
-x - " ";
-y - "h";
-z - "i";
-```
-
 #####Errors and Exceptions:
 ```
 1 + true
@@ -370,6 +352,11 @@ printAgain();
 The var x = 10 instantiated within the printAgain will not affect the scope
 of the printNumber call within printAgain. (That would by dynamic scoping.)
 ***
+```
+
+#####Some Edge-Cases of the Language
+```
+
 ```
 
 

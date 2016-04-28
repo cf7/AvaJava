@@ -29,6 +29,12 @@ describe('The scanner', function() {
         col: 11
       }));
       i(tokens[3]).should.equal(i({
+        kind: 'function',
+        lexeme: 'function',
+        line: 1,
+        col: 13
+      }));
+      i(tokens[3]).should.equal(i({
         kind: '(',
         lexeme: '(',
         line: 1,
@@ -52,12 +58,6 @@ describe('The scanner', function() {
         line: 1,
         col: 19
       }));
-      // i(tokens[7]).should.equal(i({
-      //   kind: '"',
-      //   lexeme: '"',
-      //   line: 1,
-      //   col: 23
-      // }));
       i(tokens[7]).should.equal(i({
         kind: 'stringlit',
         lexeme: '\"Peace\"',
