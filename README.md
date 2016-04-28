@@ -57,6 +57,7 @@ prefixop  	::=  '-' | 'not'
 postfixop 	::=  '++' | '--'
 exponent	::=  '^^'
 intlit    	::=  [\d]+
+floatlit  	::=  /^((\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?)$/
 boolit   	::=  'true' | 'false'
 comment   	::=  '//' [^\r\n]* [\r\n] | '***' ( [.] | [\n] )* '***'
 type		::=  'int' | 'string' | 'float' | 'bool' | 'function' | 'list' | 'object' | 'set'
