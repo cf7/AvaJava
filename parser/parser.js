@@ -699,7 +699,11 @@ var at = function(kind) {
 
 var parseListComprehensions = function (){
   console.log("inside parseListComprehensions");
-}
+};
+
+var parseTuple = function (){
+
+};
 
 // match shifts the tokens down the line
 // to match with the next one and so on
