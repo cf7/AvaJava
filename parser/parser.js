@@ -32,7 +32,7 @@ var tokens = [];
 var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 
                             'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 
                             'floatlit', 'boolit', '(', 'function',
-                            'true', 'false', 'type', 'list', 'when'];
+                            'true', 'false', 'type', 'list', 'when', 'return'];
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
@@ -58,7 +58,7 @@ var parseBlock = function() {
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
-    if (!at('EOF')) {
+    if (!at('EOF') && statements[0]) {
       match(';');
     }
     console.log("matched semicolon");
@@ -144,27 +144,6 @@ var parseType = function() {
   }
 };
 
-var parseIfBlock = function () {
-  console.log("inside parseIfBlock");
-  var statements = [];
-  var numberErrors = error.count;
-  // if (at('return')) {
-  //   statements.push(parseReturnStatement());
-  // }
-  while (true) {
-    statements.push(parseStatement());
-    // if (at(match(';'))) {
-    //   match(';');
-    // }
-    if (!at(blockStatementKeywords)) {
-      break;
-    } else if (error.count > numberErrors) {
-      break;
-    }
-  }
-  console.log("leaving parseIfBlock");
-  return new Block(statements);
-}
 
 var parseFunctionExp = function () {
   console.log("inside parseFunctionExp");
@@ -355,33 +334,36 @@ var parseWhileLoop = function () {
 }
 
 var parseConditionalExp = function () {
-  var elseifs;
+  var conditionals = [];
+  var bodies = [];
+  var elseifs = [];
   var elseBody;
-  var body;
   var parentheses = false;
   console.log("inside parseConditionalExp");
-  match('if');
-  if (at('(')) {
-    match('(');
-    parentheses = true;
-  }
-  var conditional = parseExpression();
-  if (at(')') && !parentheses) {
-    return error("Unbalanced parentheses", tokens[0]);
-  } else if (at(')') && parentheses) {
-    match(')');
-  }
-  match('then');
-  body = parseIfBlock();
-  if (at('else')) {
-    match('else');
-    if (at('if')) {
-      elseifs = parseConditionalExp();
-    } else {
-      elseBody = parseIfBlock();
+  while (at('if')) {
+    match('if');
+    if (at('(')) {
+      match('(');
+      parentheses = true;
+    }
+    conditionals.push(parseExp1());
+    if (at(')') && !parentheses) {
+      return error("Unbalanced parentheses", tokens[0]);
+    } else if (at(')') && parentheses) {
+      match(')');
+    }
+    match('then');
+    bodies.push(parseBlock());
+    if (at('else') && tokens[1].lexeme === 'if') {
+      match('else');
+    } else if (at('else')) {
+      match('else');
+      elseBody = parseBlock();
+      break;
     }
   }
-  return new IfElseStatements(conditional, body, elseifs, elseBody);
+  match('end');
+  return new IfElseStatements(conditionals, bodies, elseBody);
 }
 
 var parseExpression = function () {
@@ -463,9 +445,15 @@ var parseExp5 = function () {
   var op, left, right;
   console.log("inside parseExp5");
   left = parseExp6();
+<<<<<<< HEAD
   while(at('::')){
     op = match('::');
     right = parseExp11();
+=======
+  while (at(['::'])) {
+    op = match();
+    right = parseExp6();
+>>>>>>> refs/remotes/origin/master
     left = new BinaryExpression(op, left, right);
   }
   return left;
@@ -475,9 +463,21 @@ var parseExp6 = function () {
   var op, left, right;
   console.log("inside parseExp6");
   left = parseExp7();
-  while (at(['+', '-'])) {
+  if (at(['..', '...'])) {
     op = match();
     right = parseExp7();
+    left = new BinaryExpression(op, left, right);
+  }
+  return left;
+}
+
+var parseExp7 = function () {
+  var op, left, right;
+  console.log("inside parseExp7");
+  left = parseExp8();
+  while (at(['+', '-'])) {
+    op = match();
+    right = parseExp8();
     console.log("=========================");
     left = new BinaryExpression(op, left, right);
     console.log("========================");
@@ -488,13 +488,13 @@ var parseExp6 = function () {
 
 // ** remember can store the things that are being matched!
 // ** may need them to pass to a different parsing branch
-var parseExp7 = function () {
+var parseExp8 = function () {
   var op, left, right;
-  console.log("inside parseExp7");
-  left = parseExp8();
+  console.log("inside parseExp8");
+  left = parseExp9();
   while (at(['*', '/', '%'])) {
     op = match();
-    right = parseExp8();
+    right = parseExp9();
     left = new BinaryExpression(op, left, right);
   }
   return left;
@@ -502,49 +502,49 @@ var parseExp7 = function () {
 }
 
 // parseExp6
-var parseExp8 = function () {
+var parseExp9 = function () {
   var op, operand;
-  console.log("inside parseExp8");
+  console.log("inside parseExp9");
   if (at(['-', 'not'])) {
     op = match(); // need to branch to a different case for negation
-    operand = parseExp9();
+    operand = parseExp10();
     return new UnaryExpression(op, operand);
   } else {
-    return parseExp9();
+    return parseExp10();
   }
   // return statement
 }
 
 // parseExp7
-var parseExp9 = function () {
+var parseExp10 = function () {
   var op, operand;
-  console.log("inside parseExp9");
-  var operand = parseExp10();
+  console.log("inside parseExp10");
+  var operand = parseExp11();
   if (at(['++', '--'])) { // add ! for factorial operation
     op = match();
     console.log("leaving parseExp9");
     return new PostfixExpression(op, operand);
   } else {
-    console.log("leaving parseExp9");
+    console.log("leaving parseExp10");
     return operand;
   }
 }
 
-var parseExp10 = function () {
+var parseExp11 = function () {
   var op, left, right;
-  console.log("inside parseExp10");
-  left = parseExp11();
+  console.log("inside parseExp11");
+  left = parseExp12();
   while (at('^^')) {
     op = match();
-    right = parseExp11();
+    right = parseExp12();
     left = new BinaryExpression(op, left, right);
   }
-  console.log("leaving parseExp10");
+  console.log("leaving parseExp11");
   return left;
 }
 
-var parseExp11 = function () {
-  console.log("inside parseExp11");
+var parseExp12 = function () {
+  console.log("inside parseExp12");
   if (at('(')) {
     match('(');
     var exp = parseExpression();
@@ -574,7 +574,7 @@ var parseExp11 = function () {
         }
         while (at('.')) {
           match('.');
-          exps.push(parseExpression());
+          exps.push(parseExpression()); // in grammar needs to be Exp12 for continuous accesses
         }
       }
       varref = new Access(varref, exps);

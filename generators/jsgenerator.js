@@ -225,25 +225,17 @@ var generator = {
   // if getting numbers from gen() while generating a block, might
   // be because block returns indentlevel
   IfElseStatements: function (ifelse) {
-    // can still use gen() without using emit(), use gen() to traverse
-    // gen() allows recursion from outside this function! 
-    // allows it to leave and come back
-    // basically use generator['key'](input) to get same effect
-    if (ifelse.elseifs) {
-      // console.log("inside elseifs ......" + ifelse.elseifs);
-      // console.log("alsdkjas;lj ===== " + "console.log(" + gen(ifelse.body) + ")");
-      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } else ' + gen(ifelse.elseifs);
-
-    } else if (ifelse.elseBody) {
-      // console.log("inside else ........" + ifelse.elseBody.statements.constructor.name);
-      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' } ' + ' else { ' + gen(ifelse.elseBody) + ' }';
-
-    } else {
-
-      // console.log("inside no else");
-      return 'if (' + gen(ifelse.conditional) + ' )' + ' { ' + gen(ifelse.body) + ' }';
-
+    var strings = [];
+    strings.push('if' + '(' + gen(ifelse.conditionals[0]) + ')' + ' { '+ gen(ifelse.bodies[0]) + ' }');
+    if (ifelse.conditionals.length > 1) {
+        for (var i = 1; i < ifelse.conditionals.length; i++) {
+            strings.push('else if ( ' + gen(ifelse.conditionals[i]) + ' ) { ' + gen(ifelse.bodies[i]) + ' } ');
+        }
     }
+    if (ifelse.elseBody) {
+        strings.push(' else { ' + gen(ifelse.bodies[ifelse.bodies.length - 1]) + ' } ');
+    }
+    return strings.join('');
   },
 
   ReturnStatement: function (r) {
@@ -385,7 +377,12 @@ var generator = {
   },
 
   ListLiteral: function (literal) {
-    return literal.toString();
+    // for list ranges
+    if (literal.elements[0] && (literal.elements[0] instanceof BinaryExpression)) {
+      return gen(literal.elements[0]);
+    } else {
+      return literal.toString();
+    }
   },
 
   // BooleanLiteral: function(literal) {
@@ -403,6 +400,7 @@ var generator = {
 
   BinaryExpression: function(e) { // turn string manipulation stuff into function later
     console.log("inside BinaryExpression: " + e.operator.lexeme);
+<<<<<<< HEAD
     
     if(e.left instanceof ListLiteral && e.right instanceof ListLiteral){
       if( e.operator.lexeme === '@'){
@@ -442,6 +440,16 @@ var generator = {
        return gen(e.left)  + ".concat(" + gen(e.right) + ")" 
       }
     if (e.operator.lexeme === '^^') {
+=======
+    if (e.operator.lexeme === '...') {
+      var minus = {kind: '-', lexeme: '-', line: 0, col: 0};
+      var plus = {kind: '+', lexeme: '+', line: 0, col: 0};
+      var one = {kind: 'intlit', lexeme: '1', line: 0, col: 0};
+      var difference = new BinaryExpression(minus, e.right, e.left);
+      var index = new BinaryExpression(plus, difference, new IntegerLiteral(one));
+      return 'Array.from(new Array(' + gen(index) + '), (x,i) => i + ' + gen(e.left) + ')';
+    } else if (e.operator.lexeme === '^^') {
+>>>>>>> refs/remotes/origin/master
       return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
     } else if (e.left instanceof StringLiteral && e.right instanceof StringLiteral) {
       if (e.operator.lexeme === '-') {
