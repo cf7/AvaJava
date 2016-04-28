@@ -289,10 +289,11 @@ x and y both not 0 	// intead of (x != 0 && y != 0)
 ```
 var x = 10;
 
-if x > 1 then ava "inside if statement" else ava "not inside if statement";
+if x > 1 then ava "inside if statement"; else ava "not inside if statement"; end;
 
 if x < 1 then
-	ava "0"
+	ava "0";
+end;
 ```
 
 #####Lists and List Operations
@@ -365,7 +366,8 @@ var addOdds = (x,y) -> if x % 2 + y % 2 both not 0 then x + y;
 
 #####Modules (just use "export")
 export() is a builtin function
-
+(shown below with javascript equivalent)
+                     
 ```
 export: { }															module.exports = {};
 export: { "add": (function (x:int,y:int) -> return x + y; end;) }	module.exports = { "add": (function (x:int,y:int) -> return x + y; end;) }
