@@ -31,7 +31,7 @@ var WhileLoop = require('../entities/whileloop.js');
 var util = require('util');
 var HashMap = require('hashmap').HashMap;
 var code = "";
-
+var counter = 0;
 var builtins = new BuiltIns();
 
 // var map;
@@ -399,11 +399,38 @@ var generator = {
 
   BinaryExpression: function(e) { // turn string manipulation stuff into function later
     console.log("inside BinaryExpression: " + e.operator.lexeme);
-    if( e.operator.lexeme == '@'){
-      return gen(e.left) + '.concat(' + gen(e.right) + ')';
+    
+    if(e.left instanceof ListLiteral && e.right instanceof ListLiteral){
+      if( e.operator.lexeme == '@'){
+        return gen(e.left) + '.concat(' + gen(e.right) + ')';
+      }
+      else if(e.operator.lexeme == '::'){
+        return "[" + gen(e.left)  + "," + gen(e.right) + "]";
+      }
     }
     if(e.operator.lexeme == '::'){
-      return "[" + gen(e.left) +  "]" + ".concat(" + gen(e.right) + ")";
+      if(e.left instanceof IntegerLiteral && e.right instanceof ListLiteral){
+        return "[" + gen(e.left)  + "]" + "1.concat(" + gen(e.right) + ")";
+      }
+      else if(e.left instanceof ListLiteral && e.right instanceof IntegerLiteral){
+        return "[" + gen(e.left)  + "]" + "2.concat(" + gen(e.right) + ")";
+      }
+      else if(e.left instanceof IntegerLiteral && e.right instanceof IntegerLiteral){
+        if(e.operator.lexeme == '::' && counter < 1){
+          counter++;
+          return gen(e.left) + "]" + "3.concat(" + gen(e.right) + ")";
+        }else if(e.operator.lexeme == '::' && counter == 1){
+          counter++
+          return gen(e.left) + "4.concat(" + gen(e.right) + ")"
+        }else{
+          counter++;
+          return "[hi" + gen(e.left) + "]" + "5.concat(" + gen(e.right) + ")"
+        }
+      }
+      else{
+        return e.left + " " + e.right
+        //return "[hello" + gen(e.left) + ".concat(" + gen(e.right) + ")" + e.left + " " + e.right
+      }
     }
     if (e.operator.lexeme === '^^') {
       return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
