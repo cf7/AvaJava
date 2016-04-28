@@ -58,7 +58,7 @@ var parseBlock = function() {
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
-    if (!at('EOF')) {
+    if (!at('EOF') && statements[0]) {
       match(';');
     }
     console.log("matched semicolon");
@@ -333,32 +333,6 @@ var parseWhileLoop = function () {
   return new WhileLoop(condition, body);
 }
 
-var parseIfBlock = function () {
-  console.log("inside parseIfBlock");
-  var statements = [];
-  var numberErrors = error.count;
-  // if (at('return')) {
-  //   statements.push(parseReturnStatement());
-  // }
-  while (true) {
-    statements.push(parseStatement());
-    // if (at(match(';'))) {
-      match(';');
-    // }
-    if (!at(blockStatementKeywords)) {
-      break;
-    } else if (error.count > numberErrors) {
-      break;
-    }
-  }
-  console.log("leaving parseIfBlock");
-  return new Block(statements);
-}
-
-var parseConditionalBody = function () {
-
-}
-
 var parseConditionalExp = function () {
   var conditionals = [];
   var bodies = [];
@@ -379,12 +353,12 @@ var parseConditionalExp = function () {
       match(')');
     }
     match('then');
-    bodies.push(parseIfBlock());
+    bodies.push(parseBlock());
     if (at('else') && tokens[1].lexeme === 'if') {
       match('else');
     } else if (at('else')) {
       match('else');
-      elseBody = parseIfBlock();
+      elseBody = parseBlock();
       break;
     }
   }

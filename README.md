@@ -91,7 +91,7 @@ ExpList 	::= Exp ( ',' Exp )*
 TypedExpList	::= TypedExp (',' TypedExp)*
 TypedExp	::= id ':' type
 
-ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') then' Block ('else if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? 'end'
+ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') 'then' Block ('else' 'if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? 'end'
 
 
 Exp1 		::= Exp2 ('or' Exp2)*
