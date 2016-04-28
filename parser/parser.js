@@ -537,7 +537,7 @@ var parseExp10 = function () {
     console.log("leaving parseExp9");
     return new PostfixExpression(op, operand);
   } else {
-    console.log("leaving parseExp9");
+    console.log("leaving parseExp10");
     return operand;
   }
 }
@@ -551,12 +551,12 @@ var parseExp11 = function () {
     right = parseExp12();
     left = new BinaryExpression(op, left, right);
   }
-  console.log("leaving parseExp10");
+  console.log("leaving parseExp11");
   return left;
 }
 
 var parseExp12 = function () {
-  console.log("inside parseExp11");
+  console.log("inside parseExp12");
   if (at('(')) {
     match('(');
     var exp = parseExpression();
