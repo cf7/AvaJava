@@ -32,7 +32,7 @@ scan(argv._[0], function(tokens) {
     return;
   }
 
-  program.analyze();
+  //program.analyze();
 
   if (error.count > 0) {
     return;
