@@ -17,6 +17,9 @@ var AssignmentStatement = (function() {
   };
 
   AssignmentStatement.prototype.analyze = function(context) {
+    console.log("+++++ inside AssignmentStatement analyze +++++");
+    // implement destructuring and pattern matching here!!!
+
     this.target.analyze(context);
     this.source.analyze(context);
     // want type to be changeable later on

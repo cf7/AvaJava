@@ -213,6 +213,7 @@ var scan = function (line, lineNumber, tokens) {
             processStringInterpolation(string, lineNumber, start, tokens);
           } else {
             emit("stringlit", string);
+            start = pos;
           }
         }
         if (oneCharacterTokens.test(line[pos])) {

@@ -1,4 +1,4 @@
-![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
+![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/images/AvaJava_Logo.png)
 
 <b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, Swift, and OCaml that compiles into Javascript.</b> 
 It combines the most interesting parts of these languages and also provides a new selection of operators.
@@ -29,17 +29,20 @@ This language will be designed to facilitate faster typing and more concise repr
 
 ##Grammar
 
+[Avajava Railroad Diagram](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/images/railroad_diagram/index.html)
+
 ###Microsyntax
 
 ```
 characterLiteral 	::=  letter | digit | [\s]
 stringlit	::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 
-letter		::=	[a-zA-Z]
+letter		::=	 [a-zA-Z]
 digit		::=  [\d]
 keyword		::=  'var' | 'while' | 'and' | 'or' | 'not' 
-           		| 'true' | 'false' | 'return' | 'for' | 'each' 
-	   			| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava'
+           		| 'true' | 'false' | 'return' | 'for' | 'each' | 'do'
+	   			| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava' | 'times'
+	   			| type
 id        	::=  letter (letter | digit | '_')*
 key		   	::=	 id | stringlit
 assignop  	::=  '=' | '+=' | '-=' | '*=' | '/='
@@ -49,7 +52,8 @@ consop    	::=  '::'
 addop     	::=  '+' | '-'
 mulop     	::=  '*' | '/' | '%' 
 prefixop  	::=  '-' | 'not'
-postfixop 	::=  '!' | '++' | '--'
+postfixop 	::=  '++' | '--'
+exponent	::=  '^^'
 intlit    	::=  [\d]+
 floatlit  	::=  /^(\.\d+|\d+(\.\d+)?)([Ee][+-]?\d+)?$/
 boolit   	::=  'true' | 'false'
@@ -126,17 +130,22 @@ FunctionCalls can utilize currying to take in arguments.
 
 ```
 var factorial = function (n:int) ->                     var factorial = function (n) {
-    if n <= 1 then 1 else n * factorial(n - 1); end;        if (n <= 1) {
-                                                                return 1;
-factorial addOdds 3 3;                                      } else {
-                                                                return n * factorial(n - 1);
-// currying is optional                                     }
-                                                        }                                                                                    factorial(addOdds(3,3));
+    if n <= 1 then 							                  if (n <= 1) {
+    	return 1; 					                             return 1;
+    else                                                     } else {
+    	return n * factorial(n - 1);                            return n * factorial(n - 1);
+    end;                                                     }
+end;                                                    }
+                                                                
+factorial addOdds 3 3;                                      
+                                                                
+// currying is optional                                                                                                                                                           factorial(addOdds(3,3));
 
 
-var helloWorld = function () -> ava "Hello World"; end; var helloWorld = function () {
-                                                            console.log("Hello World");
-                                                        }     
+var helloWorld = function () -> 			             var helloWorld = function () {
+	ava "Hello World";                                       console.log("Hello World");
+end;                                                    }   
+                                                            
       
 var mapFunction = function (f:function, l:list) ->      var mapFunction = function (f, l) {
 	var newList = [];							              var newList = [];
@@ -150,9 +159,14 @@ end;                                                    }
 
 ######To Compile & Run
 ```
-./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
+$ ./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
 ```
-		
+
+#####To Test
+```
+$ npm test
+```
+
 ####Commments
 ```
 // Single Line Comments
@@ -275,23 +289,33 @@ x and y both not 0 	// intead of (x != 0 && y != 0)
 ```
 var x = 10;
 
-if x > 1 then ava "inside if statement" else ava "not inside if statement";
+if x > 1 then ava "inside if statement"; else ava "not inside if statement"; end;
 
 if x < 1 then
-	ava "0"
+	ava "0";
+end;
 ```
+
 #####Lists and List Operations
 ```
 var x = [1,2,3,4,5,6,7];
 x[0];
 x[1];
 
-[1..10]		// [1,2,3,4,5,6,7,8,9]
 [1...10] 	// [1,2,3,4,5,6,7,8,9,10]
 
 [1,2,3]++ 	// [2,3,4]
 [1,2,3]^^2 	// [1,4,9]
 ```
+
+#####List Comprehensions
+```
+var u = [z^^2 for z in [1,2,3,4,5]];
+
+var w = [(x, y) for x in [1,2,3] for y in [3,1,4] if x != y];
+
+```
+
 #####Cons and Append Operators
 ```
 [1,2,3] @ [4,5,6,7] 	//	[1,2,3,4,5,6,7] = [1...7]
@@ -300,6 +324,7 @@ x[1];
 [1,2,3]::[4,5,6,7]::[] 	// [[1,2,3], [4,5,6,7]]
 
 ```
+
 #####Objects
 ```
 var w = { x:2, y:3, z: { inside: 3 } };
@@ -341,7 +366,8 @@ var addOdds = (x,y) -> if x % 2 + y % 2 both not 0 then x + y;
 
 #####Modules (just use "export")
 export() is a builtin function
-
+(shown below with javascript equivalent)
+                     
 ```
 export: { }															module.exports = {};
 export: { "add": (function (x:int,y:int) -> return x + y; end;) }	module.exports = { "add": (function (x:int,y:int) -> return x + y; end;) }

@@ -288,12 +288,12 @@ var generator = {
         console.log("inside ForLoop: " + f);
         // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
         return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
-          + ' ' + gen(new BinaryExpression(op, left, right)) + '; '
+          + '; ' + gen(new BinaryExpression(op, left, right)) + '; '
           +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
           + gen(f.body) + ' }';
     } else if (f.exp instanceof IfElseStatements) {
         return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
-          + '; ' + gen(f.exp.conditional) + '; ' + gen(f.exp.body) + ') { '
+          + '; ' + gen(f.exp.conditionals[0]) + '; ' + gen(f.exp.bodies[0]) + ') { '
           + gen(f.body) + ' }';
     } else {
         console.log("inside ForLoop: " + f.id);
@@ -400,47 +400,46 @@ var generator = {
 
   BinaryExpression: function(e) { // turn string manipulation stuff into function later
     console.log("inside BinaryExpression: " + e.operator.lexeme);
-<<<<<<< HEAD
     
-    if(e.left instanceof ListLiteral && e.right instanceof ListLiteral){
-      if( e.operator.lexeme === '@'){
-        return gen(e.left) + '.concat(' + gen(e.right) + ')';
-      }
+    // if(e.left instanceof ListLiteral && e.right instanceof ListLiteral){
+    //   if( e.operator.lexeme === '@'){
+    //     return gen(e.left) + '.concat(' + gen(e.right) + ')';
+    //   }
 
-      else if(e.operator.lexeme === '::'){
-        if(e.right.elements[0] instanceof ListLiteral){
-          return "[" + gen(e.left)  + "," + gen(e.right.elements[0]) + "]"
-        }
-        else{
-          return "[" + gen(e.left)  + "," + gen(e.right) + "]"
-        }
-      }
-    }
-    if (e.operator.lexeme === '::'){
-      //console.log(e.operator.lexeme);
-      if(e.left instanceof IntegerLiteral && e.right instanceof IntegerLiteral){
-        if(counter < 1){
-          counter++;
-          return "[" + gen(e.left) + "]" + ".concat(" + gen(e.right) + ")";
-        }else if( counter == 1){
-          counter++
-          return "[" + gen(e.left) + "]" + ".concat(" + gen(e.right) + ")"
-        }
-        else{
-          return gen(e.left)  + ".concat(" + gen(e.right) + ")";
-        }
-      }
-      else if(e.left instanceof ListLiteral && e.right instanceof IntegerLiteral){
-       return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
-      }
-      else if(e.left instanceof IntegerLiteral && e.right instanceof ListLiteral){
-       return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
-      }
-      else{
-       return gen(e.left)  + ".concat(" + gen(e.right) + ")" 
-      }
-    if (e.operator.lexeme === '^^') {
-=======
+    //   else if(e.operator.lexeme === '::'){
+    //     if(e.right.elements[0] instanceof ListLiteral){
+    //       return "[" + gen(e.left)  + "," + gen(e.right.elements[0]) + "]"
+    //     }
+    //     else{
+    //       return "[" + gen(e.left)  + "," + gen(e.right) + "]"
+    //     }
+    //   }
+    // }
+    // if (e.operator.lexeme === '::'){
+    //   //console.log(e.operator.lexeme);
+    //   if(e.left instanceof IntegerLiteral && e.right instanceof IntegerLiteral){
+    //     if(counter < 1){
+    //       counter++;
+    //       return "[" + gen(e.left) + "]" + ".concat(" + gen(e.right) + ")";
+    //     }else if( counter == 1){
+    //       counter++
+    //       return "[" + gen(e.left) + "]" + ".concat(" + gen(e.right) + ")"
+    //     }
+    //     else{
+    //       return gen(e.left)  + ".concat(" + gen(e.right) + ")";
+    //     }
+    //   }
+    //   else if(e.left instanceof ListLiteral && e.right instanceof IntegerLiteral){
+    //    return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
+    //   }
+    //   else if(e.left instanceof IntegerLiteral && e.right instanceof ListLiteral){
+    //    return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
+    //   }
+    //   else{
+    //    return gen(e.left)  + ".concat(" + gen(e.right) + ")" 
+    //   }
+    // }
+    
     if (e.operator.lexeme === '...') {
       var minus = {kind: '-', lexeme: '-', line: 0, col: 0};
       var plus = {kind: '+', lexeme: '+', line: 0, col: 0};
@@ -449,7 +448,6 @@ var generator = {
       var index = new BinaryExpression(plus, difference, new IntegerLiteral(one));
       return 'Array.from(new Array(' + gen(index) + '), (x,i) => i + ' + gen(e.left) + ')';
     } else if (e.operator.lexeme === '^^') {
->>>>>>> refs/remotes/origin/master
       return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
     } else if (e.left instanceof StringLiteral && e.right instanceof StringLiteral) {
       if (e.operator.lexeme === '-') {
