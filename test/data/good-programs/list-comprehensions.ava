@@ -1,5 +1,0 @@
-var x = [1,2,3,4,5];
-
-var y = [for each z in x do z + 1];
-
-y = [for each z in y do z ^^ 2];

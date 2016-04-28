@@ -445,17 +445,15 @@ var parseExp5 = function () {
   var op, left, right;
   console.log("inside parseExp5");
   left = parseExp6();
-<<<<<<< HEAD
-  while(at('::')){
-    op = match('::');
-    right = parseExp11();
-=======
-  while (at(['::'])) {
-    op = match();
-    right = parseExp6();
->>>>>>> refs/remotes/origin/master
-    left = new BinaryExpression(op, left, right);
-  }
+  // while(at('::')){
+  //   op = match('::');
+  //   right = parseExp11();
+  // }
+  // while (at(['::'])) {
+  //   op = match();
+  //   right = parseExp6();
+  //   left = new BinaryExpression(op, left, right);
+  // }
   return left;
 }
 

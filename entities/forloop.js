@@ -28,8 +28,8 @@ class ForLoop {
         // // should have own local context for body
         // return this.body.analyze(localContext);
         // // check for iterable type
-
-        if (!(this.exp instanceof IfElseStatements)) {
+        // console.log("TTTTTTTTTTTTTTTTTTTTTT");
+        // if (!(this.exp instanceof IfElseStatements)) {
             if (this.id) { // the presence of an id is what differentiates the two forloops
                 this.exp.analyze(context);
                 this.exp.type.mustBeList("Cannot iterate through non-iterable", this.exp);
@@ -37,9 +37,10 @@ class ForLoop {
                 this.exp.analyze(context);
                 this.exp.type.mustBeInteger("Index must be an integer", this.exp);
             }
-        } else {
-            this.exp.analyze(context);
-        }
+        // } else {
+            // console.log("HHHHHHHHHHHHHHHHH");
+            //this.exp.analyze(context);
+        //}
     }
 
 }
