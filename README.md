@@ -1,4 +1,4 @@
-![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/AvaJava_Logo.png)
+![alt tag](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/images/AvaJava_Logo.png)
 
 <b>AvaJava is a mash-up of Python, CoffeeScript, Javascript, Swift, and OCaml that compiles into Javascript.</b> 
 It combines the most interesting parts of these languages and also provides a new selection of operators.
@@ -28,6 +28,8 @@ This language will be designed to facilitate faster typing and more concise repr
 </ul>
 
 ##Grammar
+
+[Avajava Railroad Diagram](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/images/railroad_diagram/index.html)
 
 ###Microsyntax
 
