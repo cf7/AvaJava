@@ -1,0 +1,4 @@
+var x = 3;
+var printNumber = function () -> ava(x); end;
+var printAgain = function () -> var x = 10; printNumber(); end;
+printAgain();

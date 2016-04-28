@@ -146,9 +146,9 @@ var generator = {
     // }[v.type];
     if (v.exp) {
                     // change to just 'v' when analyzer is working
-      return "var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp) + ";" //initializer + ";");
+      return "var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp); //initializer + ";");
     } else {
-      return "var " + (makeVariable(v.id.lexeme)) + ";";
+      return "var " + (makeVariable(v.id.lexeme));
     }
   },
 
@@ -295,9 +295,13 @@ var generator = {
     if (!f.id) {
         console.log("inside ForLoop: " + f);
         // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
-        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp.lexeme)))
+        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
           + ' ' + gen(new BinaryExpression(op, left, right)) + '; '
           +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
+          + gen(f.body) + ' }';
+    } else if (f.exp instanceof IfElseStatements) {
+        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
+          + '; ' + gen(f.exp.conditional) + '; ' + gen(f.exp.body) + ') { '
           + gen(f.body) + ' }';
     } else {
         console.log("inside ForLoop: " + f.id);

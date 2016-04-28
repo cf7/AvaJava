@@ -1,7 +1,15 @@
-var x = 10;
+var x = [ 1, 2, 3, 4, 5 ];
+
+for each var number in x { number++; };
+for each number in x { number++; }; // 'var' is optional
+
+x = 10;
 
 for x times { ava "Hello World"; };
 
-var x = [ 1, 2, 3, 4, 5 ];
 
-for each number in x { number++; };
+var m = [ 1, 2, 3, 4, 5 ];
+
+for (var i = 0 if i < length(m) then i++) { ava m[i]; } // this version requires 'var'
+
+// add semantics to make sure i is undeclared

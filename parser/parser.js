@@ -32,7 +32,7 @@ var tokens = [];
 var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 
                             'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 
                             'floatlit', 'boolit', '(', 'function',
-                            'true', 'false', 'type', 'return', 'list'];
+                            'true', 'false', 'type', 'list', 'when'];
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
@@ -62,7 +62,7 @@ var parseBlock = function() {
       match(';');
     }
     console.log("matched semicolon");
-    if (!at(blockStatementKeywords)) { // hardcoded 'return' for error outside of function block
+    if (!at(blockStatementKeywords)) {
       break;
     } else if (error.count > numberErrors) {
       break;
@@ -77,15 +77,10 @@ var parseStatement = function() {
   // since parseBlock no longer matches ';'s, need to match ';'
   // within each of these parseFunctions below
   console.log("inside parseStatement");
-  // if (at('var')) {
-  //   return parseVariableDeclaration();
-  // } else 
-  if (at('ava')) {
+  if (at('var')) {
+    return parseVariableDeclaration();
+  } else if (at('ava')) {
     return parsePrintStatement();
-  } else if (at('return')) {
-    return parseReturnStatement();
-  } else if (at('if')) {
-    return parseConditionalExp();
   } else if (at('for')) {
     return parseForLoop();
   } else if (at('while')) {
@@ -326,11 +321,21 @@ var parseForLoop = function () {
     body = parseBlock();
     match('}');
   } else { // counter for loop
-    exp = parseExpression();
-    match('times');
-    match('{');
-    body = parseBlock();
-    match('}');
+    if (tokens[1].lexeme === 'times') {
+      exp = parseExpression();
+      match('times');
+      match('{');
+      body = parseBlock();
+      match('}')
+    } else if (at('(')) {
+      match('(');
+      id = parseVariableDeclaration();
+      exp = parseConditionalExp();
+      match(')');
+      match('{');
+      body = parseBlock();
+      match('}');
+    }
   }
   console.log("leaving parseForLoop");
   return new ForLoop(id, exp, body);
@@ -381,16 +386,16 @@ var parseConditionalExp = function () {
 
 var parseExpression = function () {
   console.log("inside parseExpression");
-  if (at('var')) {
-    return parseVariableDeclaration();
-  // } else if (at('if')) {
-  //   return parseConditionalExp();
-  } else if (at('function')) { // added an indicator to syntax
+  if (at('function')) { // added an indicator to syntax
     // this is why other languages have a keyword
     // indicator for functions, because how could you differentiate
     // the beginning of a functionDeclaration from the beginning
     // of a parenthesized expression without lookahead?
     return parseFunctionExp();
+  } else if (at('return')) {
+    return parseReturnStatement();
+  } else if (at('if')) {
+    return parseConditionalExp();
   } else {
     return parseExp1(); //error('inside parse expression error', tokens[0]);
   }
