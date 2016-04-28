@@ -385,7 +385,12 @@ var generator = {
   },
 
   ListLiteral: function (literal) {
-    return literal.toString();
+    // for list ranges
+    if (literal.elements[0] && (literal.elements[0] instanceof BinaryExpression)) {
+      return gen(literal.elements[0]);
+    } else {
+      return literal.toString();
+    }
   },
 
   // BooleanLiteral: function(literal) {
@@ -403,10 +408,14 @@ var generator = {
 
   BinaryExpression: function(e) { // turn string manipulation stuff into function later
     console.log("inside BinaryExpression: " + e.operator.lexeme);
-    if( e.operator.lexeme == '@'){
-      return gen(e.left) + '.concat(' + gen(e.right) + ')';
-    }
-    if (e.operator.lexeme === '^^') {
+    if (e.operator.lexeme === '...') {
+      var minus = {kind: '-', lexeme: '-', line: 0, col: 0};
+      var plus = {kind: '+', lexeme: '+', line: 0, col: 0};
+      var one = {kind: 'intlit', lexeme: '1', line: 0, col: 0};
+      var difference = new BinaryExpression(minus, e.right, e.left);
+      var index = new BinaryExpression(plus, difference, new IntegerLiteral(one));
+      return 'Array.from(new Array(' + gen(index) + '), (x,i) => i + ' + gen(e.left) + ')';
+    } else if (e.operator.lexeme === '^^') {
       return "( Math.pow(" + gen(e.left) + ", " + gen(e.right) + ") )";
     } else if (e.left instanceof StringLiteral && e.right instanceof StringLiteral) {
       if (e.operator.lexeme === '-') {

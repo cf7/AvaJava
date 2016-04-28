@@ -463,11 +463,11 @@ var parseExp5 = function () {
   var op, left, right;
   console.log("inside parseExp5");
   left = parseExp6();
-  // if (at(['::'])) {
-  //   op = match();
-  //   right = parseExp6();
-  //   left = new BinaryExpression(op, left, right);
-  // }
+  if (at(['::'])) {
+    op = match();
+    right = parseExp6();
+    left = new BinaryExpression(op, left, right);
+  }
   return left;
 }
 
@@ -475,9 +475,21 @@ var parseExp6 = function () {
   var op, left, right;
   console.log("inside parseExp6");
   left = parseExp7();
-  while (at(['+', '-'])) {
+  if (at(['..', '...'])) {
     op = match();
     right = parseExp7();
+    left = new BinaryExpression(op, left, right);
+  }
+  return left;
+}
+
+var parseExp7 = function () {
+  var op, left, right;
+  console.log("inside parseExp7");
+  left = parseExp8();
+  while (at(['+', '-'])) {
+    op = match();
+    right = parseExp8();
     console.log("=========================");
     left = new BinaryExpression(op, left, right);
     console.log("========================");
@@ -488,13 +500,13 @@ var parseExp6 = function () {
 
 // ** remember can store the things that are being matched!
 // ** may need them to pass to a different parsing branch
-var parseExp7 = function () {
+var parseExp8 = function () {
   var op, left, right;
-  console.log("inside parseExp7");
-  left = parseExp8();
+  console.log("inside parseExp8");
+  left = parseExp9();
   while (at(['*', '/', '%'])) {
     op = match();
-    right = parseExp8();
+    right = parseExp9();
     left = new BinaryExpression(op, left, right);
   }
   return left;
@@ -502,24 +514,24 @@ var parseExp7 = function () {
 }
 
 // parseExp6
-var parseExp8 = function () {
+var parseExp9 = function () {
   var op, operand;
-  console.log("inside parseExp8");
+  console.log("inside parseExp9");
   if (at(['-', 'not'])) {
     op = match(); // need to branch to a different case for negation
-    operand = parseExp9();
+    operand = parseExp10();
     return new UnaryExpression(op, operand);
   } else {
-    return parseExp9();
+    return parseExp10();
   }
   // return statement
 }
 
 // parseExp7
-var parseExp9 = function () {
+var parseExp10 = function () {
   var op, operand;
-  console.log("inside parseExp9");
-  var operand = parseExp10();
+  console.log("inside parseExp10");
+  var operand = parseExp11();
   if (at(['++', '--'])) { // add ! for factorial operation
     op = match();
     console.log("leaving parseExp9");
@@ -530,20 +542,20 @@ var parseExp9 = function () {
   }
 }
 
-var parseExp10 = function () {
+var parseExp11 = function () {
   var op, left, right;
-  console.log("inside parseExp10");
-  left = parseExp11();
+  console.log("inside parseExp11");
+  left = parseExp12();
   while (at('^^')) {
     op = match();
-    right = parseExp11();
+    right = parseExp12();
     left = new BinaryExpression(op, left, right);
   }
   console.log("leaving parseExp10");
   return left;
 }
 
-var parseExp11 = function () {
+var parseExp12 = function () {
   console.log("inside parseExp11");
   if (at('(')) {
     match('(');
@@ -574,7 +586,7 @@ var parseExp11 = function () {
         }
         while (at('.')) {
           match('.');
-          exps.push(parseExpression());
+          exps.push(parseExpression()); // in grammar needs to be Exp12 for continuous accesses
         }
       }
       varref = new Access(varref, exps);
