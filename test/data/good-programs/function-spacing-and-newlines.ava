@@ -4,8 +4,9 @@ if n <= 1 then
 
 return 
 
-1 
+1
 
+;
 
 else 
 
@@ -18,5 +19,7 @@ factorial
 (n - 
 
 1);
+
+end;
 
 end;

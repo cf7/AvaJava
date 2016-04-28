@@ -15,7 +15,7 @@ This language will be designed to facilitate faster typing and more concise repr
 <li> First-Class/Higher Order Functions
 <li> Lambda Functions
 <li> Currying/Uncurrying
-<li> List Ranges (maybe)
+<li> List Ranges
 <li> List Comprehensions
 <li> Cons and Append Operators
 <li> String Interpolation
@@ -25,10 +25,6 @@ This language will be designed to facilitate faster typing and more concise repr
 <li> Scientific Notation
 <li> Constant Folding
 <li> Unreachable Code Elimination
-<li> User-defined types (maybe)
-<li> Default Parameters (maybe)
-<li> Named Parameters (maybe)
-<li> Pattern Matching/Destructuring (maybe)
 </ul>
 
 ##Grammar
@@ -95,7 +91,7 @@ ExpList 	::= Exp ( ',' Exp )*
 TypedExpList	::= TypedExp (',' TypedExp)*
 TypedExp	::= id ':' type
 
-ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') then' Block ('else if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? ';'
+ConditionalExp ::= 'if' (Exp1 | '(' Exp1 ')') 'then' Block ('else' 'if' (Exp1 | '(' Exp1 ')') 'then' Block)* ('else' Block)? 'end'
 
 
 Exp1 		::= Exp2 ('or' Exp2)*
@@ -103,16 +99,17 @@ Exp2 		::= Exp3 ('and' Exp3)* ('both' Exp)?
 Exp3 		::= Exp4 (relop Exp4)?
 Exp4 		::= Exp5 (appendop Exp5)*
 Exp5 		::= Exp6 (consop Exp6)*
-Exp6 		::= Exp7 (addop Exp7)*
-Exp7 		::= Exp8 (mulop Exp8)*
-Exp8 		::= prefixop? Exp9
-Exp9 		::= Exp10 postfixop?
-Exp10 		::= Exp11 ('^^' Exp11)*
-Exp11 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringlit | boolit | List | SetLiteral | ObjectLiteral
+Exp6		::= Exp7 (('…') Exp7)?
+Exp7 		::= Exp8 (addop Exp8)*
+Exp8 		::= Exp9 (mulop Exp9)*
+Exp9 		::= prefixop? Exp10
+Exp10 		::= Exp11 postfixop?
+Exp11 		::= Exp12 ('^^' Exp12)*
+Exp12 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringlit | boolit | List | SetLiteral | ObjectLiteral
 
 VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
 Assign 		::= id assignop Exp
-Access		::= '[' Exp ']' | '.' Exp11
+Access		::= '[' Exp ']' | '.' Exp12
 
 ObjectLiteral	::= '{' ObjExpList? '}'
 ObjExpList 	::= ObjExp (',' ObjExp)*
@@ -133,7 +130,7 @@ var factorial = function (n:int) ->                     var factorial = function
                                                                 return 1;
 factorial addOdds 3 3;                                      } else {
                                                                 return n * factorial(n - 1);
-// however, currying is optional                            }
+// currying is optional                                     }
                                                         }                                                                                    factorial(addOdds(3,3));
 
 
@@ -190,15 +187,15 @@ mapFunction(addOne, [1,2,3]);
 
 ####Lambda (Anonymous) Functions   
 ```
-(function () -> return function () -> return function () -> return 0; end; end; end);
+(function () -> return function () -> return function () -> return 0; end; end; end)();
 ```
                  
 ####Primitives
 ```
-1; 			// integer
-1.00; 		// float
-1.00e24;	// float in scientific notation
-1.00E24;
+1 			// int
+1.00 		// float
+1.00e24		// float in scientific notation
+1.00E24
 "h"			// string (even though it is only one character)
 "hi"		// string
 true 		// boolean
@@ -222,14 +219,7 @@ for x times { ava "Hello World"; };
 
 var x = [ 1, 2, 3, 4, 5 ];
 
-for each var number in x { 
-	number++; 
-};
-
 for each number in x { number++; }; 
-// 'var' is optional in for each loops
-
-
 
 
 
@@ -280,24 +270,36 @@ Both expressions is a feature that attempts to reduce the redundant code associa
 x and y both 0 		// instaead of (x == 0 && y == 0)
 x and y both not 0 	// intead of (x != 0 && y != 0)
 ```
+
+##### If Statements
+```
+var x = 10;
+
+if x > 1 then ava "inside if statement" else ava "not inside if statement";
+
+if x < 1 then
+	ava "0"
+```
 #####Lists and List Operations
 ```
 var x = [1,2,3,4,5,6,7];
-x[0];		// 1
-x[1];		// 2
+x[0];
+x[1];
 
 [1..10]		// [1,2,3,4,5,6,7,8,9]
 [1...10] 	// [1,2,3,4,5,6,7,8,9,10]
 
+[1,2,3]++ 	// [2,3,4]
+[1,2,3]^^2 	// [1,4,9]
+```
+#####Cons and Append Operators
+```
 [1,2,3] @ [4,5,6,7] 	//	[1,2,3,4,5,6,7] = [1...7]
 
 1::2::3::[] 			// [1,2,3]
 [1,2,3]::[4,5,6,7]::[] 	// [[1,2,3], [4,5,6,7]]
 
-[1,2,3]++ => [2,3,4]
-[1,2,3]^^2 => [1,4,9]
 ```
-
 #####Objects
 ```
 var w = { x:2, y:3, z: { inside: 3 } };
@@ -348,7 +350,7 @@ export: { "add": (function (x:int,y:int) -> return x + y; end;) }	module.exports
 #####Scoping:
 ```
 ***
-avajava will utilize static scoping.
+Avajava utilizes static scoping.
 For example . . .
 ***
 
@@ -365,7 +367,12 @@ of the printNumber call within printAgain. (That would by dynamic scoping.)
 ```
 
 #####Some Edge-Cases of the Language
+
+###### 'var' is optional in for each loops
+
 ```
+for each var number in x { number++; };
+for each number in x { number++; };
 
 ```
 

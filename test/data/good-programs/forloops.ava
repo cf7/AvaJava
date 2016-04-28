@@ -10,6 +10,6 @@ for x times { ava "Hello World"; };
 
 var m = [ 1, 2, 3, 4, 5 ];
 
-for (var i = 0 if i < length(m) then i++) { ava m[i]; } // this version requires 'var'
+for (var i = 0 if i < length(m) then i++;) { ava m[i]; } // this version requires 'var'
 
 // add semantics to make sure i is undeclared
