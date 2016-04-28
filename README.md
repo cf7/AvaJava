@@ -150,9 +150,14 @@ end;                                                    }
 
 ######To Compile & Run
 ```
-./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
+$ ./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
 ```
-		
+
+#####To Test
+```
+$ npm test
+```
+
 ####Commments
 ```
 // Single Line Comments
