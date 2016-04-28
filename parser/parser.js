@@ -32,7 +32,7 @@ var tokens = [];
 var blockStatementKeywords = ['var', 'while', 'true', 'false', 'not', 
                             'for', 'if', 'ava', 'id', 'stringlit', 'intlit', 
                             'floatlit', 'boolit', '(', 'function',
-                            'true', 'false', 'type', 'return', 'list'];
+                            'true', 'false', 'type', 'return', 'list', 'when'];
 var assignmentOperators = ['=', '+=', '-=', '*=', '/='];
 
 module.exports = function(scannerOutput) {
@@ -326,11 +326,21 @@ var parseForLoop = function () {
     body = parseBlock();
     match('}');
   } else { // counter for loop
-    exp = parseExpression();
-    match('times');
-    match('{');
-    body = parseBlock();
-    match('}');
+    if (tokens[1].lexeme === 'times') {
+      exp = parseExpression();
+      match('times');
+      match('{');
+      body = parseBlock();
+      match('}')
+    } else if (at('(')) {
+      match('(');
+      id = parseVariableDeclaration();
+      exp = parseConditionalExp();
+      match(')');
+      match('{');
+      body = parseBlock();
+      match('}');
+    }
   }
   console.log("leaving parseForLoop");
   return new ForLoop(id, exp, body);

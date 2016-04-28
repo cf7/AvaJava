@@ -114,19 +114,7 @@ List 		::= '[' ExpList? ']'
 (with their equivalent Javascript translations)
 
 ```
-var addOdds = (x:int, y:int) ->                                  var addOdds = function (x,y) {
-    if x%2 and y%2 both not 0 then x+y else Math.PI end;    if (x%2 !== 0 && y%2 !== 0) {
-                                                                return x + y;
-addOdds 3 3;                                                } else {
-                                                                return Math.PI;
-                                                            }
-                                                        }
-                                                        
-                                                        addOdds(3,3);
-
-
-
-var factorial = (n:int) ->                                  var factorial = function (n) {
+var factorial = function (n:int) ->                     var factorial = function (n) {
     if n <= 1 then 1 else n * factorial(n - 1) end;         if (n <= 1) {
                                                                 return 1;
 factorial addOdds 3 3;                                      } else {
@@ -135,9 +123,17 @@ factorial addOdds 3 3;                                      } else {
                                                         }                                                                                    factorial(addOdds(3,3));
 
 
-var helloWorld = () -> ava "Hello World" end;           var helloWorld = function () {
+var helloWorld = function () -> ava "Hello World" end;  var helloWorld = function () {
                                                             console.log("Hello World");
-                                                        }                                             
+                                                        }     
+      
+var mapFunction = function (f:function, l:list) ->      var mapFunction = function (f, l) {
+	var newList = [];							              var newList = [];
+	for each x in l {                                        for (x of l) {
+		push(newList, f x);                                      newList.push(f(x));
+	};                                                       }
+	return newList;                                          return newList;
+end;                                                    }                                                                                                                                                	                                        
 ```
 
 
@@ -157,7 +153,6 @@ reserved words - 'var' | 'while' | 'and' | 'or' | 'not'
 ####Commments
 ```
 // Single Line Comments
-
 
 ***
 
