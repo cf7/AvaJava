@@ -122,7 +122,7 @@ var generator = {
 
   VariableDeclaration: function (v) {
     if (v.exp) {
-      return "var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp); //initializer + ";");
+      return "var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp);
     } else {
       return "var " + (makeVariable(v.id.lexeme));
     }
