@@ -31,10 +31,10 @@ var Function = (function () {
         }
         
         console.log("*******inside function's analyze*******");
-        // console.log("parentContext: ");
-        // console.log(localContext.parent.symbolTable);
-        // console.log("localContext: ");
-        // console.log(localContext.symbolTable);
+        console.log("parentContext: ");
+        console.log(localContext.parent.symbolTable);
+        console.log("localContext: ");
+        console.log(localContext.symbolTable);
         return this.body.analyze(localContext);
 
         // return this.type = this.getReturnType(this.body, context);

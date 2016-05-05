@@ -9,6 +9,10 @@ class TypedVariableDeclaration {
 
     }
 
+    getExp() {
+        return this.exp;
+    }
+    
     toString() {
         return "( " + this.id.lexeme + " : " + this.type + " )";
     }

@@ -1,0 +1,5 @@
+var thisFunction = function () -> return [1,2,3,4]; end;
+
+var anotherFunction = function (f:function) -> return f(); end;
+
+anotherFunction(thisFunction);

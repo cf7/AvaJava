@@ -229,14 +229,9 @@ while (x < 20) {
 	ava "Hello World";
 }
 
-for x times { ava "Hello World"; };
-
-
-
 var x = [ 1, 2, 3, 4, 5 ];
 
 for each number in x { number++; }; 
-
 
 
 var m = [ 1, 2, 3, 4, 5 ];
