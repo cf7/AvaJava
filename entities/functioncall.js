@@ -32,7 +32,7 @@ var FunctionCall = (function () {
 
         var currentFunction = context.lookupVariable(this.id);
         console.log(currentFunction);
-        if (!currentFunction instanceof TypedVariableDeclaration) {
+        if (!(currentFunction instanceof TypedVariableDeclaration)) {
             if (new BuiltIns().entities[this.id.lexeme]) {
                 return;
             } else {

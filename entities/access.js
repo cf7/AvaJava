@@ -110,7 +110,7 @@ class Access {
                     if (checkVar instanceof Access) {
                         // checkVar.analyze(context);
 
-
+                        console.log("is the analyzer entering in here?");
 
                     } else {
                         // what if variable is an array?
@@ -118,7 +118,10 @@ class Access {
                             if (checkVar instanceof VariableReference && variable.exps.hasOwnProperty(checkVar.getToken().lexeme)) {
                                // turn them into string literals so that generator does not
                                // confuse them for variableReferences later on
+                               console.log("converting access properties to StringLiteral");
                                this.exps[i] = new StringLiteral(checkVar.getToken());
+                               this.exps[i].string = '\'' + this.exps[i].string + '\'';
+                               console.log(this.exps[i]);
                             } else if (checkVar instanceof VariableReference && !variable.exps.hasOwnProperty(checkVar.getToken().lexeme)) {
                                 checkVar = context.lookupVariable(checkVar.getToken());
                                 console.log("before canBeIntOrString");

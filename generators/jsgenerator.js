@@ -171,6 +171,7 @@ var generator = {
         if (l.exps.length > 1) {
           for (var i = 1; i < l.exps.length; i++) {
             console.log(l.exps[i]);
+            var str = gen(l.exps[i]);
             string += "][" + gen(l.exps[i]);
           }
         }
