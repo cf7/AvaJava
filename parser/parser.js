@@ -443,7 +443,7 @@ var parseExp4 = function () {
   left = parseExp5();
   while(at('@')){
     op = match('@');
-    right = parseExp11();
+    right = parseExp5();
     left = new BinaryExpression(op, left, right);
   }
   return left;
@@ -455,7 +455,7 @@ var parseExp5 = function () {
   left = parseExp6();
   while (at(['::'])) {
     op = match('::');
-    right = parseExp11();
+    right = parseExp6();
     left = new BinaryExpression(op, left, right);
   }
   return left;
@@ -465,7 +465,7 @@ var parseExp6 = function () {
   var op, left, right;
   console.log("inside parseExp6");
   left = parseExp7();
-  if (at(['..', '...'])) {
+  if (at('...')) {
     op = match();
     right = parseExp7();
     left = new BinaryExpression(op, left, right);

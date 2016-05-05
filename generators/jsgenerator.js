@@ -349,22 +349,18 @@ var generator = {
       if (e.operator.lexeme === '*') {
         return "( " + gen(e.right) + ".repeat(" + gen(e.left) + ") )";
       }
-    }
-    else if(e.left instanceof ListLiteral && e.right instanceof ListLiteral){
-      if( e.operator.lexeme === '@'){
+    } else if( e.operator.lexeme === '@') {
+        console.log("LEFT");
+        console.log(e.left);
+        console.log("RIGHT");
+        console.log(e.right);
         return gen(e.left) + '.concat(' + gen(e.right) + ')';
-      }
-      else if(e.operator.lexeme === '::'){
-        if(e.right.elements[0] instanceof ListLiteral){
+    } else if (e.operator.lexeme === '::'){
+      if(e.right.elements[0] instanceof ListLiteral){
           return "[" + gen(e.left)  + "," + gen(e.right.elements[0]) + "]"
-        }
-        else{
+        } else {
           return "[" + gen(e.left)  + "," + gen(e.right) + "]"
         }
-      }
-    }
-    else if (e.operator.lexeme === '::'){
-     //console.log(e.operator.lexeme);
       if(e.left instanceof IntegerLiteral && e.right instanceof IntegerLiteral){
         if(counter < 1){
           counter++;
@@ -372,18 +368,14 @@ var generator = {
         }else if( counter == 1){
           counter++
           return "[" + gen(e.left) + "]" + ".concat(" + gen(e.right) + ")"
-        }
-        else{
+        }else{
           return gen(e.left)  + ".concat(" + gen(e.right) + ")";
         }
-      }
-      else if(e.left instanceof ListLiteral && e.right instanceof IntegerLiteral){
+      } else if(e.left instanceof ListLiteral && e.right instanceof IntegerLiteral){
        return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
-      }
-      else if(e.left instanceof IntegerLiteral && e.right instanceof ListLiteral){
+      } else if(e.left instanceof IntegerLiteral && e.right instanceof ListLiteral){
        return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
-      }
-      else{
+      }else{
        return gen(e.left)  + ".concat(" + gen(e.right) + ")" 
       }
     } else {
