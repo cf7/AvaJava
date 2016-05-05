@@ -3,11 +3,16 @@ var thisFunction = function () -> return 0;  var x = 10; end;
 var thisFunctionAgain = function (x:int) ->
 
 	if x > 3 then
-		return x
+		return x;
 	else 
 		return 0; // return statements get infinite loop error when misspelled
 	end;
 
 	return 1;
 
+end;
+
+
+if (false) then
+	ava "should not reach this point if being optimized";
 end;

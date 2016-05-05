@@ -1,3 +1,6 @@
+var BooleanLiteral = require('./booleanliteral.js');
+var StringLiteral = require('./stringliteral.js');
+
 var IfElseStatements = (function () {
     function IfElseStatements(conditionals, bodies, elseBody) {
         this.conditionals = conditionals;
@@ -34,7 +37,35 @@ var IfElseStatements = (function () {
     };
     
     IfElseStatements.prototype.optimize = function() {
-        return this;
+        // ** conditionals are binaryExpression and will have been
+        // ** analyzed by the time they get here
+        var unreachableIndices = [];
+        for (var i = 0; i < this.conditionals.length; i++) {
+            this.conditionals[i].optimize();
+            if (this.conditionals[i] instanceof BooleanLiteral) {
+                if (this.conditionals[i].name === 'false') {
+                    unreachableIndices.push(i);
+                }
+            }
+        }
+        for (var i = 0; i < this.bodies.length; i++) {
+            this.bodies[i].optimize();
+        }
+
+        // for (index of unreachableIndices) {
+        //     this.conditionals[index] = new StringLiteral({ kind: 'stringlit', lexeme: '', line: 0, col: 0 });
+        //     this.bodies[index] = new StringLiteral({ kind: 'stringlit', lexeme: '', line: 0, col: 0 });
+        // }
+
+        if (this.elseBody) {
+            this.elseBody.optimize();
+        }
+        
+        if (this.conditionals[0].name === 'false') {
+            return this.elseBody;
+        } else {
+            return this;
+        }
     };
 
     return IfElseStatements;

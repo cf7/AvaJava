@@ -20,6 +20,7 @@ var ReturnStatement = (function () {
             console.log("*************");
             console.log("CURRENT SCOPE");
             console.log(currentScope);
+            // currentScope.returnType = this.value.type;
             currentScope.type = this.value.type;
             console.log("*************");
             console.log("NEW TYPE");

@@ -87,8 +87,12 @@ class Access {
             // variable.type.removeValidType(Type.OBJECT, "access");
             // variable.type.removeValidType(Type.FUNCTION, "builtin");
 
-            variable.type.canBeListOrObj("Variable not of type LIST or type OBJECT", variable);
-
+            // ** bug: add code below when fixing returnTypes
+            // if (variable instanceof Function) {
+            //     variable.returnType.canBeListOrObj("Variable not of type LIST or type OBJECT", variable);
+            // } else {
+                variable.type.canBeListOrObj("Variable not of type LIST or type OBJECT", variable);
+            // }
             console.log("variable ))()()()()()()()()()()()(");
             console.log(variable);
            
