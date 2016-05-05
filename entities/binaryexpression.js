@@ -167,8 +167,8 @@ var BinaryExpression = (function () {
     }
 
     BinaryExpression.prototype.isIntegerLiteral = function(operand, value) {
-      console.log("|| Inside isIntegerLiteral in BinaryExpression Optimizer ||");
-      console.log(operand);
+      // console.log("|| Inside isIntegerLiteral in BinaryExpression Optimizer ||");
+      // console.log(operand);
       var valid = false;
       var valueExp = '';
       if (operand.referent) {
@@ -178,11 +178,6 @@ var BinaryExpression = (function () {
         valid = true;
         valueExp = operand.value;
       }
-      console.log(valid);
-      console.log(valueExp);
-      console.log(valid && (parseInt(valueExp) === value));
-      // ** by this time, will have already been analyzed, so whatever 
-      // ** variable is here should have a referent
       return valid && (parseInt(valueExp) === value);
     };
 
@@ -196,7 +191,7 @@ var BinaryExpression = (function () {
         case '+':
           console.log("'+' case inside foldIntegerConstants");
           // decided to pass in entire tokens to literal entities
-          // to facilitate getToken() function standardization throughout all entities
+          // to facilitate getToken() function standardization that all entities use
           return new IntegerLiteral({ kind: 'intlit', lexeme: x + y, line: 0, col: 0 });
         case '-':
           return new IntegerLiteral({ kind: 'intlit', lexeme: x - y, line: 0, col: 0 });
