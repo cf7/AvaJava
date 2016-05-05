@@ -8,6 +8,10 @@ class ListLiteral {
         this.type = Type.LIST;
     }
 
+    getToken() {
+        return {};
+    }
+    
     toString() {
         return "[" + this.elements.join(',') + "]";
     }

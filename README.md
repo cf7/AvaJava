@@ -29,7 +29,7 @@ This language will be designed to facilitate faster typing and more concise repr
 
 ##Grammar
 
-[Avajava Railroad Diagram](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/images/railroad_diagram/index.html)
+[Avajava Railroad Diagram](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/images/railroad_diagram/index.html)  
 [Avjava microsyntax](https://raw.githubusercontent.com/ronaldooeee/Avajava/master/images/microsyntax/index.html)
 ###Microsyntax
 

@@ -98,6 +98,7 @@ var FunctionCall = (function () {
 
                     for (var i = 0; i < this.args.length; i++) {
                         this.args[i].analyze(context); // do they need to be analyzed?
+                        console.log(this.args[i]);
                         if (this.args[i].getToken().kind === "id") {
                             console.log("***lookingup***: " + this.args[i].getToken().lexeme);
                             temporary = context.lookupVariable(this.args[i].getToken());
