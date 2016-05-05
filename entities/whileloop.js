@@ -18,14 +18,14 @@ var WhileLoop = (function() {
     return this.body.analyze(context);
   };
 
-  WhileLoop.prototype.optimize = function() {
-    // this.condition = this.condition.optimize();
-    // this.body = this.body.optimize();
-    // if (this.condition instanceof BooleanLiteral && this.condition.value() === false) {
-    //   return null;
-    // }
-    // return this;
-  };
+  // WhileLoop.prototype.optimize = function() {
+  //   this.condition = this.condition.optimize();
+  //   this.body = this.body.optimize();
+  //   if (this.condition instanceof BooleanLiteral && this.condition.value() === false) {
+  //     return null;
+  //   }
+  //   return this;
+  // };
 
   return WhileLoop;
 

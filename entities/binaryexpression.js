@@ -125,40 +125,40 @@ var BinaryExpression = (function () {
         } else {
           switch (this.operator.lexeme) {
             case '+':
-              if (isIntegerLiteral(this.right, 0)) {
+              if (this.isIntegerLiteral(this.right, 0)) {
                 return this.left;
               }
-              if (isIntegerLiteral(this.left, 0)) {
+              if (this.isIntegerLiteral(this.left, 0)) {
                 return this.right;
               }
               break;
             case '-':
-              if (isIntegerLiteral(this.right, 0)) {
+              if (this.isIntegerLiteral(this.right, 0)) {
                 return this.left;
               }
-              if (sameVariable(this.left, this.right)) {
+              if (this.sameVariable(this.left, this.right)) {
                 return new IntegerLiteral(0);
               }
               break;
             case '*':
-              if (isIntegerLiteral(this.right, 1)) {
+              if (this.isIntegerLiteral(this.right, 1)) {
                 return this.left;
               }
-              if (isIntegerLiteral(this.left, 1)) {
+              if (this.isIntegerLiteral(this.left, 1)) {
                 return this.right;
               }
-              if (isIntegerLiteral(this.right, 0)) {
+              if (this.isIntegerLiteral(this.right, 0)) {
                 return new IntegerLiteral(0);
               }
-              if (isIntegerLiteral(this.left, 0)) {
+              if (this.isIntegerLiteral(this.left, 0)) {
                 return new IntegerLiteral(0);
               }
               break;
             case '/':
-              if (isIntegerLiteral(this.right, 1)) {
+              if (this.isIntegerLiteral(this.right, 1)) {
                 return this.left;
               }
-              if (sameVariable(this.left, this.right)) {
+              if (this.sameVariable(this.left, this.right)) {
                 return new IntegerLiteral(1);
               }
           }
