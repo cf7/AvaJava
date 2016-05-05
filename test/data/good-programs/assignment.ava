@@ -1,0 +1,11 @@
+var x = 10;
+var y = 12;
+
+x = 5;
+x = y;
+
+var thisFunction = function (x:int) -> end;
+
+x = thisFunction;
+
+// x = function (z:int) -> return z + 1; end;

@@ -79,8 +79,7 @@ Print 		::= 'ava' Exp
 
 Loop 		::= ForLoop | WhileLoop
 
-ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}' 
-				| 'for' id 'times' '{' Block '}'
+ForLoop 	::= 'for' 'each' id 'in' Exp '{' Block '}'
 				| 'for' '(' VarDecl ConditionalExp ')' '{' Block '}'
 				
 WhileLoop	::=	'while' '(' Exp ')' '{' Block '}'

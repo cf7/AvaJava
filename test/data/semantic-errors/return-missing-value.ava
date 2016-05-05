@@ -1,0 +1,1 @@
+var thisFunction = function (x:int) -> return; end;

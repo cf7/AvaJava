@@ -60,7 +60,10 @@ var AnalysisContext = (function() {
   };
 
   AnalysisContext.prototype.assignValue = function(token, value) {
+    console.log("INSIDE ASSIGNVALUE ** ** ** **");
+    console.log(this.symbolTable[token.lexeme]);
     this.symbolTable[token.lexeme] = value;
+    console.log(this.symbolTable[token.lexeme]);
   };
   
   AnalysisContext.prototype.lookupVariable = function(token) {

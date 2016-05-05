@@ -22,8 +22,24 @@ var AssignmentStatement = (function() {
 
     this.target.analyze(context);
     this.source.analyze(context);
+
+    // console.log("target and source");
+    // console.log(this.target);
+    // console.log(this.source);
+    
+    // if (this.source instanceof VariableReference) {
+    //   context.assignValue(this.target.token, this.source.referent);
+    // } else {
+    //   context.assignValue(this.target.token, this.source);
+    // }
+    //this.target = context.lookupVariable(this.target.token);
+    // console.log("looking up variable");
+    // console.log(" = = = = = ")
+    // console.log(this.target);
+    // console.log("should be different from what is above");
+    // console.log(context.lookupVariable(this.target.token));
     // want type to be changeable later on
-    // return this.source.type.mustBeCompatibleWith(this.target.type, 'Type mismatch in assignment');
+    return this;
   };
 
   AssignmentStatement.prototype.optimize = function() {

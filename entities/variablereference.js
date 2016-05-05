@@ -23,7 +23,7 @@ var VariableReference = (function() {
     // referring to anything
     // because even though param was passed in syntactically
     // was not passed in semantically
-    console.log("REFERENT: " + this.referent.constructor);
+    // console.log("REFERENT: " + this.referent.constructor);
     if (this.referent) {
       // every declared variable needs to have an exp, and that exp must have a type
       // including function parameters

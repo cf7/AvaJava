@@ -58,10 +58,16 @@ var parseBlock = function() {
   var numberErrors = error.count;
   while (true) {
     statements.push(parseStatement());
-    if (!at('EOF') && statements[0]) {
+    if (statements[0]) {
       match(';');
     }
+    if ((!statements[0] && at(';'))) { // for the ';;;...;;;' case
+      while (at(';')) {
+        match(';');
+      }
+    }
     console.log("matched semicolon");
+    console.log(tokens[0]);
     if (!at(blockStatementKeywords)) {
       break;
     } else if (error.count > numberErrors) {
@@ -300,13 +306,15 @@ var parseForLoop = function () {
     body = parseBlock();
     match('}');
   } else { // counter for loop
-    if (tokens[1].lexeme === 'times') {
-      exp = parseExpression();
-      match('times');
-      match('{');
-      body = parseBlock();
-      match('}')
-    } else if (at('(')) {
+    // ** if still want to add for x times { ava "Hello" } version
+    // if (tokens[1].lexeme === 'times') { // lookahead
+    //   exp = parseExpression();
+    //   match('times');
+    //   match('{');
+    //   body = parseBlock();
+    //   match('}')
+    // } else 
+    if (at('(')) {
       match('(');
       id = parseVariableDeclaration();
       exp = parseConditionalExp();

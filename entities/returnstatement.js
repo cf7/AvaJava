@@ -1,4 +1,5 @@
 var error = require('../error.js');
+var Type = require('./type.js');
 
 var ReturnStatement = (function () {
     function ReturnStatement (value) {
@@ -10,19 +11,23 @@ var ReturnStatement = (function () {
     };
     
     ReturnStatement.prototype.analyze = function(context) {
-        this.value.analyze(context);
-        if (!context.getInsideFunction()) {
-            error("Return statement must be inside a function block.");
+        if (this.value) {
+            this.value.analyze(context);
+            if (!context.getInsideFunction()) {
+                error("Return statement must be inside a function block.");
+            }
+            var currentScope = context.getScope();
+            console.log("*************");
+            console.log("CURRENT SCOPE");
+            console.log(currentScope);
+            currentScope.type = this.value.type;
+            console.log("*************");
+            console.log("NEW TYPE");
+            console.log(currentScope.type);
+            // setting the return type for the function!!!
+        } else {
+            error("Return statement must return a value.");
         }
-        var currentScope = context.getScope();
-        console.log("*************");
-        console.log("CURRENT SCOPE");
-        console.log(currentScope);
-        currentScope.type = this.value.type;
-        console.log("*************");
-        console.log("NEW TYPE");
-        console.log(currentScope.type);
-        // setting the return type for the function!!!
 
     };
 

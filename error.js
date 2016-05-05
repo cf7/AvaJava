@@ -11,7 +11,7 @@ var error = function (message, location) {
         }
     }
     if (!error.quiet) {
-        console.log(`${message}`);
+        console.log(`Error: ${message}`);
     }
     return error.count++;
 };

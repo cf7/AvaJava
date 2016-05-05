@@ -28,7 +28,7 @@ var Type = (function() {
   Type.ITERABLE = new Type('iterable');
 
   Type.FUNCTION = new Type('function');
-
+  
   // make sure to export after adding more types!!!
 
   Type.ARBITRARY = new Type('<arbitrary_type>');
