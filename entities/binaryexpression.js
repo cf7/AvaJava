@@ -137,7 +137,7 @@ var BinaryExpression = (function () {
                 return this.left;
               }
               if (this.sameVariable(this.left, this.right)) {
-                return new IntegerLiteral(0);
+                return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
               }
               break;
             case '*':
@@ -148,10 +148,10 @@ var BinaryExpression = (function () {
                 return this.right;
               }
               if (this.isIntegerLiteral(this.right, 0)) {
-                return new IntegerLiteral(0);
+                return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
               }
               if (this.isIntegerLiteral(this.left, 0)) {
-                return new IntegerLiteral(0);
+                return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
               }
               break;
             case '/':
@@ -159,7 +159,7 @@ var BinaryExpression = (function () {
                 return this.left;
               }
               if (this.sameVariable(this.left, this.right)) {
-                return new IntegerLiteral(1);
+                return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
               }
           }
         }
@@ -167,7 +167,23 @@ var BinaryExpression = (function () {
     }
 
     BinaryExpression.prototype.isIntegerLiteral = function(operand, value) {
-      return operand instanceof IntegerLiteral && operand.value === value;
+      console.log("|| Inside isIntegerLiteral in BinaryExpression Optimizer ||");
+      console.log(operand);
+      var valid = false;
+      var valueExp = '';
+      if (operand.referent) {
+        valid = operand.referent.exp instanceof IntegerLiteral;
+        valueExp = valid ? operand.referent.exp.value : valueExp;
+      } else if (operand instanceof IntegerLiteral) {
+        valid = true;
+        valueExp = operand.value;
+      }
+      console.log(valid);
+      console.log(valueExp);
+      console.log(valid && (parseInt(valueExp) === value));
+      // ** by this time, will have already been analyzed, so whatever 
+      // ** variable is here should have a referent
+      return valid && (parseInt(valueExp) === value);
     };
 
     BinaryExpression.prototype.sameVariable = function(exp1, exp2) {

@@ -384,8 +384,8 @@ For example . . .
 ***
 
 var x = 3;
-var printNumber = () -> ava(x);
-var printAgain = () -> var x = 10; printNumber;
+var printNumber = () -> ava(x); end;
+var printAgain = () -> var x = 10; printNumber; end;
 printAgain();
 
 ***
@@ -403,6 +403,12 @@ of the printNumber call within printAgain. (That would by dynamic scoping.)
 for each var number in x { number++; };
 for each number in x { number++; };
 
+```
+
+###### If statements have optional parentheses
+```
+if (true) then ava "hello"; end;
+if true then ava "hello"; end;
 ```
 
 
