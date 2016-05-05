@@ -16,7 +16,6 @@ This language will be designed to facilitate faster typing and more concise repr
 <li> Lambda Functions
 <li> Currying/Uncurrying
 <li> List Ranges
-<li> List Comprehensions
 <li> Cons and Append Operators
 <li> String Interpolation
 <li> String-Int Operations
@@ -25,6 +24,7 @@ This language will be designed to facilitate faster typing and more concise repr
 <li> Scientific Notation
 <li> Constant Folding
 <li> Unreachable Code Elimination
+<li> Algebraic Simplification
 </ul>
 
 ##Grammar
@@ -303,14 +303,6 @@ x[1];
 
 [1,2,3]++ 	// [2,3,4]
 [1,2,3]^^2 	// [1,4,9]
-```
-
-#####List Comprehensions
-```
-var u = [z^^2 for z in [1,2,3,4,5]];
-
-var w = [(x, y) for x in [1,2,3] for y in [3,1,4] if x != y];
-
 ```
 
 #####Cons and Append Operators

@@ -60,16 +60,15 @@ var emit = function (line) {
 
 
 var makeOp = function (op) { 
-  return {    // only add to this list if Avajava operator looks different in javascript
+  return { 
     not: '!', 
     and: '&&',
     or: '||',
     '==': '===',
     '!=': '!=='
-  }[op] || op;  // otherwise, if operators are same, keep op
+  }[op] || op;  
 };
 
-// both work
 var makeVariable = (function(lastId, map) {
   return function(v) {
     if (!map.has(v)) {
@@ -78,29 +77,11 @@ var makeVariable = (function(lastId, map) {
     return '_v' + map.get(v);
   };
 })(0, new HashMap());
-// var makeVariable = function(v) { // if stops working, see original Iki version
-//   console.log('inside makeVariable: ' + v);
-//   console.log('map has ' + v + ': ' + map.has(v));
-//   if (!map.has(v)) {
-//     map.set(v, ++lastId);
-//   }
-//   return '_v' + map.get(v);
-// };
 
 var gen = function (e) {
-  console.log("inside gen entity: " + e); // prints toString() of entity
-  console.log("inside gen constructor-name: " + e.constructor.name);
-  // console.log(e); // prints entire entity
-  return generator[e.constructor.name](e); // find corresponding entity name in generator object
-  // and pass in the entity into its matching function
+  return generator[e.constructor.name](e);
 };
 
-// consult entities for instance variables within
-// the objects (example: program.block is an instance variable in the class Program)
-
-// need to determine whether to use gen() or not
-// sometimes will only need to return strings in the cases below
-// can have a mix of calling entitiy toStrings() and calling gen() to keep traversing
 var hasStatement = function (array) {
   var hasStmt = false;
   for (var i = 0; i < array.length; i++) {
@@ -140,12 +121,7 @@ var generator = {
   },
 
   VariableDeclaration: function (v) {
-    // var initializer = { // typechecking?
-    //   'int': '0',
-    //   'bool': 'false'
-    // }[v.type];
     if (v.exp) {
-                    // change to just 'v' when analyzer is working
       return "var " + (makeVariable(v.id.lexeme)) + " = " + gen(v.exp); //initializer + ";");
     } else {
       return "var " + (makeVariable(v.id.lexeme));
@@ -223,8 +199,6 @@ var generator = {
     return string;
   },
 
-  // if getting numbers from gen() while generating a block, might
-  // be because block returns indentlevel
   IfElseStatements: function (ifelse) {
     var strings = [];
     strings.push('if' + '(' + gen(ifelse.conditionals[0]) + ')' + ' { '+ gen(ifelse.bodies[0]) + ' }');
@@ -244,7 +218,6 @@ var generator = {
   },
 
   Print: function (p) {
-    // console.log("inside Print: " + gen(p.expression));
     return "console.log(" + gen(p.expression) + ")";
   },
 
@@ -279,20 +252,12 @@ var generator = {
     var index = { kind: 'id', lexeme: 'i' };
     var indexExp = { kind: 'intlit', lexeme: '0' };
     var op = { kind: '<', lexeme: '<' };
-    var left = new VariableReference(index); // don't gen() these because will
-    // be passed into gen() later on (in BinaryExpression)
-    var right = f.exp; // this is also a VariableReference
+    var left = new VariableReference(index); 
+    var right = f.exp;
     var incrementOp = { kind: '++', lexeme: '++' };
     var operand = new VariableReference(index);
-
-    if (!f.id) {
-        console.log("inside ForLoop: " + f);
-        // "for (var i = 0; i < gen(f.exp); i++) { gen(f.body) }"
-        return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
-          + '; ' + gen(new BinaryExpression(op, left, right)) + '; '
-          +  gen(new PostfixExpression(incrementOp, operand)) + ') { ' 
-          + gen(f.body) + ' }';
-    } else if (f.exp instanceof IfElseStatements) {
+    
+    if (f.exp instanceof IfElseStatements) {
         return 'for (' + gen(new VariableDeclaration(index, new IntegerLiteral(indexExp)))
           + '; ' + gen(f.exp.conditionals[0]) + '; ' + gen(f.exp.bodies[0]) + ') { '
           + gen(f.body) + ' }';
@@ -307,8 +272,6 @@ var generator = {
   },
 
   BothExpression: function (both) {
-    // has a left and right, left is binaryExpression, right is an Expression
-    // binaryExpressions have operators
     var right = both.right;
     if (right instanceof UnaryExpression) {
       right = gen(both.right);
@@ -319,38 +282,12 @@ var generator = {
     }
   },
 
-  // ReadStatement: function(s) {
-  //   var i, len, ref, results, v;
-  //   ref = s.varrefs;
-  //   results = [];
-  //   for (i = 0, len = ref.length; i < len; i++) {
-  //     v = ref[i];
-  //     results.push(emit((makeVariable(v.referent)) + " = prompt();"));
-  //   }
-  //   return results;
-  // },
-  // WriteStatement: function(s) {
-  //   var e, i, len, ref, results;
-  //   ref = s.expressions;
-  //   results = [];
-  //   for (i = 0, len = ref.length; i < len; i++) {
-  //     e = ref[i];
-  //     results.push(emit("alert(" + (gen(e)) + ");"));
-  //   }
-  //   return results;
-  // },
-  // WhileStatement: function(s) {
-  //   emit("while (" + (gen(s.condition)) + ") {");
-  //   gen(s.body);
-  //   return emit('}');
-  // },
-
   BooleanLiteral: function (literal) {
     return literal.toString();
   },
 
   IntegerLiteral: function (literal) {
-    return literal.toString(); // sometimes may not want to emit, just return a string
+    return literal.toString();
   },
 
   FloatLiteral: function (literal) {
@@ -358,18 +295,10 @@ var generator = {
   },
 
   StringLiteral: function (literal) {
-    // console.log("inside StringLiteral: " + literal.toString());
     return literal.toString();
   },
 
   ObjectLiteral: function (literal) {
-    // console.log("inside ObjectLiteral generator");
-    //   var keys = Object.keys(literal.exps);
-    //   var strings = [];
-    //   for (var property of keys) {
-    //       strings.push(makeVariable(property) + ":" + gen(literal.exps[property]));
-    //   }
-    //   return "{" + strings.join(',') + "}";
     return literal.toString();
   },
 
@@ -378,7 +307,6 @@ var generator = {
   },
 
   ListLiteral: function (literal) {
-    // for list ranges
     if (literal.elements[0] && (literal.elements[0] instanceof BinaryExpression)) {
       return gen(literal.elements[0]);
     } else {
@@ -386,20 +314,16 @@ var generator = {
     }
   },
 
-  // BooleanLiteral: function(literal) {
-  //   return literal.toString();
-  // },
-
   VariableReference: function(v) {
     console.log("inside VariableReference: " + v.token.lexeme);
-    return makeVariable(v.token.lexeme); // later pass in v.referent once analyzer is working
+    return makeVariable(v.token.lexeme);
   },
 
   UnaryExpression: function(e) {
     return "(" + (makeOp(e.operator.lexeme)) + (gen(e.operand)) + ")";
   },
 
-  BinaryExpression: function(e) { // turn string manipulation stuff into function later
+  BinaryExpression: function(e) {
     console.log("inside BinaryExpression: " + e.operator.lexeme);
     
     if (e.operator.lexeme === '...') {

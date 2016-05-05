@@ -41,7 +41,7 @@ var IfElseStatements = (function () {
         // ** analyzed by the time they get here
         var unreachableIndices = [];
         for (var i = 0; i < this.conditionals.length; i++) {
-            this.conditionals[i].optimize();
+            this.conditionals[i] = this.conditionals[i].optimize();
             if (this.conditionals[i] instanceof BooleanLiteral) {
                 if (this.conditionals[i].name === 'false') {
                     unreachableIndices.push(i);
@@ -49,7 +49,7 @@ var IfElseStatements = (function () {
             }
         }
         for (var i = 0; i < this.bodies.length; i++) {
-            this.bodies[i].optimize();
+            this.bodies[i] = this.bodies[i].optimize();
         }
 
         // for (index of unreachableIndices) {
@@ -58,10 +58,10 @@ var IfElseStatements = (function () {
         // }
 
         if (this.elseBody) {
-            this.elseBody.optimize();
+            this.elseBody = this.elseBody.optimize();
         }
         
-        if (this.conditionals[0].name === 'false') {
+        if (this.conditionals.length === 1 && this.conditionals[0].name === 'false') {
             return this.elseBody;
         } else {
             return this;

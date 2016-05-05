@@ -11,14 +11,10 @@ class ForLoop {
     }
 
     toString() {
-        if (!this.id) {
-            return `for ${this.exp} times { ${this.body} }`;
+        if (this.exp instanceof IfElseStatements) {
+            return `for (${this.id}; ${this.exp.conditionals[0]}; ${this.exp.bodies[0].statements}) { ${this.body} }`;
         } else {
-            if (this.exp instanceof IfElseStatements) {
-                return `for (${this.id}; ${this.exp.conditionals[0]}; ${this.exp.bodies[0].statements}) { ${this.body} }`;
-            } else {
-                return `for each ${this.id} in ${this.exp} { ${this.body} }`;
-            }
+            return `for each ${this.id} in ${this.exp} { ${this.body} }`;
         }
     }
 

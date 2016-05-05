@@ -13,6 +13,3 @@ var thisFunctionAgain = function (x:int) ->
 end;
 
 
-if (false) then
-	ava "should not reach this point if being optimized";
-end;
