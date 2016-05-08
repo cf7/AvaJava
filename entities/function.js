@@ -6,7 +6,7 @@ var Function = (function () {
         this.params = params; // an array of parsed expressions
         this.body = body; // an array of statements
         this.type = Type.FUNCTION;
-        // this.returnType = Type.ARBITRARY;
+        this.returnType = Type.ARBITRARY;
     }
 
     Function.prototype.getNumberParams = function() {

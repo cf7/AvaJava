@@ -35,10 +35,10 @@ var ReturnStatement = (function () {
             console.log("CURRENT SCOPE");
             console.log(currentScope);
             // currentScope.returnType = this.value.type;
-            currentScope.type = this.value.type;
+            currentScope.returnType = this.value.type;
             console.log("*************");
             console.log("NEW TYPE");
-            console.log(currentScope.type);
+            console.log(currentScope.returnType);
             // setting the return type for the function!!!
         } else {
             error("Return statement must return a value.");

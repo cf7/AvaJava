@@ -11,7 +11,8 @@ var FunctionCall = (function () {
     function FunctionCall (id, args) {
         this.id = id;
         this.args = args; // array of exp objects, need to get tokens
-        // this.type = Type.FUNCTION;
+        this.type = Type.FUNCTION;
+        this.returnType = Type.ARBITRARY;
     }
 
     FunctionCall.prototype.getArgs = function() {
@@ -38,7 +39,7 @@ var FunctionCall = (function () {
             } else {
                 currentFunction = currentFunction.getExp(); // because of first class functions
                 // the Function object is actually stored in the exp of the variabeDeclaration
-                this.type = currentFunction.type;
+                this.returnType = currentFunction.returnType;
                 console.log(this.id);
                 console.log("here");
                 console.log(currentFunction);
@@ -112,12 +113,16 @@ var FunctionCall = (function () {
                         for (var i = 0; i < variables.length; i++) {
                             // variable coming from outside will already be analyzed by block
                             // variables[i].analyze(context);
+                            var checkType = variables[i].type;
+                            if (variables[i].type === Type.FUNCTION) {
+                                checkType = variables[i].returnType;
+                            }
                             console.log("==Types==");
                             console.log(currentFunction.params[i].id.lexeme + " : " + currentFunction.params[i].type);
-                            console.log(variables[i] + " : " + variables[i].type);
+                            console.log(variables[i] + " : " + checkType);
                             console.log("====");
-                            message = "Required " + currentFunction.params[i].type + " but found " + variables[i].type;
-                            currentFunction.params[i].type.mustBeMutuallyCompatibleWith(variables[i].type, message, currentFunction.params[i]);
+                            message = "Required " + currentFunction.params[i].type + " but found " + checkType;
+                            currentFunction.params[i].type.mustBeMutuallyCompatibleWith(checkType, message, currentFunction.params[i]);
                         }
                     }
                 }
