@@ -553,13 +553,13 @@ var parseExp12 = function () {
       while (at('[')) {
         match('[');
         // exps.push(parseExp13());
-        id = new Access(id, parseExp13());
+        id = new Access(id, false, parseExp13());
         match(']');
       }
       while (at('.')) {
         match('.');
         // exps.push(parseExp13()); // in grammar needs to be Exp12 for continuous accesses
-        id = new Access(id, parseExp13());
+        id = new Access(id, true, parseExp13());
       }
     }
      console.log("Accessing");

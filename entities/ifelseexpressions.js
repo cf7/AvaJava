@@ -17,7 +17,7 @@ var IfElseStatements = (function () {
             }
         }
         if (this.elseBody) {
-            strings.push('else ' + this.bodies[this.bodies.length - 1]);
+            strings.push('else ' + this.elseBody);
         }
         return strings.join('');
     };

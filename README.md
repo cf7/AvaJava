@@ -331,9 +331,10 @@ x[1];
 
 #####Objects
 ```
-var w = { x:2, y:3, z: { inside: 3 } };
+var w = { x:2, y:3, z: { u: 3 } };
+w['x'];
 w.x;
-w.z.inside;
+w.z.u;
 ```
 
 #####Sets
