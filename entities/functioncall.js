@@ -114,7 +114,7 @@ var FunctionCall = (function () {
                             // variable coming from outside will already be analyzed by block
                             // variables[i].analyze(context);
                             var checkType = variables[i].type;
-                            if (variables[i].type === Type.FUNCTION) {
+                            if (variables[i].type === Type.FUNCTION && currentFunction.params[i].type !== Type.FUNCTION) {
                                 checkType = variables[i].returnType;
                             }
                             console.log("==Types==");
