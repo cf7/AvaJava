@@ -43,7 +43,7 @@ class Access {
     changeAccess() {
         // for some reason  !(this.exp instanceof StringLiteral) wasn't working
         // even though console logged this.exp and saw it was indeed a StringLiteral
-        if (!(this.exp.type.name !== 'stringlit')) {
+        if (this.exp.type && !(this.exp.type.name !== 'stringlit')) {
             this.exp = new StringLiteral(this.exp.getToken());
             this.exp.string = '\'' + this.exp.string + '\'';
         }
