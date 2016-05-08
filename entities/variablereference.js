@@ -6,6 +6,7 @@ var VariableReference = (function() {
   function VariableReference(token) {
     console.log("varref token: " + token.lexeme);
     this.token = token;
+    this.referent = {};
   }
 
   VariableReference.prototype.getToken = function() {

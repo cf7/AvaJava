@@ -13,7 +13,6 @@ This language will be designed to facilitate faster typing and more concise repr
 <li> Function Return Types
 <li> Built-In Functions
 <li> First-Class/Higher Order Functions
-<li> Lambda Functions
 <li> Currying/Uncurrying
 <li> List Ranges
 <li> Cons and Append Operators

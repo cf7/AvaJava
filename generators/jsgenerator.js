@@ -245,7 +245,10 @@ var generator = {
           + gen(f.body) + ' }';
     } else {
         console.log("inside ForLoop: " + f.id);
-        return 'for (' + gen(f.id).replace(';','') + ' of ' + gen(f.exp) + ') { ' + gen(f.body) + ' }';
+        // just need the variable name
+        var iterator = gen(f.id).replace('var', '').replace('=', '').replace('(', '')
+                                .replace(')', '').replace('0', '').replace(';', '');
+        return 'for (' + iterator + ' of ' + gen(f.exp) + ') { ' + gen(f.body) + ' }';
     }
   },
 

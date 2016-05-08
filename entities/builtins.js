@@ -11,6 +11,7 @@ class BuiltIns {
             contains: {
                 value: {},
                 type: Type.FUNCTION,
+                returnType: Type.BOOL,
                 generateCode: function (args) {
                     console.log("inside builtin contains");
                     console.log(args);
@@ -23,6 +24,7 @@ class BuiltIns {
             length: {
                 value: {},
                 type: Type.FUNCTION,
+                returnType: Type.INT,
                 generateCode: function (args) {
                     return args[0] + ".length";
                 }
@@ -31,6 +33,7 @@ class BuiltIns {
             map: {
                 value: {},
                 type: Type.FUNCTION,
+                returnType: Type.INT,
                 generateCode: function (args) {
                     return args[1] + '.map(' + args[0] + ')';
                 }
@@ -39,6 +42,7 @@ class BuiltIns {
             push: {
                 value: {},
                 type: Type.FUNCTION,
+                returnType: Type.INT, // returns length of new array
                 generateCode: function (args) {
                     return args[0] + '.push(' + args[1] + ')';
                 }
@@ -47,6 +51,7 @@ class BuiltIns {
             pop: {
                 value: {},
                 type: Type.FUNCTION,
+                returnType: Type.ARBITRARY,
                 generateCode: function (args) {
                     return args[0] + '.pop()';
                 }
@@ -55,6 +60,7 @@ class BuiltIns {
             export: {
                 value: {},
                 type: Type.FUNCTION,
+                returnType: Type.ARBITRARY,
                 generateCode: function (args) {
                     return 'module.exports = ' + args[0];
                 }
