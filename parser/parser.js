@@ -547,6 +547,33 @@ var parseExp11 = function () {
 
 var parseExp12 = function () {
   console.log("inside parseExp12");
+  var id = parseExp13();
+  if (at(['[', '.'])) {
+    while (at(['[', '.'])) {
+      while (at('[')) {
+        match('[');
+        // exps.push(parseExp13());
+        id = new Access(id, parseExp13());
+        match(']');
+      }
+      while (at('.')) {
+        match('.');
+        // exps.push(parseExp13()); // in grammar needs to be Exp12 for continuous accesses
+        id = new Access(id, parseExp13());
+      }
+    }
+     console.log("Accessing");
+    //console.log(exps);
+    console.log("leaving parseExp12");
+    return id // new Access(id, exps);
+  } else {
+    return id;
+  }
+
+}
+
+var parseExp13 = function () {
+  console.log("inside parseExp13");
   if (at('(')) {
     match('(');
     var exp = parseExpression();
@@ -563,25 +590,8 @@ var parseExp12 = function () {
     return parseFloatLiteral();
   } else if (at('stringlit')) { // hardcoding for now, change to 'literal' later
     return parseStringLiteral();
-  } else if (at('id')) {
-    var exps = [];
-    var varref = parseVariableReference();
-    console.log("Exp11 varref: " + varref);
-    if (at(['[', '.'])) {
-      while (at(['[', '.'])) {
-        while (at('[')) {
-          match('[');
-          exps.push(parseExpression());
-          match(']');
-        }
-        while (at('.')) {
-          match('.');
-          exps.push(parseExpression()); // in grammar needs to be Exp12 for continuous accesses
-        }
-      }
-      varref = new Access(varref, exps);
-    }
-    return varref;
+  } else if (at('id')) {  
+    return varref = parseVariableReference();
     // How do we distinguish between an id and a function Call?
   } else if (at(['true', 'false'])) {
     return parseBooleanLiteral();

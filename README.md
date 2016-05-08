@@ -200,11 +200,6 @@ var addOne = function (x:int) -> return x + 1; end;
 
 mapFunction(addOne, [1,2,3]);
 ```
-
-####Lambda (Anonymous) Functions   
-```
-(function () -> return function () -> return function () -> return 0; end; end; end)();
-```
                  
 ####Primitives
 ```
@@ -243,6 +238,8 @@ for (var i = 0 if i < length(m) then i++) {
 ```
 
 #####Assignment:
+This is essentially javascript assignment.
+
 ```
 var x = 1;
 x = "hi";
@@ -250,6 +247,8 @@ x = {y: 21, x: 100, z: 22};
 ```
 
 #####Operators:
+We added an exponential operator to not have to do repeat multiplication.
+
 ```
 x++;		// increment
 x--;		// decrement
@@ -283,6 +282,8 @@ x and y both not 0 	// intead of (x != 0 && y != 0)
 ```
 
 ##### If Statements
+If statements replace curly braces with 'then' and terminal 'end' keywords. Statements in an if-body still require semicolons.
+
 ```
 var x = 10;
 
@@ -291,9 +292,25 @@ if x > 1 then ava "inside if statement"; else ava "not inside if statement"; end
 if x < 1 then
 	ava "0";
 end;
+
+x = 8;
+
+if (x < 7) then
+	ava "6";
+else if (x < 8) then
+	ava "7";
+else if (x < 9) then
+	ava "8";
+else if (x < 10) then
+	ava "9";
+else 
+	ava "10";
+end;
+
 ```
 
-#####Lists and List Operations
+#####Lists
+
 ```
 var x = [1,2,3,4,5,6,7];
 x[0];
@@ -301,8 +318,6 @@ x[1];
 
 [1...10] 	// [1,2,3,4,5,6,7,8,9,10]
 
-[1,2,3]++ 	// [2,3,4]
-[1,2,3]^^2 	// [1,4,9]
 ```
 
 #####Cons and Append Operators
@@ -335,22 +350,12 @@ w.z.inside;
 
 #####String Operations
 ```
-"t" + "e" => "te" 
-"e" - "e" => ""
-"te" - "e" => "t"
-"heeh" - "h" => "eeh"
-"hehe" - "h" => "ehe"
-"t" * 3 => "ttt"
-```
-
-#####Errors and Exceptions:
-```
-1 + true
-=> Error "Invalid Addition of Types" 1 + true 
--------------------------------------^^^^^^^^
-var addOdds = (x,y) -> if x % 2 + y % 2 both not 0 then x + y; 
-=> Error "Expected conditional" ...if x % 2 + y % 2 both...
---------------------------------------^^^^^^^^^^^^^
+"t" + "e" 		// evalutates to "te" 
+"e" - "e" 		// evalutates to ""
+"te" - "e" 		// evalutates to "t"
+"heeh" - "h" 	// evalutates to "eeh"
+"hehe" - "h" 	// evalutates to "ehe"
+"t" * 3 		// evalutates to "ttt"
 ```
 
 #####Modules (just use "export")
@@ -383,7 +388,7 @@ of the printNumber call within printAgain. (That would by dynamic scoping.)
 
 #####Some Edge-Cases of the Language
 
-###### 'var' is optional in for each loops
+###### 'var' is optional in for-each loops
 
 ```
 for each var number in x { number++; };

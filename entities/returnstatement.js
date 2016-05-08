@@ -11,6 +11,20 @@ var ReturnStatement = (function () {
     };
     
     ReturnStatement.prototype.analyze = function(context) {
+
+        /**
+            Features that depend on function return types:
+            -currying
+            -type inference
+            -higher-order functions
+            -typed parameters
+            -built-in functions
+
+            If we take out function return types, we lose
+            complete functionality for these features
+            If we keep function return types, we lose
+            higher-order functions
+        */
         if (this.value) {
             this.value.analyze(context);
             if (!context.getInsideFunction()) {

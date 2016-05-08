@@ -11,6 +11,19 @@ var Type = (function() {
     this.validTypeCache = {};
   }
 
+  /**
+  // new entity: ListType
+  // inside - ElementType
+  // inside - SetType
+  // inside - FunctionType
+  //              inside - ParamsType
+  //              inside - ResultType
+    inside - TupleType
+        -ComponentTypes: put everything in a list and pass to constructor
+    inside - MapeType
+        -KeyType
+        -ValueType
+  */          
   Type.BOOL = new Type('bool');
 
   Type.INT = new Type('int');

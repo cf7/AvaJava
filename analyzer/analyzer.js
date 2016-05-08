@@ -63,6 +63,14 @@ var AnalysisContext = (function() {
     console.log(this.symbolTable[token.lexeme]);
   };
   
+  AnalysisContext.prototype.isVariable = function(token) {
+    var variable = this.symbolTable[token.lexeme];
+    if (variable) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   AnalysisContext.prototype.lookupVariable = function(token) {
     console.log("inside lookupVariable");
     console.log("Analyze lookupVariable: " + token.lexeme);

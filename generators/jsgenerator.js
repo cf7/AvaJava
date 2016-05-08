@@ -131,31 +131,36 @@ var generator = {
   Access: function (l) {
     console.log("inside Access generate");
     console.log(l.id);
-    console.log(l.exps);
-    console.log(l.exps[0]);
-    // hardcoding for now
-    if (l.exps[0]) {
-      if (l.exps[0] instanceof Access) { // had been recursively stored as dot operators
-        if (l.exps[0].exps[0] instanceof VariableReference) { // base case
-          return gen(l.id) + '.' + makeVariable(l.exps[0].getToken().lexeme) + '.' + makeVariable(l.exps[0].exps[0].getToken().lexeme);
-        } else {
-          return gen(l.id) + '.' + gen(l.exps[0]);
-        }
-      } else {
-        var string = "";
-        string += gen(l.exps[0]);
-        if (l.exps.length > 1) {
-          for (var i = 1; i < l.exps.length; i++) {
-            console.log(l.exps[i]);
-            var str = gen(l.exps[i]);
-            string += "][" + gen(l.exps[i]);
-          }
-        }
-        return gen(l.id) + "[" + string + "]";
-      }
+    // console.log(l.exps);
+    // console.log(l.exps[0]);
+    if (l.exp instanceof AssignmentStatement) {
+      return gen(l.id) + '[' + gen(l.exp.target) + '] = ' + gen(l.exp.source);
     } else {
-      return gen(l.id);
-    }    
+      return gen(l.id) + '[' + gen(l.exp) + ']';
+    }
+    // hardcoding for now
+    // if (l.exps[0]) {
+    //   // if (l.exps[0] instanceof Access) { // had been recursively stored as dot operators
+    //   //   if (l.exps[0].exps[0] instanceof VariableReference) { // base case
+    //   //     return gen(l.id) + '.' + l.exps[0].getToken().lexeme + '.' + l.exps[0].exps[0].getToken().lexeme;
+    //   //   } else {
+    //   //     return gen(l.id) + '.' + l.exps[0];
+    //   //   }
+    //   // } else {
+    //     var string = "";
+    //     string += gen(l.exps[0]);
+    //     if (l.exps.length > 1) {
+    //       for (var i = 1; i < l.exps.length; i++) {
+    //         console.log(l.exps[i]);
+    //         var str = gen(l.exps[i]);
+    //         string += "][" + gen(l.exps[i]);
+    //       }
+    //     }
+    //     return gen(l.id) + "[" + string + "]";
+    //  // }
+    // } else {
+    //   return gen(l.id);
+    // }    
   },
 
   ObjectAccess: function (o) {

@@ -21,7 +21,6 @@ var BinaryExpression = (function () {
     BinaryExpression.prototype.toString = function() {
         return `( ${this.operator.lexeme} ${this.left} ${this.right} )`;
     };
-    
 
     BinaryExpression.prototype.analyze = function(context) {
         console.log("inside BinaryExpression analyzer");
@@ -54,9 +53,10 @@ var BinaryExpression = (function () {
             var type = this.canHaveDifferentOperands();
             return this.type = type;
           case '-':
+          case '@':
             this.mustHaveCompatibleOperands(); // want to be able to support
             // ints and strings
-            return this.type = this.left.type; // or right, either one works
+            return this.type = this.left.type;
           case '/':
           case '^^':
             this.mustHaveIntegerOperands(); // ints only until implementing floats
@@ -96,7 +96,9 @@ var BinaryExpression = (function () {
         Type.STRING.canBeCompatibleWith(Type.INT, '+');
 
         Type.STRING.canBeCompatibleWith(Type.STRING, '+');
+        console.log("left");
         console.log(this.left);
+        console.log("right");
         console.log(this.right);
         return this.left.type.isMixedCompatibleWith(this.right.type, this.operator.lexeme, error, this.operator);
     };
