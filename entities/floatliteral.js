@@ -16,11 +16,6 @@ var FloatLiteral = (function () {
     };
     
     FloatLiteral.prototype.analyze = function(context) {
-        console.log("--=--made it down to floats--=--");
-        // add typechecking
-        // will definitely need typechecking to support
-        // operations between integers and doubles (floats)
-        // don't need to execute, just need to translate
         return this.type = Type.FLOAT;
     };
 

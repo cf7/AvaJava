@@ -503,26 +503,23 @@ var parseExp8 = function () {
   // return statement
 }
 
-// parseExp6
 var parseExp9 = function () {
   var op, operand;
   console.log("inside parseExp9");
   if (at(['-', 'not'])) {
-    op = match(); // need to branch to a different case for negation
+    op = match();
     operand = parseExp10();
     return new UnaryExpression(op, operand);
   } else {
     return parseExp10();
   }
-  // return statement
 }
 
-// parseExp7
 var parseExp10 = function () {
   var op, operand;
   console.log("inside parseExp10");
   var operand = parseExp11();
-  if (at(['++', '--'])) { // add ! for factorial operation
+  if (at(['++', '--'])) {
     op = match();
     console.log("leaving parseExp9");
     return new PostfixExpression(op, operand);
@@ -552,18 +549,15 @@ var parseExp12 = function () {
     while (at(['[', '.'])) {
       while (at('[')) {
         match('[');
-        // exps.push(parseExp13());
         id = new Access(id, false, parseExp13());
         match(']');
       }
       while (at('.')) {
         match('.');
-        // exps.push(parseExp13()); // in grammar needs to be Exp12 for continuous accesses
         id = new Access(id, true, parseExp13());
       }
     }
-     console.log("Accessing");
-    //console.log(exps);
+    console.log("Accessing");
     console.log("leaving parseExp12");
     return id;
   } else {
@@ -594,8 +588,6 @@ var parseExp13 = function () {
     return varref = parseVariableReference();
   } else if (at(['true', 'false'])) {
     return parseBooleanLiteral();
-  // } else {
-  //   error('inside parseExp9 error', tokens[0]);
   }
 }
 

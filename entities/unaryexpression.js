@@ -11,7 +11,7 @@ var UnaryExpression = (function () {
     };
     
     UnaryExpression.prototype.analyze = function(context) {
-    this.operand.analyze(context);
+        this.operand.analyze(context);
         switch (this.operator.lexeme) {
             case 'not':
                 this.operand.type.canBeIntOrBool('The "not" operator requires a boolean or int operand', this.operator)
@@ -22,7 +22,7 @@ var UnaryExpression = (function () {
                 this.type = Type.INT;
                 break;
             default:
-
+                break;
         }
     };
 
