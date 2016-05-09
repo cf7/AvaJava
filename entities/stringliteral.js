@@ -17,7 +17,6 @@ var StringLiteral = (function () {
     };
 
     StringLiteral.prototype.analyze = function(context) {
-        console.log("---=---made it down to strings---=---");
         return this.type = Type.STRING;
     };
 

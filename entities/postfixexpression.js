@@ -1,9 +1,10 @@
 "use strict";
 
+var Type = require('./type.js');
+
 class PostfixExpression {
 
     constructor(op, operand) {
-        console.log("--------------postfixexpr---------: " + op.lexeme);
         this.operator = op;
         this.operand = operand;
     }
@@ -13,10 +14,21 @@ class PostfixExpression {
     }
 
     analyze(context) {
-        // typechecking
-        return this.operand.analyze(context);
+        this.operand.analyze(context);
+        switch (this.operator.lexeme) {
+            case '++':
+                this.operand.type.mustBeInteger('The "++" operator requires an integer operand', this.operator)
+                this.type = Type.INT;
+                break;
+            case '--':
+                this.operand.type.mustBeInteger('The "--" operator requires an integer operand', this.operator);
+                this.type = Type.INT;
+                break;
+            default:
+                break;
+        }
+        return this;
     }
-
 
     optimize() {
 

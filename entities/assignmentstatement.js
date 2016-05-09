@@ -17,16 +17,12 @@ var AssignmentStatement = (function() {
   };
 
   AssignmentStatement.prototype.analyze = function(context) {
-    console.log("+++++ inside AssignmentStatement analyze +++++");
-
     this.target.analyze(context);
     this.source.analyze(context);
-
     return this;
   };
 
   AssignmentStatement.prototype.optimize = function() {
-    console.log("inside AssignmentStatement optimize");
     this.target = this.target.optimize();
     this.source = this.source.optimize();
     if (this.source instanceof VariableReference && this.target.referent === this.source.referent) {

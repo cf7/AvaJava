@@ -24,6 +24,7 @@ var UnaryExpression = (function () {
             default:
                 break;
         }
+        return this;
     };
 
     UnaryExpression.prototype.optimize = function() {
