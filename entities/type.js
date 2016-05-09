@@ -119,8 +119,20 @@ var Type = (function() {
       if (result) {
         if (this.name === 'int' && otherType.name === 'int') {
           return Type.INT;
-        } else {
+        } else if (this.name === 'string' && otherType.name === 'string') {
           return Type.STRING;
+        } else if (this.name === 'float' && otherType.name === 'float') {
+          return Type.FLOAT;
+        } else if (this.name === 'int' && otherType.name === 'string') {
+          return Type.STRING;
+        } else if (this.name === 'string' && otherType.name === 'int') {
+          return Type.STRING;
+        } else if (this.name === 'int' && otherType.name === 'float') {
+          return Type.FLOAT;
+        } else if (this.name === 'float' && otherType.name === 'int') {
+          return Type.FLOAT;
+        } else {
+          return Type.ARBITRARY;
         }
       } else {
         return error(message, location);

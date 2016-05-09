@@ -44,7 +44,7 @@ var BinaryExpression = (function () {
             case '<=':
             case '>=':
             case '>':
-              this.mustHaveIntegerOperands();
+              this.canHaveDifferentOperands();
               return this.type = Type.BOOL;
             case '==':
             case '!=':
@@ -55,16 +55,13 @@ var BinaryExpression = (function () {
               this.mustHaveBooleanOperands();
               return this.type = Type.BOOL;
             case '*':
-              var type = this.canHaveDifferentOperands();
-              return this.type = type;
             case '+':
-              var type = this.canHaveDifferentOperands();
-              return this.type = type;
             case '-':
             case '%':
             case '/':
-              this.mustHaveCompatibleOperands();
-              return this.type = this.left.type;
+            case '^^':
+              var type = this.canHaveDifferentOperands();
+              return this.type = type; 
             case '@':
               this.mustHaveCompatibleOperands();
               return this.type = Type.LIST;
@@ -74,9 +71,6 @@ var BinaryExpression = (function () {
             case '...':
               this.mustHaveIntegerOperands();
               return this.type = Type.LIST;
-            case '^^':
-              this.mustHaveIntegerOperands();
-              return this.type = Type.INT;
             default:
               break;
           }
@@ -108,13 +102,66 @@ var BinaryExpression = (function () {
         if (this.operator.lexeme === '::') {
           error = this.operator.lexeme + " can only be used with integers or lists";
         }
+
         Type.INT.canBeCompatibleWith(Type.INT, '*');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '*');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '*');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '*');
         Type.INT.canBeCompatibleWith(Type.STRING, '*');
         Type.STRING.canBeCompatibleWith(Type.INT, '*');
+
         Type.INT.canBeCompatibleWith(Type.INT, '+');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '+');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '+');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '+');
         Type.INT.canBeCompatibleWith(Type.STRING, '+');
         Type.STRING.canBeCompatibleWith(Type.INT, '+');
         Type.STRING.canBeCompatibleWith(Type.STRING, '+');
+
+        Type.INT.canBeCompatibleWith(Type.INT, '-');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '-');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '-');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '-');
+        Type.STRING.canBeCompatibleWith(Type.STRING, '-');
+
+        Type.INT.canBeCompatibleWith(Type.INT, '/');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '/');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '/');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '/');
+
+        Type.INT.canBeCompatibleWith(Type.INT, '%');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '%');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '%');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '%');
+
+        Type.INT.canBeCompatibleWith(Type.INT, '^^');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '^^');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '^^');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '^^');
+
+        Type.INT.canBeCompatibleWith(Type.INT, '<');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '<');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '<');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '<');
+        Type.STRING.canBeCompatibleWith(Type.STRING, '<');
+
+        Type.INT.canBeCompatibleWith(Type.INT, '<=');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '<=');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '<=');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '<=');
+        Type.STRING.canBeCompatibleWith(Type.STRING, '<=');
+
+        Type.INT.canBeCompatibleWith(Type.INT, '>');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '>');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '>');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '>');
+        Type.STRING.canBeCompatibleWith(Type.STRING, '>');
+
+        Type.INT.canBeCompatibleWith(Type.INT, '>=');
+        Type.FLOAT.canBeCompatibleWith(Type.FLOAT, '>=');
+        Type.INT.canBeCompatibleWith(Type.FLOAT, '>=');
+        Type.FLOAT.canBeCompatibleWith(Type.INT, '>=');
+        Type.STRING.canBeCompatibleWith(Type.STRING, '>=');
 
         Type.LIST.canBeCompatibleWith(Type.INT, '::');
         Type.INT.canBeCompatibleWith(Type.LIST, '::');
