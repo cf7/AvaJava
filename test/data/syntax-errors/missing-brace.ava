@@ -1,1 +1,1 @@
-for x times ava "Hello World"; };
+for each x in [1,2,3]  ava "Hello World"; };

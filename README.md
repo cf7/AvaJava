@@ -236,7 +236,7 @@ for (var i = 0 if i < length(m) then i++) {
 // this version requires 'var'
 ```
 
-#####Assignment:
+#####Assignment
 This is essentially javascript assignment.
 
 ```
@@ -244,8 +244,15 @@ var x = 1;
 x = "hi";
 x = {y: 21, x: 100, z: 22};
 ```
+#####Variables
+Variable names in Avajava cannot have numbers.
 
-#####Operators:
+```
+var x = 0;		// valid
+var x2 = 0;		// this will throw a syntax error
+```
+
+#####Operators
 We added an exponential operator to not have to do repeat multiplication.
 
 ```
