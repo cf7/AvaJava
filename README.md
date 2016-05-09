@@ -227,12 +227,14 @@ false		// boolean
 ```
  
 #####Loops
+For readability, we embedded a conditional expression in the second version of the forloop.
+
 ```
 var x = 10;
 
 while (x < 20) {
 	ava "Hello World";
-}
+};
 
 var x = [ 1, 2, 3, 4, 5 ];
 
@@ -243,7 +245,7 @@ var m = [ 1, 2, 3, 4, 5 ];
 
 for (var i = 0 if i < length(m) then i++) { 
 	ava m[i]; 
-} 
+};
 ```
 
 #####Assignment
@@ -275,8 +277,8 @@ x -= 10;
 x *= 10; 
 x /= 10; 
 x % 2;		// modulus
-x and y
-x or y
+x and y;
+x or y;
 ```
 
 #####Relational Operators
@@ -284,9 +286,9 @@ x or y
 1 == 1
 1 >= 2
 1 <= 2
-1 != 2 			// not equal
-true and false 	// yields false
-true or false	// yields true
+1 != 2 				// not equal
+true and false; 	// yields false
+true or false;		// yields true
 ```
 
 #####Both Expressions
@@ -325,7 +327,8 @@ end;
 
 ```
 
-#####Lists
+#####Lists and List Ranges
+Only the triple dot ellipses is used to express list ranges.
 
 ```
 var x = [1,2,3,4,5,6,7];

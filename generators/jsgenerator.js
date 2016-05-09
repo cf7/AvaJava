@@ -39,7 +39,6 @@ var builtins = new BuiltIns();
 
 module.exports = function (program) {
   console.log("**********************GENERATOR********************");
-  console.log(program);
   map = new HashMap();
   lastId = 0;
   return generate(program);
@@ -110,7 +109,6 @@ var generator = {
       for (i = 0, len = ref.length; i < len; i++) {
         statement = ref[i];
         if (statement) {
-          console.log("inside Block for loop: " + statement);
           pad = indentPadding * indentLevel;
           string += "\n" + Array(pad + 1).join(' ') + gen(statement);
         }
@@ -129,8 +127,6 @@ var generator = {
   },
 
   Access: function (l) {
-    console.log("inside Access generate");
-    console.log(l.id);
     if (l.exp instanceof AssignmentStatement) {
       return gen(l.id) + '[' + gen(l.exp.target) + '] = ' + gen(l.exp.source);
     } else {
@@ -139,11 +135,6 @@ var generator = {
   },
 
   ObjectAccess: function (o) {
-    console.log("inside ObjectAccess generate");
-    console.log(o.id);
-    console.log(o.exps);
-    console.log(o.exps[0]);
-
     return gen(o.id) + '.' + gen(o.exps[0]);
   },
 
@@ -156,7 +147,6 @@ var generator = {
   },
 
   Function: function (f) {
-    console.log("params length: " + f.params.length);
     if (f.params.indexOf(undefined) === -1 && f.params.length > 0) {
       return "function " + "( " + gen(f.params) + " )" + "{ " + gen(f.body) + " }";
     } else {
@@ -167,12 +157,10 @@ var generator = {
   Array: function (a) {
     var string = "";
     if (a.length > 1) {
-      // string += '[ ';
       string += gen(a[0]);
       for (var i = 1; i < a.length; i++) {
         string += ', ' + gen(a[i]);
       }
-      // string += ' ]';
     } else {
       string += gen(a[0]);
     }
@@ -202,17 +190,11 @@ var generator = {
   },
 
   FunctionCall: function (c) {
-    console.log("inside FunctionCall: " + c.id.lexeme);
-    console.log(builtins);
     if (builtins.entities[c.id.lexeme]) {
       if (c.args.length > 0 && c.args[0]) {
-        console.log("insideinsideinsideinsideinsideinsideinsideinside");
-        console.log(c.id.lexeme);
         var newArgs = c.args.map(gen);
         return builtins.entities[c.id.lexeme].generateCode(newArgs);
       } else {
-        console.log("inhereinhereinhereinhereinhereinhereinhereinhere");
-        console.log(c.id.lexeme);
         return builtins.entities[c.id.lexeme].generateCode();
       }
     } else {
@@ -242,8 +224,6 @@ var generator = {
           + '; ' + gen(f.exp.conditionals[0]) + '; ' + gen(f.exp.bodies[0]) + ') { '
           + gen(f.body) + ' }';
     } else {
-        console.log("inside ForLoop: " + f.id);
-        // just need the variable name
         var iterator = gen(f.id).replace('var', '').replace('=', '').replace('(', '')
                                 .replace(')', '').replace('0', '').replace(';', '');
         return 'for (' + iterator + ' of ' + gen(f.exp) + ') { ' + gen(f.body) + ' }';
@@ -298,7 +278,6 @@ var generator = {
   },
 
   VariableReference: function(v) {
-    console.log("inside VariableReference: " + v.token.lexeme);
     return makeVariable(v.token.lexeme);
   },
 
@@ -306,9 +285,7 @@ var generator = {
     return "(" + (makeOp(e.operator.lexeme)) + (gen(e.operand)) + ")";
   },
 
-  BinaryExpression: function(e) {
-    console.log("inside BinaryExpression: " + e.operator.lexeme);
-    
+  BinaryExpression: function(e) {    
     if (e.operator.lexeme === '...') {
       var minus = {kind: '-', lexeme: '-', line: 0, col: 0};
       var plus = {kind: '+', lexeme: '+', line: 0, col: 0};
