@@ -111,7 +111,7 @@ Exp9 		::= prefixop? Exp10
 Exp10 		::= Exp11 postfixop?
 Exp11 		::= Exp12 ('^^' Exp12)*
 Exp12		::=	Exp13 (Access)*
-Exp13 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringlit | boolit | List | SetLiteral | ObjectLiteral
+Exp13 		::= '(' Exp ')' | VarRef | intlit | floatlit | stringlit | boolit | List | SetLiteral | ObjectLiteral
 
 VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
 Assign 		::= id assignop Exp
