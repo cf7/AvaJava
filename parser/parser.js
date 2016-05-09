@@ -80,8 +80,6 @@ var parseBlock = function() {
 };
 
 var parseStatement = function() {
-  // since parseBlock no longer matches ';'s, need to match ';'
-  // within each of these parseFunctions below
   console.log("inside parseStatement");
   if (at('var')) {
     return parseVariableDeclaration();
@@ -92,7 +90,7 @@ var parseStatement = function() {
   } else if (at('while')) {
     return parseWhileLoop();
   } else {
-    return parseExpression();//error('Statement expected', tokens[0]);
+    return parseExpression();
   }
 };
 

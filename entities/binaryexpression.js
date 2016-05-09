@@ -6,10 +6,8 @@ var VariableReference = require('./variablereference.js');
 var BinaryExpression = (function () {
 
     function BinaryExpression (op, left, right) {
-        console.log(op.lexeme);
         this.operator = op;
         this.left = left;
-        console.log("CONSTRUCTOR: " + this.left);
         this.right = right;
         this.type = Type.ARBITRARY;
         this.leftType = Type.ARBITRARY;
@@ -25,13 +23,8 @@ var BinaryExpression = (function () {
     };
 
     BinaryExpression.prototype.analyze = function(context) {
-        console.log("inside BinaryExpression analyzer");
-        // console.log("LEFT: " + this.left.constructor);
         this.left.analyze(context);
-        console.log("LEFT: " + this.left.constructor);
         this.right.analyze(context);
-        console.log("this.left.type###########: " + this.left.type);
-        console.log("this.right.type###########: " + this.left.type);
         if (this.left.type === Type.FUNCTION) {
           this.leftType = this.left.returnType;
         } else {
@@ -43,7 +36,7 @@ var BinaryExpression = (function () {
           this.rightType = this.right.type;
         }
         var operator = this.operator.lexeme;
-        switch (operator) { // add operators to these cases
+        switch (operator) {
           case '<':
           case '<=':
           case '>=':
@@ -65,22 +58,23 @@ var BinaryExpression = (function () {
             var type = this.canHaveDifferentOperands();
             return this.type = type;
           case '-':
+          case '%':
+          case '/':
           case '@':
+          case '::':
             this.mustHaveCompatibleOperands();
             return this.type = this.left.type;
-          case '/':
+          case '...':
           case '^^':
-            this.mustHaveIntegerOperands(); // ints only until implementing floats
+            this.mustHaveIntegerOperands();
             return this.type = Type.INT;
-          default: // change defaults
-            // this.mustHaveIntegerOperands();
-            // return this.type = Type.INT;
+          default:
+            break;
         }
     };
     
     BinaryExpression.prototype.mustHaveIntegerOperands = function() {
         var error = this.operator.lexeme + " must have integer operands";
-        console.log("inside mustHaveIntegerOperands: " + this.leftType);
         this.leftType.mustBeCompatibleWith(Type.INT, error, this.operator);
         return this.rightType.mustBeCompatibleWith(Type.INT, error, this.operator);
     }
@@ -97,9 +91,6 @@ var BinaryExpression = (function () {
     }
 
     BinaryExpression.prototype.canHaveDifferentOperands = function() {
-        console.log("^^^^^^^^ canHaveDifferentOperands ^^^^^^^^^");
-        console.log(this.leftType);
-        console.log(this.rightType);
         var error = this.operator.lexeme + " must have either both integers, an integer and a string";
         Type.INT.canBeCompatibleWith(Type.INT, '*');
         Type.INT.canBeCompatibleWith(Type.STRING, '*');
@@ -109,10 +100,6 @@ var BinaryExpression = (function () {
         Type.STRING.canBeCompatibleWith(Type.INT, '+');
 
         Type.STRING.canBeCompatibleWith(Type.STRING, '+');
-        console.log("left");
-        console.log(this.left);
-        console.log("right");
-        console.log(this.right);
         return this.leftType.isMixedCompatibleWith(this.rightType, this.operator.lexeme, error, this.operator);
     };
 

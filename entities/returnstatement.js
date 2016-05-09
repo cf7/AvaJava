@@ -17,13 +17,7 @@ var ReturnStatement = (function () {
                 error("Return statement must be inside a function block.");
             }
             var currentScope = context.getScope();
-            console.log("*************");
-            console.log("CURRENT SCOPE");
-            console.log(currentScope);
             currentScope.returnType = this.value.type;
-            console.log("*************");
-            console.log("NEW TYPE");
-            console.log(currentScope.returnType);
         } else {
             error("Return statement must return a value.");
         }

@@ -13,7 +13,6 @@ var Block = (function() {
   };
 
   Block.prototype.analyze = function(context) {
-    console.log("inside Block analyze");
     var i, len, localContext, ref, results, statement;
     localContext = context.getInsideFunction() ? context : context.createChildContext(); // create new local context for this block
 
@@ -22,12 +21,9 @@ var Block = (function() {
     if (ref[0]) {
       for (i = 0, len = ref.length; i < len; i++) {
         statement = ref[i];
-        console.log("Block CURRENT STATEMENT: " + statement);
         results.push(statement.analyze(localContext));
       }
-      console.log("Block results: " + results);
     }
-    console.log("leaving Block analyze");
     return results;
   };
 

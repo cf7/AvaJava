@@ -40,15 +40,12 @@ var FunctionCall = (function () {
                 var temporary;
                 var curried = false;
                 for (var i = 0; i < this.args.length; i++) {
-                    console.log(this.args[i]);
                     if (this.args[i] instanceof FunctionCall) {
                         temporary = context.lookupVariable(this.args[i].getToken());
                         if (temporary instanceof VariableDeclaration) {
                             if (temporary.exp && !(temporary.exp instanceof Function)) {
-                                console.log(this.args[i].getArgs());
                                 newArgs.push(new VariableReference(this.args[i].getToken()));
                                 newArgs = newArgs.concat(this.args[i].getArgs());
-                                console.log(newArgs);
                                 curried = true;
                             }
                         }
