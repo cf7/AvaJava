@@ -16,9 +16,34 @@ var y = mapFunction(addString, x);
 
 var z = { y[0], y[7] };
 
+contains(z, 'a');
+
 var index = 0;
 
 while (index < length(y)) {
 	ava y[index];
 	index++;
+};
+
+var removeString = function (s:string) -> return s - '0'; end;
+
+y = mapFunction(removeString, y);
+
+index = 0;
+
+while (index < length(y)) {
+	ava y[index];
+	index++;
+};
+
+var w = 1.00e12 - 0.25e11;
+w += 10e5;
+
+var index2 = 100;
+index = -100;
+
+while (index and index2 both not 0) {
+	ava "hello";
+	index++;
+	index2--;
 };

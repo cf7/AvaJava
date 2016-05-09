@@ -51,7 +51,7 @@ var Type = (function() {
   };
 
   Type.prototype.analyze = function(context) {
-    // using this for undefined varDecl
+
   };
 
   Type.prototype.canBeIntOrString = function(message, location) {
@@ -97,24 +97,20 @@ var Type = (function() {
   };
 
   Type.prototype.addValidType = function(otherType, circumstance) {
-    // can be compatiblewith otherType given current circumstance
     this.validTypeCache[otherType.name + circumstance] = { type: otherType };
   };
 
   Type.prototype.isValidType = function(circumstance, message, location) {
-    // can be compatiblewith otherType given current operator
     if (!(this.validTypeCache[this.name + circumstance])) {
       error(message, location);
     }
   };
 
   Type.prototype.removeValidType = function(otherType, circumstance) {
-    // can be compatiblewith otherType given current circumstance
     this.validTypeCache[otherType.name + circumstance] = { type: otherType };
   };
 
   Type.prototype.canBeCompatibleWith = function(otherType, operator) {
-    // can be compatiblewith otherType given current operator
     this.mixTypeCache[this.name + otherType.name + operator] = { operator: operator, type1: this, type2: otherType };
   };
 

@@ -16,12 +16,7 @@ var Block = (function() {
     console.log("inside Block analyze");
     var i, len, localContext, ref, results, statement;
     localContext = context.getInsideFunction() ? context : context.createChildContext(); // create new local context for this block
-    // only if it not inside a function
-    // console.log("parentContext: ");
-    // console.log(localContext.parent.symbolTable);
-    // console.log("localContext: ");
-    // console.log(localContext.symbolTable);
-    // console.log("statements: " + this.statements);
+
     ref = this.statements;
     results = [];
     if (ref[0]) {
@@ -39,7 +34,6 @@ var Block = (function() {
   Block.prototype.optimize = function() {
     console.log("inside Block optimize");
 
-    // unreachable code removal for return statements
     var temporary = [];
     var extraneous = false;
     for (var i = 0; i < this.statements.length; i += 1) {

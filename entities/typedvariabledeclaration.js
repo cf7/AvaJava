@@ -20,14 +20,9 @@ class TypedVariableDeclaration {
     analyze(context) {
         console.log("--------inside typeVarDecl analyze-------");
         console.log("current variable: " + this.id.lexeme);
-        // need to account for if variable is a single number
-        // a list of expressions
-        // or a function
-
-        // Type inference in here!!!
-        // Swift: once type is inferred, type cannot change
+    
         context.variableMustNotBeAlreadyDeclared(this.id);
-        context.addVariable(this.id.lexeme, this); // adds var to symbol table and returns symbol table
+        context.addVariable(this.id.lexeme, this);
         return this.type;
     }
 
