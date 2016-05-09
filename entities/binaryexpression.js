@@ -155,12 +155,26 @@ var BinaryExpression = (function () {
               }
               break;
             case '/':
+              if (this.isIntegerLiteral(this.left, 0)) {
+                return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
+              }
               if (this.isIntegerLiteral(this.right, 1)) {
                 return this.left;
               }
               if (this.sameVariable(this.left, this.right)) {
                 return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
               }
+            case '%':
+              if (this.isIntegerLiteral(this.left, 0)) {
+                return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
+              }
+              if (this.isIntegerLiteral(this.right, 1)) {
+                return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
+              }
+              if (this.sameVariable(this.left, this.right)) {
+                return new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
+              }
+              break;
           }
         }
       return this;
@@ -187,7 +201,6 @@ var BinaryExpression = (function () {
       console.log("inside foldIntegerConstants");
       switch (op) {
         case '+':
-          console.log("'+' case inside foldIntegerConstants");
           return new IntegerLiteral({ kind: 'intlit', lexeme: x + y, line: 0, col: 0 });
         case '-':
           return new IntegerLiteral({ kind: 'intlit', lexeme: x - y, line: 0, col: 0 });
