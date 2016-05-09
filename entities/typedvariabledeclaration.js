@@ -24,7 +24,7 @@ class TypedVariableDeclaration {
     }
 
     optimize() {
-
+        return this;
     }
 }
 

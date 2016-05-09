@@ -28,7 +28,8 @@ var UnaryExpression = (function () {
     };
 
     UnaryExpression.prototype.optimize = function() {
-        
+        this.operand = this.operand.optimize();
+        return this;
     };
     
     return UnaryExpression;

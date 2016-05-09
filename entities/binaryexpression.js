@@ -105,22 +105,11 @@ var BinaryExpression = (function () {
 
 
     BinaryExpression.prototype.optimize = function() {
-        console.log("inside BinaryExpression optimize");
-        console.log("OPERATOR");
-        console.log(this.operator);
-        console.log("LEFT");
-        console.log(this.left);
-        console.log("RIGHT");
-        console.log(this.right);
         this.left = this.left.optimize();
         this.right = this.right.optimize();
         if (this.left instanceof IntegerLiteral && this.right instanceof IntegerLiteral) {
-          console.log("=-=-=-=-=-=-=-=- about to fold integer constants -=-=-=-=-=-=-=-=");
-          console.log(this.left);
-          console.log(this.right);
           return this.foldIntegerConstants(this.operator.lexeme, +this.left.value, +this.right.value);
         } else if (this.left instanceof BooleanLiteral && this.right instanceof BooleanLiteral) {
-          console.log("=-=-=-=-=-=-=-=- about to fold boolean constants -=-=-=-=-=-=-=-=");
           return this.foldBooleanConstants(this.operator.lexeme, this.left.value(), this.right.value());
         } else {
           switch (this.operator.lexeme) {
@@ -198,7 +187,6 @@ var BinaryExpression = (function () {
     };
 
     BinaryExpression.prototype.foldIntegerConstants = function(op, x, y) {
-      console.log("inside foldIntegerConstants");
       switch (op) {
         case '+':
           return new IntegerLiteral({ kind: 'intlit', lexeme: x + y, line: 0, col: 0 });

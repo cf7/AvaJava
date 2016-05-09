@@ -15,7 +15,7 @@ class SetLiteral {
     }
 
     optimize() {
-
+        return this;
     }
 }
 

@@ -33,7 +33,10 @@ class ListLiteral {
     }
 
     optimize() {
-
+        for (var i = 0; i < this.elements.length; i += 1) {
+            this.elements[i] = this.elements[i].optimize();
+        }
+        return this;
     }
 }
 

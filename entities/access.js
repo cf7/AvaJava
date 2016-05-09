@@ -62,6 +62,12 @@ class Access {
             }
         }
     }
+
+    optimize() {
+        this.id = this.id.optimize();
+        this.exp = this.exp.optimize();
+        return this;
+    }
 }
 
 module.exports = Access;

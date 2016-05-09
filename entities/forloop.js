@@ -41,7 +41,10 @@ class ForLoop {
     }
 
     optimize() {
-        
+        this.id = this.id.optimize();
+        this.exp = this.exp.optimize();
+        this.body = this.body.optimize();
+        return this;
     }
 
 }

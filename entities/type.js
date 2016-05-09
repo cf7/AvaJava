@@ -36,9 +36,13 @@ var Type = (function() {
   };
 
   Type.prototype.analyze = function(context) {
-
+    return this;
   };
 
+  Type.prototype.optimize = function() {
+    return this;
+  };
+  
   Type.prototype.canBeIntOrBool = function(message, location) {
     if (!(this.isCompatibleWith(Type.INT) || this.isCompatibleWith(Type.BOOL))) {
       error(message, location);
@@ -107,7 +111,7 @@ var Type = (function() {
 
   Type.prototype.isMixedCompatibleWith = function(otherType, operator, message, location) {
       var result = false;
-      
+
       if (this.mixTypeCache[this.name + otherType.name + operator]) {
         result = this.mixTypeCache[this.name + otherType.name + operator].operator === operator;
       }

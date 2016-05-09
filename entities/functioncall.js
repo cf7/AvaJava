@@ -91,7 +91,10 @@ var FunctionCall = (function () {
     };
 
     FunctionCall.prototype.optimize = function() {
-        
+        for (var i = 0; i < this.args.length; i += 1) {
+            this.args[i] = this.args.optimize();
+        }
+        return this;
     };
     
     return FunctionCall;

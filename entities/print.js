@@ -14,7 +14,8 @@ class Print {
     }
 
     optimize() {
-
+        this.expression = this.expression.optimize();
+        return this;
     }
 }
 

@@ -23,7 +23,11 @@ class ObjectLiteral {
     }
 
     optimize() {
-
+        var keys = Object.keys(this.exps);
+        for (var property of keys) {
+            this.exps[property] = this.exps[property].optimize();
+        }
+        return this;
     }
 }
 

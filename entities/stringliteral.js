@@ -20,6 +20,10 @@ var StringLiteral = (function () {
         return this.type = Type.STRING;
     };
 
+    StringLiteral.prototype.optimize = function() {
+        return this;
+    };
+
     return StringLiteral;
 })();
 

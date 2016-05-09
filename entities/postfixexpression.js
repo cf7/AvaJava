@@ -31,7 +31,8 @@ class PostfixExpression {
     }
 
     optimize() {
-
+        this.operand = this.operand.optimize();
+        return this;
     }
 
 }

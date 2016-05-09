@@ -13,11 +13,13 @@ var BothExpression = (function () {
     };
 
     BothExpression.prototype.analyze = function(context) {
-        
+        return this;
     };
 
     BothExpression.prototype.optimize = function() {
-        
+        this.left = this.left.optimize();
+        this.right = this.right.optimize();
+        return this;
     };
     
     return BothExpression;

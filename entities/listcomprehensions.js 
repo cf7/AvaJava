@@ -1,24 +1,24 @@
-"use strict";
+// "use strict";
 
-var Type = require('.type.js');
+// var Type = require('.type.js');
 
-class ListLiteral {
-	constructor(elements) {
-		this.elements = elements;
-		this.type = Type.ITERABLE;
-	}
-	toString() {
-        return "[" + this.elements.join(',') + "]";
-    }
+// class ListLiteral {
+	// constructor(elements) {
+		// this.elements = elements;
+		// this.type = Type.ITERABLE;
+	// }
+	// toString() {
+        // return "[" + this.elements.join(',') + "]";
+    // }
 
-    analyze(context) {
-        // typechecking
-    }
+    // analyze(context) {
+        // // typechecking
+    // }
 
-    optimize() {
+    // optimize() {
 
-    }
-}
+    // }
+// }
 
-module.exports = ListLiteral;
+// module.exports = ListLiteral;
 

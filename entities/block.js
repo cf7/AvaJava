@@ -14,8 +14,7 @@ var Block = (function() {
 
   Block.prototype.analyze = function(context) {
     var i, len, localContext, ref, results, statement;
-    localContext = context.getInsideFunction() ? context : context.createChildContext(); // create new local context for this block
-
+    localContext = context.getInsideFunction() ? context : context.createChildContext();
     ref = this.statements;
     results = [];
     if (ref[0]) {
@@ -28,21 +27,16 @@ var Block = (function() {
   };
 
   Block.prototype.optimize = function() {
-    console.log("inside Block optimize");
-
     var temporary = [];
     var extraneous = false;
     for (var i = 0; i < this.statements.length; i += 1) {
-      console.log(this.statements[i]);
       if (this.statements[i] instanceof ReturnStatement) {
         temporary = this.statements.slice(0, i + 1);
-        console.log(temporary);
         extraneous = true;
       }
     }
     if (extraneous) {
       this.statements = temporary.slice();
-      console.log(this.statements);
     }
 
     var s;

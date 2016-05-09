@@ -26,10 +26,8 @@ var AssignmentStatement = (function() {
     this.target = this.target.optimize();
     this.source = this.source.optimize();
     if (this.source instanceof VariableReference && this.target.referent === this.source.referent) {
-      console.log("leaving null AssignmentStatement optimize");
       return null;
     }
-    console.log("leaving AssignmentStatement optimize");
     return this;
   };
 
