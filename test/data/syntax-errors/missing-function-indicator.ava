@@ -1,1 +1,1 @@
-var thisFunction = () -> ava "Hello" end;
+var thisFunction = () -> ava "Hello"; end;

@@ -1,0 +1,3 @@
+var thisFunction = function () -> return 0; end;
+
+thisFunction);

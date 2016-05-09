@@ -61,7 +61,6 @@ var BinaryExpression = (function () {
           case '%':
           case '/':
           case '@':
-          case '::':
             this.mustHaveCompatibleOperands();
             return this.type = this.left.type;
           case '...':

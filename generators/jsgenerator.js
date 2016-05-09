@@ -335,31 +335,16 @@ var generator = {
         return "( " + gen(e.right) + ".repeat(" + gen(e.left) + ") )";
       }
     } else if( e.operator.lexeme === '@') {
-        console.log("LEFT");
-        console.log(e.left);
-        console.log("RIGHT");
-        console.log(e.right);
         return gen(e.left) + '.concat(' + gen(e.right) + ')';
     } else if (e.operator.lexeme === '::'){
-      if(e.right.elements[0] instanceof ListLiteral){
-          return "[" + gen(e.left)  + "," + gen(e.right.elements[0]) + "]"
-        } else {
-          return "[" + gen(e.left)  + "," + gen(e.right) + "]"
-        }
       if(e.left instanceof IntegerLiteral && e.right instanceof IntegerLiteral){
-        if(counter < 1){
-          counter++;
-          return "[" + gen(e.left) + "]" + ".concat(" + gen(e.right) + ")";
-        }else if( counter == 1){
-          counter++
-          return "[" + gen(e.left) + "]" + ".concat(" + gen(e.right) + ")"
-        }else{
-          return gen(e.left)  + ".concat(" + gen(e.right) + ")";
-        }
+        return '[' + gen(e.left) + ', ' + gen(e.right) + ']';
       } else if(e.left instanceof ListLiteral && e.right instanceof IntegerLiteral){
-       return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
+        return gen(e.left) + ".concat(" + gen(e.right) + ")";
       } else if(e.left instanceof IntegerLiteral && e.right instanceof ListLiteral){
-       return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
+        return "[" + gen(e.left)  + "]" + ".concat(" + gen(e.right) + ")";
+      } else if(e.left instanceof ListLiteral && e.right instanceof ListLiteral) {
+        return '[' + gen(e.left) + '].concat(' + gen(e.right) + ')';
       }else{
        return gen(e.left)  + ".concat(" + gen(e.right) + ")" 
       }

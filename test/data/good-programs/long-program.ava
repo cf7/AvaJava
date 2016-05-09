@@ -47,3 +47,5 @@ while (index and indexTwo both not 0) {
 	index++;
 	indexTwo--;
 };
+
+for each x in [1...10] { ava "hello again"; };

@@ -61,6 +61,10 @@ class Access {
                 this.exp.target.string = '\'' + this.exp.target.string + '\'';
             }
         }
+
+        if (this.exp instanceof FunctionCall && this.dot) {
+            error("Incorrect syntax for calling functions", this);
+        }
     }
 
     optimize() {

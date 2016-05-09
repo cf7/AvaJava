@@ -5,7 +5,7 @@ var thisFunctionAgain = function (x:int) ->
 	if x > 3 then
 		return x;
 	else 
-		return 0; // return statements get infinite loop error when misspelled
+		return 0;
 	end;
 
 	return 1;
