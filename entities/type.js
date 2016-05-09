@@ -54,6 +54,12 @@ var Type = (function() {
 
   };
 
+  Type.prototype.canBeIntOrBool = function(message, location) {
+    if (!(this.isCompatibleWith(Type.INT) || this.isCompatibleWith(Type.BOOL))) {
+      error(message, location);
+    }
+  };
+
   Type.prototype.canBeIntOrString = function(message, location) {
     if (!(this.isCompatibleWith(Type.INT) || this.isCompatibleWith(Type.STRING))) {
       error(message, location);

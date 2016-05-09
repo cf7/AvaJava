@@ -1,0 +1,6 @@
+var x = 1;
+var y = 2;
+
+if x and y both not 0 then
+	ava "hello";
+end;

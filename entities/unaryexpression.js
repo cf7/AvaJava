@@ -13,12 +13,12 @@ var UnaryExpression = (function () {
     UnaryExpression.prototype.analyze = function(context) {
     this.operand.analyze(context);
         switch (this.operator.lexeme) {
-            case 'not': // add case for 'not' to work for both booleans and non-booleans
-                this.operand.type.mustBeBoolean('The "not" operator requires a boolean operand', this.op);
+            case 'not':
+                this.operand.type.canBeIntOrBool('The "not" operator requires a boolean or int operand', this.operator)
                 this.type = Type.BOOL;
                 break;
             case '-':
-                this.operand.type.mustBeInteger('The "negation" operator requires an integer operand', this.op);
+                this.operand.type.mustBeInteger('The "negation" operator requires an integer operand', this.operator);
                 this.type = Type.INT;
                 break;
             default:

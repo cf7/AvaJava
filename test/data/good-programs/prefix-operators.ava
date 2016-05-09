@@ -1,5 +1,5 @@
 not true;
 not false;
-
+not 0;
 var x = 1;
 x = -x;
