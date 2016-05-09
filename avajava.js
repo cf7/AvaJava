@@ -8,7 +8,7 @@ var scan = require('./scanner/scanner.js');
 var parse = require('./parser/parser.js');
 var generate = (require('./generators/jsgenerator.js'))//(argv.target);
 var error = require('./error.js');
-console.log("before scan: " + argv._[0]);
+
 scan(argv._[0], function(tokens) {
   var i, len, program, t;
   if (error.count > 0) {

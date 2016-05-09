@@ -2,6 +2,7 @@ var Type = require('./type.js');
 var IntegerLiteral = require('./integerliteral.js');
 var BooleanLiteral = require('./booleanliteral.js');
 var VariableReference = require('./variablereference.js');
+var error = require('../error.js');
 
 var BinaryExpression = (function () {
 
@@ -23,6 +24,7 @@ var BinaryExpression = (function () {
     };
 
     BinaryExpression.prototype.analyze = function(context) {
+      if (this.left && this.right) {
         this.left.analyze(context);
         this.right.analyze(context);
         if (this.left.type === Type.FUNCTION) {
@@ -60,16 +62,26 @@ var BinaryExpression = (function () {
           case '-':
           case '%':
           case '/':
-          case '@':
             this.mustHaveCompatibleOperands();
             return this.type = this.left.type;
+          case '@':
+            this.mustHaveCompatibleOperands();
+            return this.type = Type.LIST;
+          case '::':
+            this.canHaveDifferentOperands();
+            return this.type = Type.LIST;
           case '...':
+            this.mustHaveIntegerOperands();
+            return this.type = Type.LIST;
           case '^^':
             this.mustHaveIntegerOperands();
             return this.type = Type.INT;
           default:
             break;
         }
+      } else {
+        error("Binary operation missing an operand", this);
+      }
     };
     
     BinaryExpression.prototype.mustHaveIntegerOperands = function() {
@@ -90,15 +102,23 @@ var BinaryExpression = (function () {
     }
 
     BinaryExpression.prototype.canHaveDifferentOperands = function() {
-        var error = this.operator.lexeme + " must have either both integers, an integer and a string";
+        var error = this.operator.lexeme + " can only be used with either both integers, an integer and a string";
+        if (this.operator.lexeme === '::') {
+          error = this.operator.lexeme + " can only be used with integers or lists";
+        }
         Type.INT.canBeCompatibleWith(Type.INT, '*');
         Type.INT.canBeCompatibleWith(Type.STRING, '*');
         Type.STRING.canBeCompatibleWith(Type.INT, '*');
         Type.INT.canBeCompatibleWith(Type.INT, '+');
         Type.INT.canBeCompatibleWith(Type.STRING, '+');
         Type.STRING.canBeCompatibleWith(Type.INT, '+');
-
         Type.STRING.canBeCompatibleWith(Type.STRING, '+');
+
+        Type.LIST.canBeCompatibleWith(Type.INT, '::');
+        Type.INT.canBeCompatibleWith(Type.LIST, '::');
+        Type.INT.canBeCompatibleWith(Type.INT, '::');
+        Type.LIST.canBeCompatibleWith(Type.LIST, '::');
+
         return this.leftType.isMixedCompatibleWith(this.rightType, this.operator.lexeme, error, this.operator);
     };
 

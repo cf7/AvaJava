@@ -110,11 +110,12 @@ Exp8 		::= Exp9 (mulop Exp9)*
 Exp9 		::= prefixop? Exp10
 Exp10 		::= Exp11 postfixop?
 Exp11 		::= Exp12 ('^^' Exp12)*
-Exp12 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringlit | boolit | List | SetLiteral | ObjectLiteral
+Exp12		::=	Exp13 (Access)*
+Exp13 		::= '(' Exp ')' | VarRef Access* | intlit | floatlit | stringlit | boolit | List | SetLiteral | ObjectLiteral
 
 VarRef 		::= Assign | (Call | id) ('[' Exp ']')?
 Assign 		::= id assignop Exp
-Access		::= '[' Exp ']' | '.' Exp12
+Access		::= '[' Exp13 ']' | '.' Exp13
 
 ObjectLiteral	::= '{' ObjExpList? '}'
 ObjExpList 	::= ObjExp (',' ObjExp)*
@@ -162,10 +163,20 @@ end;                                                    }
 ```
 $ ./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
 ```
+######example
+```
+$ ./avajava.js test/data/good-programs/factorial.ava
+$ ./avajava.js -o test/data/optimizer-tests/constant-folding.ava
+```
 
 #####To Test
 ```
 $ npm test
+```
+To test generated code, try piping it into node.
+
+```
+$ ./avajava.js test/data/good-programs/factorial.ava | node
 ```
 
 ####Commments
@@ -233,7 +244,6 @@ var m = [ 1, 2, 3, 4, 5 ];
 for (var i = 0 if i < length(m) then i++) { 
 	ava m[i]; 
 } 
-// this version requires 'var'
 ```
 
 #####Assignment
@@ -249,7 +259,7 @@ Variable names in Avajava cannot have numbers.
 
 ```
 var x = 0;		// valid
-var x2 = 0;		// this will throw a syntax error
+var x2 = 0;		// this will return a syntax error
 ```
 
 #####Operators
@@ -331,6 +341,7 @@ x[1];
 [1,2,3] @ [4,5,6,7] 	//	[1,2,3,4,5,6,7] = [1...7]
 
 1::2::3::[] 			// [1,2,3]
+1::[2,3]				// [1,2,3]
 [1,2,3]::[4,5,6,7]::[] 	// [[1,2,3], [4,5,6,7]]
 
 ```
@@ -348,14 +359,9 @@ w.z.u;
 { 2, 3, 4 } 
 ```
 
-#####Tuples
-
-```
-(x,y,z)
-((1,2), (2,3), (3,4))
-```
-
 #####String Operations
+Strings can be added to or subtracted to using addops. Integers can also be applied to strings.
+
 ```
 "t" + "e" 		// evalutates to "te" 
 "e" - "e" 		// evalutates to ""
@@ -375,27 +381,23 @@ export: { "add": (function (x:int,y:int) -> return x + y; end;) }	module.exports
 ```
 
 #####Scoping:
-```
-***
 Avajava utilizes static scoping.
 For example . . .
-***
 
+```
 var x = 3;
 var printNumber = () -> ava(x); end;
 var printAgain = () -> var x = 10; printNumber; end;
 printAgain();
-
-***
+```
 . . . will print out 3 because printNumber was instantiated with var x = 3
 The var x = 10 instantiated within the printAgain will not affect the scope
 of the printNumber call within printAgain. (That would by dynamic scoping.)
-***
-```
+
 
 #####Some Edge-Cases of the Language
 
-###### 'var' is optional in for-each loops
+######'var' is optional in for-each loops
 
 ```
 for each var number in x { number++; };
@@ -403,10 +405,8 @@ for each number in x { number++; };
 
 ```
 
-###### If statements have optional parentheses
+######If statements have optional parentheses
 ```
 if (true) then ava "hello"; end;
 if true then ava "hello"; end;
 ```
-
-

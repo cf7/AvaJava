@@ -43,8 +43,6 @@ var AnalysisContext = (function() {
   };
   
   AnalysisContext.prototype.setScope = function(fun) {
-    console.log("inside AnalysisContext setScope");
-    console.log(fun);
     this.symbolTable["scope"] = fun;
   };
 
@@ -57,10 +55,7 @@ var AnalysisContext = (function() {
   };
 
   AnalysisContext.prototype.assignValue = function(token, value) {
-    console.log("INSIDE ASSIGNVALUE ** ** ** **");
-    console.log(this.symbolTable[token.lexeme]);
     this.symbolTable[token.lexeme] = value;
-    console.log(this.symbolTable[token.lexeme]);
   };
   
   AnalysisContext.prototype.isVariable = function(token) {
@@ -72,17 +67,13 @@ var AnalysisContext = (function() {
     }
   };
   AnalysisContext.prototype.lookupVariable = function(token) {
-    console.log("inside lookupVariable");
-    console.log("Analyze lookupVariable: " + token.lexeme);
     var variable = this.symbolTable[token.lexeme];
-    console.log("Variable after lookup: " + variable);
     if (variable) {
       return variable;
     } else if (!this.parent) {
       error("Variable " + token.lexeme + " not found", token);
       return VariableDeclaration.ARBITRARY;
     } else {
-      console.log("lookup in parent context");
       return this.parent.lookupVariable(token);
     }
   };
