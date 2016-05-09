@@ -131,8 +131,6 @@ var BinaryExpression = (function () {
           console.log("=-=-=-=-=-=-=-=- about to fold integer constants -=-=-=-=-=-=-=-=");
           console.log(this.left);
           console.log(this.right);
-          // the unary '+this.left.value' operator is converting the value to a number
-          // just in case the value is a string or char
           return this.foldIntegerConstants(this.operator.lexeme, +this.left.value, +this.right.value);
         } else if (this.left instanceof BooleanLiteral && this.right instanceof BooleanLiteral) {
           console.log("=-=-=-=-=-=-=-=- about to fold boolean constants -=-=-=-=-=-=-=-=");
@@ -182,8 +180,6 @@ var BinaryExpression = (function () {
     }
 
     BinaryExpression.prototype.isIntegerLiteral = function(operand, value) {
-      // console.log("|| Inside isIntegerLiteral in BinaryExpression Optimizer ||");
-      // console.log(operand);
       var valid = false;
       var valueExp = '';
       if (operand.referent) {
@@ -205,8 +201,6 @@ var BinaryExpression = (function () {
       switch (op) {
         case '+':
           console.log("'+' case inside foldIntegerConstants");
-          // decided to pass in entire tokens to literal entities
-          // to facilitate getToken() function standardization that all entities use
           return new IntegerLiteral({ kind: 'intlit', lexeme: x + y, line: 0, col: 0 });
         case '-':
           return new IntegerLiteral({ kind: 'intlit', lexeme: x - y, line: 0, col: 0 });

@@ -10,20 +10,7 @@ var Type = (function() {
     this.mixTypeCache = {};
     this.validTypeCache = {};
   }
-
-  /**
-  // new entity: ListType
-  // inside - ElementType
-  // inside - SetType
-  // inside - FunctionType
-  //              inside - ParamsType
-  //              inside - ResultType
-    inside - TupleType
-        -ComponentTypes: put everything in a list and pass to constructor
-    inside - MapeType
-        -KeyType
-        -ValueType
-  */          
+    
   Type.BOOL = new Type('bool');
 
   Type.INT = new Type('int');
@@ -42,8 +29,6 @@ var Type = (function() {
 
   Type.FUNCTION = new Type('function');
   
-  // make sure to export after adding more types!!!
-
   Type.ARBITRARY = new Type('<arbitrary_type>');
 
   Type.prototype.toString = function() {
@@ -128,7 +113,6 @@ var Type = (function() {
         result = this.mixTypeCache[this.name + otherType.name + operator].operator === operator;
       }
 
-      // hardcoding result of string * int for now
       if (result) {
         if (this.name === 'int' && otherType.name === 'int') {
           return Type.INT;

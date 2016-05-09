@@ -39,11 +39,11 @@ while (index < length(y)) {
 var w = 1.00e12 - 0.25e11;
 w += 10e5;
 
-var index2 = 100;
+var indexTwo = 100;
 index = -100;
 
-while (index and index2 both not 0) {
+while (index and indexTwo both not 0) {
 	ava "hello";
 	index++;
-	index2--;
+	indexTwo--;
 };

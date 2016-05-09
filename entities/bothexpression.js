@@ -1,3 +1,5 @@
+var Type = require('./type.js');
+
 var BothExpression = (function () {
 
     function BothExpression (left, right) {
@@ -5,6 +7,7 @@ var BothExpression = (function () {
         console.log(right);
         this.left = left;
         this.right = right;
+        this.type = Type.BOOL;
     }
     
     BothExpression.prototype.toString = function() {
