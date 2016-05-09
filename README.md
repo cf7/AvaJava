@@ -39,9 +39,9 @@ stringlit	::=  ["] (characterLiteral | '\\'[nsrt'"\\] )* ["]
 letter		::=	 [a-zA-Z]
 digit		::=  [\d]
 keyword		::=  'var' | 'while' | 'and' | 'or' | 'not' 
-           		| 'true' | 'false' | 'return' | 'for' | 'each' | 'do'
-	   			| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava' | 'times'
-	   			| type
+           		| 'true' | 'false' | 'return' | 'for' | 'each'
+	   			| 'if' | 'then' | 'else' | 'in' | 'both' | 'ava' | type
+	   			
 id        	::=  letter (letter | digit | '_')*
 key		   	::=	 id | stringlit
 assignop  	::=  '=' | '+=' | '-=' | '*=' | '/='

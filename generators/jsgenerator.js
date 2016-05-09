@@ -131,8 +131,6 @@ var generator = {
   Access: function (l) {
     console.log("inside Access generate");
     console.log(l.id);
-    console.log(l.exps);
-    console.log(l.exps[0]);
     if (l.exp instanceof AssignmentStatement) {
       return gen(l.id) + '[' + gen(l.exp.target) + '] = ' + gen(l.exp.source);
     } else {

@@ -1,2 +1,2 @@
-var thisFunction = function () -> ava "ava" end;
+var thisFunction = function () -> ava "ava"; end;
 return;

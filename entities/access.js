@@ -4,12 +4,18 @@ var VariableDelcaration = require('./variabledeclaration.js');
 var VariableReference = require('./variablereference.js');
 var ObjectLiteral = require('./objectliteral.js');
 var StringLiteral = require('./stringLiteral.js');
+var FloatLiteral = require('./floatliteral.js');
 var Function = require('./function.js');
 var FunctionCall = require('./functioncall.js');
 var Type = require('./type.js');
 var BuiltIns = require('./builtins.js');
 var AssignmentStatement = require('./assignmentstatement.js');
 var error = require('../error.js');
+
+var keywords = ['var', 'while', 'true', 'false', 'not', 
+                'for', 'if', 'ava', 'string', 'int', 
+                'float', 'bool', '(', 'function',
+                'true', 'false', 'list', 'return', 'object', 'set'];
 
 class Access {
     constructor(id, dot, exp) {
@@ -45,6 +51,16 @@ class Access {
     }
 
     analyze(context) {
+        if (!this.exp) {
+            error("Accessing requires an expression", this.exp);
+        } else if (this.exp instanceof FloatLiteral) {
+            error("Cannot use floats to index an array", this.exp);
+        } else if (this.exp) {
+            var token = this.exp.getToken();
+            if (keywords.some(function (word) { return token.lexeme === word })) {
+                error("Access index cannot be a keyword", this.exp);
+            }
+        }
 
         if (this.id instanceof Access) {
             this.id.changeAccess();

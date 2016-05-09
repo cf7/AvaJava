@@ -3,6 +3,11 @@
 var Type = require('./type.js');
 var error = require('../error.js');
 
+var keywords = ['var', 'while', 'true', 'false', 'not', 
+                'for', 'if', 'ava', 'string', 'int', 
+                'float', 'bool', '(', 'function',
+                'true', 'false', 'list', 'return', 'object', 'set'];
+
 class ObjectLiteral {
     constructor(exps) {
         this.exps = exps;
@@ -19,6 +24,12 @@ class ObjectLiteral {
     }
 
     analyze(context) {
+        var keys = Object.keys(this.exps);
+        for (var property of keys) {
+            if (keywords.some(function (word) { return property === word })) {
+                error("Cannot use keywords as object keys");
+            }
+        }
         return this.type = Type.OBJECT;
     }
 

@@ -1,1 +1,1 @@
-var anotherFunction = function () -> true + 2 end;
+var anotherFunction = function () -> true + 2; end;
