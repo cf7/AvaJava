@@ -27,57 +27,59 @@ var BinaryExpression = (function () {
       if (this.left && this.right) {
         this.left.analyze(context);
         this.right.analyze(context);
-        if (this.left.type === Type.FUNCTION) {
-          this.leftType = this.left.returnType;
-        } else {
-          this.leftType = this.left.type;
-        }
-        if (this.right.type === Type.FUNCTION) {
-          this.rightType = this.right.returnType;
-        } else {
-          this.rightType = this.right.type;
-        }
-        var operator = this.operator.lexeme;
-        switch (operator) {
-          case '<':
-          case '<=':
-          case '>=':
-          case '>':
-            this.mustHaveIntegerOperands();
-            return this.type = Type.BOOL;
-          case '==':
-          case '!=':
-            this.mustHaveCompatibleOperands();
-            return this.type = Type.BOOL;
-          case 'and':
-          case 'or':
-            this.mustHaveBooleanOperands();
-            return this.type = Type.BOOL;
-          case '*':
-            var type = this.canHaveDifferentOperands();
-            return this.type = type;
-          case '+':
-            var type = this.canHaveDifferentOperands();
-            return this.type = type;
-          case '-':
-          case '%':
-          case '/':
-            this.mustHaveCompatibleOperands();
-            return this.type = this.left.type;
-          case '@':
-            this.mustHaveCompatibleOperands();
-            return this.type = Type.LIST;
-          case '::':
-            this.canHaveDifferentOperands();
-            return this.type = Type.LIST;
-          case '...':
-            this.mustHaveIntegerOperands();
-            return this.type = Type.LIST;
-          case '^^':
-            this.mustHaveIntegerOperands();
-            return this.type = Type.INT;
-          default:
-            break;
+        if (this.left.type !== Type.ARBITRARY && this.right.type !== Type.ARBITRARY) {
+          if (this.left.type === Type.FUNCTION) {
+            this.leftType = this.left.returnType;
+          } else {
+            this.leftType = this.left.type;
+          }
+          if (this.right.type === Type.FUNCTION) {
+            this.rightType = this.right.returnType;
+          } else {
+            this.rightType = this.right.type;
+          }
+          var operator = this.operator.lexeme;
+          switch (operator) {
+            case '<':
+            case '<=':
+            case '>=':
+            case '>':
+              this.mustHaveIntegerOperands();
+              return this.type = Type.BOOL;
+            case '==':
+            case '!=':
+              this.mustHaveCompatibleOperands();
+              return this.type = Type.BOOL;
+            case 'and':
+            case 'or':
+              this.mustHaveBooleanOperands();
+              return this.type = Type.BOOL;
+            case '*':
+              var type = this.canHaveDifferentOperands();
+              return this.type = type;
+            case '+':
+              var type = this.canHaveDifferentOperands();
+              return this.type = type;
+            case '-':
+            case '%':
+            case '/':
+              this.mustHaveCompatibleOperands();
+              return this.type = this.left.type;
+            case '@':
+              this.mustHaveCompatibleOperands();
+              return this.type = Type.LIST;
+            case '::':
+              this.canHaveDifferentOperands();
+              return this.type = Type.LIST;
+            case '...':
+              this.mustHaveIntegerOperands();
+              return this.type = Type.LIST;
+            case '^^':
+              this.mustHaveIntegerOperands();
+              return this.type = Type.INT;
+            default:
+              break;
+          }
         }
       } else {
         error("Binary operation missing an operand", this);
