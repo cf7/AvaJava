@@ -66,8 +66,7 @@ var BinaryExpression = (function () {
             return this.type = type;
           case '-':
           case '@':
-            this.mustHaveCompatibleOperands(); // want to be able to support
-            // ints and strings
+            this.mustHaveCompatibleOperands();
             return this.type = this.left.type;
           case '/':
           case '^^':

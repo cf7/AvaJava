@@ -17,6 +17,11 @@ class PostfixExpression {
         return this.operand.analyze(context);
     }
 
+
+    optimize() {
+
+    }
+
 }
 
 module.exports = PostfixExpression;

@@ -288,7 +288,7 @@ var generator = {
   },
 
   SetLiteral: function (literal) {
-    return "new Set([" + literal.values.join(',') + "])";
+    return "new Set([" + gen(literal.values) + "])";
   },
 
   ListLiteral: function (literal) {

@@ -15,6 +15,10 @@ var BothExpression = (function () {
         
     };
 
+    BothExpression.prototype.optimize = function() {
+        
+    };
+    
     return BothExpression;
 })();
 

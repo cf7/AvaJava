@@ -69,7 +69,6 @@ var processStringInterpolation = function (string, linenumber, strStart, tokens)
   var front = "";
   var rest = "";
   var interpString = "";
-  console.log("inside processString: " + string);
   while (pos < string.length) {
     if (string[pos] === "#" && string[pos + 1] === "{") {
       start = pos;
@@ -163,7 +162,6 @@ var scan = function (line, lineNumber, tokens) {
         if (/["']/.test(line[pos])) {
           encounteredString = true;
           var quoteType = new RegExp(line[pos]);
-          console.log("quoteType: " + quoteType);
           start = pos;
           pos++
           while (!quoteType.test(line[pos]) && pos < line.length) {

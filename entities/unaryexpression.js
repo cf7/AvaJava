@@ -21,6 +21,10 @@ var UnaryExpression = (function () {
         }
     };
 
+    UnaryExpression.prototype.optimize = function() {
+        
+    };
+    
     return UnaryExpression;
 })();
 

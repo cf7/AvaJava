@@ -3,7 +3,7 @@ var Type = require('./type.js');
 
 class SetLiteral {
     constructor(values) {
-        this.values = values; // array of values
+        this.values = values;
     }
 
     toString() {
@@ -11,7 +11,7 @@ class SetLiteral {
     }
 
     analyze(context) {
-        return this.type = Type.OBJECT; // for now they are objects
+        return this.type = Type.OBJECT;
     }
 
     optimize() {

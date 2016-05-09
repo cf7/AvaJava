@@ -44,6 +44,10 @@ class ForLoop {
         this.body.analyze(localContext);
     }
 
+    optimize() {
+        
+    }
+
 }
 
 module.exports = ForLoop;

@@ -130,6 +130,10 @@ var FunctionCall = (function () {
         }
     };
 
+    FunctionCall.prototype.optimize = function() {
+        
+    };
+    
     return FunctionCall;
 })();
 

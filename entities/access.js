@@ -19,19 +19,13 @@ class Access {
     }
 
     getToken() {
-        console.log("getToken");
         return this.id.getToken();
     }
 
     toString() {
-        console.log("Access toString");
-        console.log(this.id);
-        console.log(this.exp);
-        if (this.id instanceof FunctionCall) { // hardcoding edge case for now
-            console.log("case1");
+        if (this.id instanceof FunctionCall) {
             return this.id + "[" + this.exp + "]"; // for functions that return lists or objects
         } else {
-            console.log("case2");
             if (this.exp instanceof AssignmentStatement) {
                 return this.id + "[" + this.exp.target + "] = " + this.exp.source;
             } else {
@@ -41,9 +35,7 @@ class Access {
     }
 
     changeAccess() {
-        // for some reason  !(this.exp instanceof StringLiteral) wasn't working
-        // even though console logged this.exp and saw it was indeed a StringLiteral
-        if (this.exp.type && !(this.exp.type.name !== 'stringlit')) {
+        if (!(this.exp instanceof StringLiteral)) {
             this.exp = new StringLiteral(this.exp.getToken());
             this.exp.string = '\'' + this.exp.string + '\'';
         }

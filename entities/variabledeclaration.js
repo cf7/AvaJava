@@ -4,18 +4,11 @@ var Type = require('./type.js');
 var error = require('../error.js');
 
 var VariableDeclaration = (function() {
-  function VariableDeclaration(id, exp) { // , type) {
-    // this.exp causing a lot of problems
-    // consider having a "generic" type or class
-    // for undeclared variables
+  function VariableDeclaration(id, exp) {
     console.log("VariableDeclaration constructor: " + id.lexeme);
     this.id = id;
-    this.exp = exp; // keeping type contained within exp to facilitate type inference
+    this.exp = exp;
     this.type = this.exp ? (this.exp.type ? this.exp.type : Type.ARBITRARY) : (Type.ARBITRARY);
-   
-    // this needs to receive a type from parser
-    // implement type inference, literals parsed with types,
-    // function's type-signatures determined by their args and return types
   }
 
   VariableDeclaration.prototype.getToken = function() {
@@ -28,7 +21,7 @@ var VariableDeclaration = (function() {
   
   VariableDeclaration.prototype.toString = function() {
     if (this.exp) {
-      return "(var " + this.id.lexeme + " " + this.exp + " )"; // this.type + ")";
+      return "(var " + this.id.lexeme + " " + this.exp + " )";
     } else {
       return "(var " + this.id.lexeme + " )";
     }

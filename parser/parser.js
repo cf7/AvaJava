@@ -61,7 +61,7 @@ var parseBlock = function() {
     if (statements[0]) {
       match(';');
     }
-    if ((!statements[0] && at(';'))) { // for the ';;;...;;;' case
+    if ((!statements[0] && at(';'))) { // for the ';;;; . . . ;; . . . ;;;' case
       while (at(';')) {
         match(';');
       }
@@ -565,7 +565,7 @@ var parseExp12 = function () {
      console.log("Accessing");
     //console.log(exps);
     console.log("leaving parseExp12");
-    return id // new Access(id, exps);
+    return id;
   } else {
     return id;
   }
@@ -588,11 +588,10 @@ var parseExp13 = function () {
     return parseIntegerLiteral();
   } else if (at('floatlit')) {
     return parseFloatLiteral();
-  } else if (at('stringlit')) { // hardcoding for now, change to 'literal' later
+  } else if (at('stringlit')) {
     return parseStringLiteral();
   } else if (at('id')) {  
     return varref = parseVariableReference();
-    // How do we distinguish between an id and a function Call?
   } else if (at(['true', 'false'])) {
     return parseBooleanLiteral();
   // } else {
@@ -608,13 +607,6 @@ var parseList = function () {
   console.log("leaving parseList");
   return new ListLiteral(exps);
 }
-
-// var parseAccess = function (id) {
-//   match('[');
-//   var exp = parseExpression();
-//   match(']');
-//   return new Access(id, exp);
-// }
 
 var parseCollection = function () {
   var result;
@@ -650,7 +642,6 @@ var parseObjectExpList = function () {
   console.log("exps: " + exps);
   console.log("leaving parseObjectExpList");
   return exps;
-  // return statement
 }
 
 var parseObject = function () {
@@ -691,7 +682,7 @@ var parseReturnStatement = function () {
   match('return');
   var exp = parseExpression();
   console.log("leaving parseReturnStatement");
-  return new ReturnStatement(exp);//parseExpression();
+  return new ReturnStatement(exp);
 }
 
 var parseExpWithBoth = function () {
@@ -702,21 +693,12 @@ var at = function(kind) {
   if (tokens.length === 0) {
     return false;
   } else if (Array.isArray(kind)) {
-    // if array has more than one element,
-    // recursively iterate through tokens
-    // until matching kind with an element
     return kind.some(at);
   } else {
     return kind === tokens[0].kind;
   }
 };
 
-// match shifts the tokens down the line
-// to match with the next one and so on
-// as the parser progresses through the rules
-// returns the token that is being removed
-// reason some of the parse functions above do not throw errors
-// is because match will throw an error if there is no match
 var match = function(kind) {
   if (tokens.length === 0) {
     return error('Unexpected end of source program');
