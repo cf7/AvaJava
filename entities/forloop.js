@@ -22,22 +22,18 @@ class ForLoop {
     analyze(context) {
         var localContext = context.createChildContext();
         if (this.id) {
-            // localContext.addVariable(this.id.lexeme, this.id);
-            console.log(this.id);
-            if (!this.id.exp) { // for-each case
+            if (!this.id.exp) {
                 this.id.exp = new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
             }
             this.id.analyze(localContext);
         }
 
-        console.log("TTTTTTTTTTTTTTTTTTTTTT");
         if (!(this.exp instanceof IfElseStatements)) {
             if (this.id) {
                 this.exp.analyze(localContext);
                 this.exp.type.mustBeList("Cannot iterate through non-iterable", this.exp);
             }
         } else {
-            console.log("HHHHHHHHHHHHHHHHH");
             this.exp.analyze(localContext);
         }
 

@@ -4,7 +4,6 @@ var Type = require('./type.js');
 
 var VariableReference = (function() {
   function VariableReference(token) {
-    console.log("varref token: " + token.lexeme);
     this.token = token;
     this.referent = {};
   }
@@ -18,7 +17,6 @@ var VariableReference = (function() {
   };
 
   VariableReference.prototype.analyze = function(context) {
-    console.log("inside VariableReference analyzer");
     this.referent = context.lookupVariable(this.token);
     if (this.referent) {
       if (!this.referent.exp) {

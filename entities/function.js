@@ -3,8 +3,8 @@ var ReturnStatement = require('./returnstatement.js');
 
 var Function = (function () {
     function Function (params, body) {
-        this.params = params; // an array of parsed expressions
-        this.body = body; // an array of statements
+        this.params = params;
+        this.body = body;
         this.type = Type.FUNCTION;
         this.returnType = Type.ARBITRARY;
     }
@@ -17,28 +17,17 @@ var Function = (function () {
     };
 
     Function.prototype.analyze = function(context) {
-        // need to check for return statements!!!
-
         var localContext = context.createChildContext();
-        // shouldn't be creating child context here
-        // new local context will be created anyway when function enters
         
         var results = [];
         localContext.setInsideFunction(true);
         localContext.setScope(this);
-        // need to analyze variables too
+
         for (var i = 0; i < this.params.length; i++) {
             localContext.addVariable(this.params[i].id.lexeme, this.params[i]);
         }
-        
-        console.log("*******inside function's analyze*******");
-        console.log("parentContext: ");
-        console.log(localContext.parent.symbolTable);
-        console.log("localContext: ");
-        console.log(localContext.symbolTable);
+    
         return this.body.analyze(localContext);
-
-        // return this.type = this.getReturnType(this.body, context);
     };
 
     Function.prototype.optimize = function() {

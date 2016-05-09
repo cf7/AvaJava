@@ -5,7 +5,6 @@ var error = require('../error.js');
 
 var VariableDeclaration = (function() {
   function VariableDeclaration(id, exp) {
-    console.log("VariableDeclaration constructor: " + id.lexeme);
     this.id = id;
     this.exp = exp;
     this.type = this.exp ? (this.exp.type ? this.exp.type : Type.ARBITRARY) : (Type.ARBITRARY);
@@ -28,17 +27,10 @@ var VariableDeclaration = (function() {
   };
 
   VariableDeclaration.prototype.analyze = function(context) {
-    console.log("--------inside varDecl analyze-------");
-    // need to account for if variable is a single number
-    // a list of expressions
-    // or a function
     context.variableMustNotBeAlreadyDeclared(this.id);
     context.addVariable(this.id.lexeme, this);
-    // Type inference in here!!!
-    // Swift: once type is inferred, type cannot change
     var results = [];
     if (this.exp) {
-      console.log("........INSIDE THIS.EXP...... ");
       if (this.exp instanceof Array) {
           console.log(this.exp.length);
           for (var i = 0; i < this.exp.length; i++) {
@@ -48,7 +40,6 @@ var VariableDeclaration = (function() {
         results.push(this.exp.analyze(context));
       }
     }
-    
     return results;
   };
 

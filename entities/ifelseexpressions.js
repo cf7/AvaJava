@@ -26,11 +26,11 @@ var IfElseStatements = (function () {
         for (var i = 0; i < this.conditionals.length; i++) {
             this.conditionals[i].analyze(context);
         }
-        // this.conditionals.analyze(context);
+
         for (var i = 0; i < this.bodies.length; i++) {
             this.bodies[i].analyze(context);
         }
-        // this.bodies.analyze(context);
+
         if (this.elseBody) {
             this.elseBody.analyze(context);
         }

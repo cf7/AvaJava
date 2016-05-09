@@ -24,7 +24,7 @@ class Access {
 
     toString() {
         if (this.id instanceof FunctionCall) {
-            return this.id + "[" + this.exp + "]"; // for functions that return lists or objects
+            return this.id + "[" + this.exp + "]";
         } else {
             if (this.exp instanceof AssignmentStatement) {
                 return this.id + "[" + this.exp.target + "] = " + this.exp.source;
@@ -46,11 +46,6 @@ class Access {
 
     analyze(context) {
 
-
-        console.log("----------inside Access analyze----------");
-        console.log(this.id);
- 
-
         if (this.id instanceof Access) {
             this.id.changeAccess();
         }
@@ -66,8 +61,6 @@ class Access {
                 this.exp.target.string = '\'' + this.exp.target.string + '\'';
             }
         }
-        
-        console.log("leaving Access analyze");
     }
 }
 
