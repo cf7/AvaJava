@@ -20,7 +20,7 @@ var AnalysisContext = (function() {
     return new AnalysisContext(this);
   };
 
-  AnalysisContext.prototype.variableMustNotBeAlreadyDeclared = function(token) {
+  AnalysisContext.prototype.variableMustNotAlreadyBeDeclared = function(token) {
     if (this.symbolTable[token.lexeme]) {
       return error("Variable " + token.lexeme + " already declared", token);
     }

@@ -22,6 +22,7 @@ class ForLoop {
     analyze(context) {
         var localContext = context.createChildContext();
         if (this.id) {
+            context.variableMustNotAlreadyBeDeclared(this.id.getToken());
             if (!this.id.exp) {
                 this.id.exp = new IntegerLiteral({ kind: 'intlit', lexeme: '0', line: 0, col: 0 });
             }

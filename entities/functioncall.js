@@ -31,7 +31,8 @@ var FunctionCall = (function () {
         var currentFunction = context.lookupVariable(this.id);
         if (!(currentFunction instanceof TypedVariableDeclaration)) {
             if (new BuiltIns().entities[this.id.lexeme]) {
-                return;
+                this.type = new BuiltIns().entities[this.id.lexeme].type;
+                this.returnType = new BuiltIns().entities[this.id.lexeme].returnType;
             } else {
                 currentFunction = currentFunction.getExp();
                 if (currentFunction instanceof Function) {

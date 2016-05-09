@@ -198,7 +198,7 @@ var generator = {
   },
 
   Print: function (p) {
-    // return "console.log(" + gen(p.expression) + ")";
+    return "console.log(" + gen(p.expression) + ")";
   },
 
   FunctionCall: function (c) {

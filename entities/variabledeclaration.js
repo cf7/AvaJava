@@ -27,7 +27,7 @@ var VariableDeclaration = (function() {
   };
 
   VariableDeclaration.prototype.analyze = function(context) {
-    context.variableMustNotBeAlreadyDeclared(this.id);
+    context.variableMustNotAlreadyBeDeclared(this.id);
     context.addVariable(this.id.lexeme, this);
     var results = [];
     if (this.exp) {

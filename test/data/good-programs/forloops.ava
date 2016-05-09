@@ -7,4 +7,3 @@ for each number in x { number++; }; // 'var' is optional
 var m = [ 1, 2, 3, 4, 5 ];
 
 for (var i = 0 if i < length(m) then i++; end) { ava m[i]; };
-// add semantics to make sure i is undeclared

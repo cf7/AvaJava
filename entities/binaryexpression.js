@@ -25,6 +25,8 @@ var BinaryExpression = (function () {
 
     BinaryExpression.prototype.analyze = function(context) {
       if (this.left && this.right) {
+        console.log(this.left);
+        console.log(this.right);
         this.left.analyze(context);
         this.right.analyze(context);
         if (this.left.type !== Type.ARBITRARY && this.right.type !== Type.ARBITRARY) {
@@ -38,6 +40,8 @@ var BinaryExpression = (function () {
           } else {
             this.rightType = this.right.type;
           }
+          console.log(this.leftType);
+          console.log(this.rightType);
           var operator = this.operator.lexeme;
           switch (operator) {
             case '<':
@@ -98,7 +102,7 @@ var BinaryExpression = (function () {
     }
 
     BinaryExpression.prototype.canHaveDifferentOperands = function() {
-        var error = this.operator.lexeme + " can only be used with either both integers, an integer and a string";
+        var error = "invalid operand types for binary operator " + this.operator.lexeme;
         if (this.operator.lexeme === '::') {
           error = this.operator.lexeme + " can only be used with integers or lists";
         }
