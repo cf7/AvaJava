@@ -32,7 +32,6 @@ var VariableDeclaration = (function() {
     var results = [];
     if (this.exp) {
       if (this.exp instanceof Array) {
-          console.log(this.exp.length);
           for (var i = 0; i < this.exp.length; i++) {
             results.push(this.exp[i].analyze(context));
           }

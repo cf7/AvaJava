@@ -17,7 +17,6 @@ var VariableReference = (function() {
   };
 
   VariableReference.prototype.analyze = function(context) {
-    console.log("inside VariableReference analyze");
     this.referent = context.lookupVariable(this.token);
     if (this.referent) {
       if (!this.referent.exp) {

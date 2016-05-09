@@ -37,8 +37,6 @@ var IfElseStatements = (function () {
     };
     
     IfElseStatements.prototype.optimize = function() {
-        // ** conditionals are binaryExpression and will have been
-        // ** analyzed by the time they get here
         var unreachableIndices = [];
         for (var i = 0; i < this.conditionals.length; i++) {
             this.conditionals[i] = this.conditionals[i].optimize();
@@ -51,11 +49,6 @@ var IfElseStatements = (function () {
         for (var i = 0; i < this.bodies.length; i++) {
             this.bodies[i] = this.bodies[i].optimize();
         }
-
-        // for (index of unreachableIndices) {
-        //     this.conditionals[index] = new StringLiteral({ kind: 'stringlit', lexeme: '', line: 0, col: 0 });
-        //     this.bodies[index] = new StringLiteral({ kind: 'stringlit', lexeme: '', line: 0, col: 0 });
-        // }
 
         if (this.elseBody) {
             this.elseBody = this.elseBody.optimize();
