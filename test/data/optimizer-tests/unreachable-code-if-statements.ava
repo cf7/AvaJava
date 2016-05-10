@@ -7,6 +7,8 @@ if (true) then
 	ava "hello";
 else if false then
 	ava "should not reach this point";
+else if false then
+	ava "should not get here either";
 else 
 	ava "hello again";
 end;

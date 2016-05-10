@@ -168,15 +168,19 @@ var generator = {
 
   IfElseStatements: function (ifelse) {
     var strings = [];
-    strings.push('if' + '(' + gen(ifelse.conditionals[0]) + ')' + ' { '+ gen(ifelse.bodies[0]) + ' }');
-    if (ifelse.conditionals.length > 1) {
-        for (var i = 1; i < ifelse.conditionals.length; i++) {
-            strings.push('else if ( ' + gen(ifelse.conditionals[i]) + ' ) { ' + gen(ifelse.bodies[i]) + ' } ');
-        }
+    if (ifelse.conditionals[0] && ifelse.bodies[0]) {
+      strings.push('if' + '(' + gen(ifelse.conditionals[0]) + ')' + ' { '+ gen(ifelse.bodies[0]) + ' }');
+      if (ifelse.conditionals.length > 1) {
+          for (var i = 1; i < ifelse.conditionals.length; i++) {
+              strings.push('else if ( ' + gen(ifelse.conditionals[i]) + ' ) { ' + gen(ifelse.bodies[i]) + ' } ');
+          }
+      }
     }
+
     if (ifelse.elseBody) {
         strings.push(' else { ' + gen(ifelse.elseBody) + ' } ');
     }
+    
     return strings.join('');
   },
 

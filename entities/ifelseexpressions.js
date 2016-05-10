@@ -50,15 +50,27 @@ var IfElseStatements = (function () {
             this.bodies[i] = this.bodies[i].optimize();
         }
 
+        for (var i = 0; i < this.conditionals.length; i++) {
+            for (var j = 0; j < unreachableIndices.length; j++) {
+                if (i === unreachableIndices[j]) {
+                    this.conditionals = this.conditionals.slice(0, i);
+                    this.conditionals = this.conditionals.concat(this.conditionals.slice(i+1, this.conditionals.length));
+                    this.bodies = this.bodies.slice(0, i);
+                    this.bodies = this.bodies.concat(this.bodies.slice(i+1, this.bodies.length));
+                }
+            }
+        }
+
         if (this.elseBody) {
             this.elseBody = this.elseBody.optimize();
         }
         
-        if (this.conditionals.length === 1 && this.conditionals[0].name === 'false') {
-            return this.elseBody;
-        } else {
-            return this;
-        }
+        // if (this.conditionals.length === 1 && this.conditionals[0].name === 'false') {
+        //     return this.elseBody;
+        // } else {
+        //     return this;
+        // }
+        return this;
     };
 
     return IfElseStatements;
