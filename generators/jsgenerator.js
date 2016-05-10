@@ -268,7 +268,6 @@ var generator = {
       var keys = Object.keys(data);
       strings.push('{');
       for (property of keys) {
-        console.log(data[property]);
         strings.push( property + ':' + gen(data[property]) + ', ');
       }
       strings.push('}');
