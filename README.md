@@ -295,8 +295,8 @@ true or false;		// yields true
 Both expressions is a feature that attempts to reduce the redundant code associated with conditional expressions.
 
 ```
-x and y both 0 		// instaead of (x == 0 && y == 0)
-x and y both not 0 	// intead of (x != 0 && y != 0)
+x and y both 10 		// instaead of (x == 10 && y == 10)
+x and y both not 10 	// intead of (x != 10 && y != 10)
 ```
 
 ##### If Statements
@@ -332,14 +332,16 @@ Only the triple dot ellipses is used to express list ranges.
 
 ```
 var x = [1,2,3,4,5,6,7];
-x[0];
-x[1];
+x[0];		// returns 1
+x[1];		// returns 2
 
 [1...10] 	// [1,2,3,4,5,6,7,8,9,10]
 
 ```
 
 #####Cons and Append Operators
+Similar to OCaml's operators, append only works if both operands are lists. The result is a concatenated list containing elements from the two original lists. The cons operator yields the same results, except that when cons-ing two lists the result is a list of lists.
+
 ```
 [1,2,3] @ [4,5,6,7] 	//	[1,2,3,4,5,6,7] = [1...7]
 
@@ -350,6 +352,8 @@ x[1];
 ```
 
 #####Objects
+These are essentially javascript objects with the same syntax for accessing fields.
+
 ```
 var w = { x:2, y:3, z: { u: 3 } };
 w['x'];
@@ -363,7 +367,7 @@ w.z.u;
 ```
 
 #####String Operations
-Strings can be added to or subtracted to using addops. Integers can also be applied to strings.
+Strings can be added to or subtracted from using '+' and '-'. Integers can also be applied to strings via multiplication only.
 
 ```
 "t" + "e" 		// evalutates to "te" 
@@ -374,7 +378,7 @@ Strings can be added to or subtracted to using addops. Integers can also be appl
 "t" * 3 		// evalutates to "ttt"
 ```
 #####Builtins
-Builtin functions require arguments to be passed into them (as opposed to using the dot operator such as in javascript)
+Builtin functions require arguments to be passed into them (as opposed to using the dot operator such as in javascript).
 
 ```
 var x = [1,2,3,4,5,6,7];

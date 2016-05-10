@@ -49,3 +49,5 @@ while (index and indexTwo both not 0) {
 };
 
 for each u in [1...10] { ava "hello again"; };
+
+export({ "add": (function (x:int,y:int) -> return x + y; end) });

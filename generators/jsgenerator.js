@@ -262,11 +262,26 @@ var generator = {
   },
 
   ObjectLiteral: function (literal) {
-    return literal.toString();
+    var strings = [];
+    if (literal.exps) {
+      var data = literal.exps;
+      var keys = Object.keys(data);
+      strings.push('{');
+      for (property of keys) {
+        console.log(data[property]);
+        strings.push( property + ':' + gen(data[property]) + ', ');
+      }
+      strings.push('}');
+    }
+    return strings.join('');
   },
 
   SetLiteral: function (literal) {
-    return "new Set([" + gen(literal.values) + "])";
+    if (literal.values[0]) {
+      return "new Set([" + gen(literal.values) + "])";
+    } else {
+      return "new Set()";
+    }
   },
 
   ListLiteral: function (literal) {
