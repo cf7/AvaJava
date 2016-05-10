@@ -34,9 +34,6 @@ var code = "";
 var counter = 0;
 var builtins = new BuiltIns();
 
-// var map;
-// var lastId;
-
 module.exports = function (program) {
   map = new HashMap();
   lastId = 0;
@@ -178,9 +175,9 @@ var generator = {
     }
 
     if (ifelse.elseBody) {
-        strings.push(' else { ' + gen(ifelse.elseBody) + ' } ');
+      strings.push(' else { ' + gen(ifelse.elseBody) + ' } ');
     }
-    
+        
     return strings.join('');
   },
 

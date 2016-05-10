@@ -64,12 +64,7 @@ var IfElseStatements = (function () {
         if (this.elseBody) {
             this.elseBody = this.elseBody.optimize();
         }
-        
-        // if (this.conditionals.length === 1 && this.conditionals[0].name === 'false') {
-        //     return this.elseBody;
-        // } else {
-        //     return this;
-        // }
+    
         return this;
     };
 
