@@ -1,5 +1,3 @@
-// baseline Iki code
-
 var BooleanLiteral = require('./booleanliteral');
 
 var WhileLoop = (function() {

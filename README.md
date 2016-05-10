@@ -373,6 +373,13 @@ Strings can be added to or subtracted to using addops. Integers can also be appl
 "hehe" - "h" 	// evalutates to "ehe"
 "t" * 3 		// evalutates to "ttt"
 ```
+#####Builtins
+Builtin functions require arguments to be passed into them (as opposed to using the dot operator such as in javascript)
+
+```
+var x = [1,2,3,4,5,6,7];
+length(x);		// x.length in javascript
+```
 
 #####Modules (just use "export")
 export() is a builtin function
@@ -398,7 +405,7 @@ The var x = 10 instantiated within the printAgain will not affect the scope
 of the printNumber call within printAgain. (That would by dynamic scoping.)
 
 
-#####Some Edge-Cases of the Language
+#####Some Edge-Cases/Areas that need Improvement
 
 ######'var' is optional in for-each loops
 
@@ -412,4 +419,9 @@ for each number in x { number++; };
 ```
 if (true) then ava "hello"; end;
 if true then ava "hello"; end;
+```
+######Indexing with expressions requires parens
+```
+var x = [1,2,3,4,5,6,7];
+x[(length(x) - 1)];
 ```

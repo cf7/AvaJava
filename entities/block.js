@@ -1,4 +1,3 @@
-// baseline code from Iki
 "use strict";
 
 var ReturnStatement = require('./returnstatement.js');

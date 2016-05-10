@@ -38,7 +38,6 @@ var builtins = new BuiltIns();
 // var lastId;
 
 module.exports = function (program) {
-  console.log("**********************GENERATOR********************");
   map = new HashMap();
   lastId = 0;
   return generate(program);
