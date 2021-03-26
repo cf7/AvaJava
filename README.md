@@ -30,7 +30,7 @@ This language is designed to facilitate more concise representations in some are
 
 [Avajava Railroad Diagram](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/images/railroad_diagram/index.html)  
 [Avjava microsyntax](https://raw.githubusercontent.com/ronaldooeee/Avajava/master/images/microsyntax/index.html)
-###Microsyntax
+### Microsyntax
 
 ```
 characterLiteral 	::=  letter | digit | [\s]
