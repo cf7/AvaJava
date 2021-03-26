@@ -4,7 +4,7 @@
 It combines the most interesting parts of these languages and also provides a new selection of operators.
 This language is designed to facilitate more concise representations in some areas and increase readability in others.
 
-####<i>Features</i>
+#### <i>Features</i>
 <ul>
 <li> Static Scoping
 <li> Static and Strong Typing
@@ -26,7 +26,7 @@ This language is designed to facilitate more concise representations in some are
 <li> Algebraic Simplification
 </ul>
 
-##Grammar
+## Grammar
 
 [Avajava Railroad Diagram](https://raw.githubusercontent.com/ronaldooeee/AvaJava/master/images/railroad_diagram/index.html)  
 [Avjava microsyntax](https://raw.githubusercontent.com/ronaldooeee/Avajava/master/images/microsyntax/index.html)
@@ -63,7 +63,7 @@ type		::=  'int' | 'string' | 'float' | 'bool' | 'function' | 'list' | 'object' 
 ```
 
 
-###Macrosyntax
+### Macrosyntax
 ```
 Program 	::= Block
 Block 		::= (Stmt ';')*
@@ -125,7 +125,7 @@ List 		::= '[' ExpList? ']'
 ```
 
 
-####Example Programs:
+#### Example Programs:
 (with their equivalent Javascript translations)
 
 FunctionCalls can utilize currying to take in arguments.
@@ -159,17 +159,17 @@ end;                                                    }
 ```
 
 
-######To Compile & Run
+###### To Compile & Run
 ```
 $ ./avajava.js [-t] [-a] [-i] [-o] pathOrFilename.ava
 ```
-######example
+###### example
 ```
 $ ./avajava.js test/data/good-programs/factorial.ava
 $ ./avajava.js -o test/data/optimizer-tests/constant-folding.ava
 ```
 
-#####To Test
+##### To Test
 ```
 $ npm test
 ```
@@ -179,7 +179,7 @@ To test generated code, try piping it into node.
 $ ./avajava.js test/data/good-programs/factorial.ava | node
 ```
 
-####Commments
+#### Commments
 ```
 // Single Line Comments
 
@@ -191,12 +191,12 @@ Multi-Line Comments
 
 ```
 
-####Print Statements
+#### Print Statements
 ```
 ava("Hello World!");
 ```
 
-####Higher Order Functions
+#### Higher Order Functions
 ```
 var mapFunction = function (f:function, l:list) -> 
 	var newList = [];
@@ -211,7 +211,7 @@ var addOne = function (x:int) -> return x + 1; end;
 mapFunction(addOne, [1,2,3]);
 ```
                  
-####Primitives
+#### Primitives
 ```
 1 			// int
 1.00 		// float
@@ -226,7 +226,7 @@ false		// boolean
 {1,2,3}		// set
 ```
  
-#####Loops
+##### Loops
 For readability, we embedded a conditional expression in the second version of the forloop.
 
 ```
@@ -248,7 +248,7 @@ for (var i = 0 if i < length(m) then i++) {
 };
 ```
 
-#####Assignment
+##### Assignment
 This is essentially javascript assignment.
 
 ```
@@ -256,7 +256,7 @@ var x = 1;
 x = "hi";
 x = {y: 21, x: 100, z: 22};
 ```
-#####Variables
+##### Variables
 Variable names in Avajava cannot have numbers.
 
 ```
@@ -264,7 +264,7 @@ var x = 0;		// valid
 var x2 = 0;		// this will return a syntax error
 ```
 
-#####Operators
+##### Operators
 We added an exponential operator to not have to do repeat multiplication.
 
 ```
@@ -281,7 +281,7 @@ x and y;
 x or y;
 ```
 
-#####Relational Operators
+##### Relational Operators
 ```
 1 == 1
 1 >= 2
@@ -291,7 +291,7 @@ true and false; 	// yields false
 true or false;		// yields true
 ```
 
-#####Both Expressions
+##### Both Expressions
 Both expressions is a feature that attempts to reduce the redundant code associated with conditional expressions.
 
 ```
@@ -327,7 +327,7 @@ end;
 
 ```
 
-#####Lists and List Ranges
+##### Lists and List Ranges
 Only the triple dot ellipses is used to express list ranges.
 
 ```
@@ -339,7 +339,7 @@ x[1];		// returns 2
 
 ```
 
-#####Cons and Append Operators
+##### Cons and Append Operators
 Similar to OCaml's operators, append only works if both operands are lists. The result is a concatenated list containing elements from the two original lists. The cons operator yields the same results, except that when cons-ing two lists the result is a list of lists.
 
 ```
@@ -351,7 +351,7 @@ Similar to OCaml's operators, append only works if both operands are lists. The 
 
 ```
 
-#####Objects
+##### Objects
 These are essentially javascript objects with the same syntax for accessing fields.
 
 ```
@@ -361,12 +361,12 @@ w.x;
 w.z.u;
 ```
 
-#####Sets
+##### Sets
 ``` 
 { 2, 3, 4 } 
 ```
 
-#####String Operations
+##### String Operations
 Strings can be added to or subtracted from using '+' and '-'. Integers can also be applied to strings via multiplication only.
 
 ```
@@ -377,7 +377,7 @@ Strings can be added to or subtracted from using '+' and '-'. Integers can also 
 "hehe" - "h" 	// evalutates to "ehe"
 "t" * 3 		// evalutates to "ttt"
 ```
-#####Builtins
+##### Builtins
 Builtin functions require arguments to be passed into them (as opposed to using the dot operator such as in javascript).
 
 ```
@@ -385,7 +385,7 @@ var x = [1,2,3,4,5,6,7];
 length(x);		// x.length in javascript
 ```
 
-#####Modules (just use "export")
+##### Modules (just use "export")
 export() is a builtin function
 (shown below with javascript equivalent)
                      
@@ -394,7 +394,7 @@ export: { }															module.exports = {};
 export: { "add": (function (x:int,y:int) -> return x + y; end;) }	module.exports = { "add": (function (x:int,y:int) -> return x + y; end;) }
 ```
 
-#####Scoping:
+##### Scoping:
 Avajava utilizes static scoping.
 For example . . .
 
@@ -409,9 +409,9 @@ The var x = 10 instantiated within the printAgain will not affect the scope
 of the printNumber call within printAgain. (That would by dynamic scoping.)
 
 
-#####Some Edge-Cases/Areas that need Improvement
+##### Some Edge-Cases/Areas that need Improvement
 
-######'var' is optional in for-each loops
+###### 'var' is optional in for-each loops
 
 ```
 for each var number in x { number++; };
@@ -419,12 +419,12 @@ for each number in x { number++; };
 
 ```
 
-######If statements have optional parentheses
+###### If statements have optional parentheses
 ```
 if (true) then ava "hello"; end;
 if true then ava "hello"; end;
 ```
-######Indexing with expressions requires parens
+###### Indexing with expressions requires parens
 ```
 var x = [1,2,3,4,5,6,7];
 x[(length(x) - 1)];
